@@ -1,0 +1,46 @@
+// Pattern
+pattern "Strategy", {
+  sps {
+    roles {
+      gen_hierarchy "Strategy", {
+        classifier_role "Strategy", mult: "*", root: true, {
+          behavioral_feature "StrategyOp()", mult: "1..*", props: ["abstract"]
+        }
+        classifier_role "AbstractStrategy", mult: "*"
+        class_role "ConcreteStrategy", mult: "1..*", {
+          behavioral_feature "StrategyOp()", mult: "1..*"
+        }
+      }
+
+      class_role "Context", mult: "1..*", {
+        behavioral_feature "Request()", mult: "*"
+      }
+    }
+
+    relations {
+      aggregation_role "StrategyContext", {
+        source "Ctx", role: "Context", mult: "1..1"
+        dest "Strategy", role: "Strategy", mult: "1..*"
+      }
+
+      at_least_one {
+        generalization_role "StrategyGeneralization", child: "Strategy", parent: "Strategy"
+        realization_role "StrategyRealization", child: "Strategy", parent: "Strategy"
+      }
+    }
+
+    constraints {
+
+    }
+  }
+
+  ips {
+    roles {
+
+    }
+
+    trace {
+
+    }
+  }
+}

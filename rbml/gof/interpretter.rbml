@@ -1,0 +1,49 @@
+//  Pattern
+pattern "Interpretter", {
+  sps {
+    roles {
+      classifier_role "Context", mult: "*"
+      class_role "Client", mult: "*"
+
+      gen_hierarchy "AbstractExpression", {
+        classifier_role "AbstractExpression", mult: "1..*", {
+          behavioral_feature "Interpret(c:Context)", mult: "1..1", properties: ["abstract"]
+        }
+        classifier_role "AbstractTerminalExpr", mult: "*"
+        classifier_role "AbstractNonterminalExpr", mult: "*"
+        class_role "ConcreteTerminalExpr", mult: "1..*", {
+          behavioral_feature "Interpret(c:Context)", mult: "1..1"
+        }
+        class_role "ConcreteNonterminalExpr", mult: "1..*", {
+          behavioral_feature "Interpret(c:Context)", mult: "1..1"
+        }
+      }
+    }
+
+    relations {
+      association_role "ClntCtx", {
+        source "", role: "", mult: ""
+        dest "", role: "", mult: ""
+      }
+      association_role "ClntExp", {
+        source "", role: "", mult: ""
+        dest "", role: "", mult: ""
+      }
+      at_least_one {
+        generalization_role "ExpressionGeneralization", child: "AbstractExpression", parent: "AbstractExpression"
+        realization_role "ExpressionRealization", child: "AbstractExpression", parent: "AbstractExpression"
+      }
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}

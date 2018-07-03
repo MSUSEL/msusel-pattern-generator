@@ -1,0 +1,58 @@
+//  Pattern
+pattern "Decorator", {
+  sps {
+    roles {
+      gen_hierarchy "Component", {
+        classifier_role "Component", mult: "*", root: true, {
+          behavioral_feature "Operation()", mult: "1..*"
+        }
+        classifier_role "AbstractComponent", mult: "*"
+        class_role "ConcreteComponent", mult: "1..*", {
+          behavioral_feature "Operation()", mult: "1..*"
+        }
+      }
+
+      gen_hierarchy "Decorator", {
+        classifier_role "Decorator", mult: "*", root: true, {
+          behavioral_feature "Operation()", mult: "1..*"
+        }
+        classifier_role "AbstractDecorator", mult: "*"
+        class_role "ConcreteDecorator", mult: "1..*", {
+          behavioral_feature "Operation()", mult: "1..*"
+          behavioral_feature "AddedBehavior()", mult: "1..*"
+          structural_feature "AddedState", mult: "1..*"
+        }
+      }
+    }
+
+    relations {
+      association_role "Dec", {
+        source "AbsComp", role: "Decorator", mult: "1..1"
+        dest "AbsDec", role: "Component", mult: "1..*"
+      }
+      at_least_one {
+        generalization_role "CompDecGen", child: "Decorator", parent: "Component"
+        realization_role "CompDecReal", child: "Decorator", parent: "Component"
+      }
+      at_least_one {
+        generalization_role "CompGeneralization", child: "Component", parent: "Component"
+        realization_role "CompRealization", child: "", parent: "Decorator"
+      }
+      at_least_one {
+        generalization_role "DecoGeneralization", child: "Decorator", parent: "Decorator"
+        realization_role "DecoRealization", child: "Decorator", parent: "Decorator"
+      }
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}

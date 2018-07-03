@@ -1,0 +1,39 @@
+//  Pattern
+pattern "Singleton", {
+  sps {
+    roles {
+        class_role "Client", mult: "*"
+
+        gen_hierarchy "Singleton", {
+            classifier_role "Singleton", root: true, mult: "1..1"
+            classifier_role "AbstractSingleton", mult: "0..*"
+            class_role "ConcreteSingleton", mult: "1..*", {
+                behavioral_feature "GetInstance():Singleton", mult: "1..1", properties: ["static"]
+                structural_feature "Instance:Singleton", mult: "1..1", properties: ["static", "readonly"]
+            }
+        }
+    }
+
+    relations {
+        association_role "Uses", {
+            source "Cln", role: "Client", mult: "0..*"
+            dest "Sing", role: "Singleton", mult: "1..1"
+        }
+        at_least_one {
+            generalization_role "SingletonGeneralization", child: "Singleton", parent: "Singleton"
+            realization_role "SingletonRealization", child: "Singleton", parent: "Singleton"
+        }
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}

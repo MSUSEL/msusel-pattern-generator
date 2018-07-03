@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    MIT License
+
+    MSUSEL Design Pattern Generator
+    Copyright (c) 2017-2018 Montana State University, Gianforte School of Computing
+    Software Engineering Laboratory
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+-->
+<unit xmlns="http://www.srcML.org/srcML/src" revision="0.9.5">
+
+<unit revision="0.9.5" language="Java" filename="src/main/java/com/sparqline/srcml/test/Drive.java" hash="b0572c6184a58ecc2042cb567e7491c3fc0b5b6f"><comment type="block" format="javadoc">/**
+ * 
+ */</comment>
+<package>package <name><name>com</name><operator>.</operator><name>sparqline</name><operator>.</operator><name>srcml</name><operator>.</operator><name>test</name></name>;</package>
+
+<comment type="block" format="javadoc">/**
+ * @author Isaac Griffith
+ *
+ */</comment>
+<interface><specifier>public</specifier> interface <name>Drive</name> <block>{
+
+}</block></interface>
+</unit>
+
+<unit revision="0.9.5" language="Java" filename="src/main/java/com/sparqline/srcml/test/Person.java" hash="b2849ce3d41be5ea2ef27f805a2d67c996d8b37b"><comment type="block" format="javadoc">/**
+ * 
+ */</comment>
+<package>package <name><name>com</name><operator>.</operator><name>sparqline</name><operator>.</operator><name>srcml</name><operator>.</operator><name>test</name></name>;</package>
+
+<comment type="block" format="javadoc">/**
+ * @author Isaac Griffith
+ *
+ */</comment>
+<class><specifier>public</specifier> class <name>Person</name> <super><extends>extends <name>Animal</name></extends> <implements>implements <name>Drive</name>, <name>Walk</name>, <name>Run</name></implements></super> <block>{
+
+    <comment type="block" format="javadoc">/**
+     * 
+     */</comment>
+    <constructor><specifier>public</specifier> <name>Person</name><parameter_list>()</parameter_list>
+    <block>{
+        <comment type="line">// TODO Auto-generated constructor stub</comment>
+    }</block></constructor>
+
+    <comment type="block" format="javadoc">/**
+     * {@inheritDoc}
+     */</comment>
+    <function><annotation>@<name>Override</name></annotation>
+    <specifier>public</specifier> <type><name>void</name></type> <name>test</name><parameter_list>()</parameter_list>
+    <block>{
+        <comment type="line">// TODO Auto-generated method stub</comment>
+        
+    }</block></function>
+
+}</block></class>
+</unit>
+
+<unit revision="0.9.5" language="Java" filename="src/main/java/com/sparqline/srcml/test/Run.java" hash="1f573114990c8d819249200bc81088fcc481b3bb"><comment type="block" format="javadoc">/**
+ * 
+ */</comment>
+<package>package <name><name>com</name><operator>.</operator><name>sparqline</name><operator>.</operator><name>srcml</name><operator>.</operator><name>test</name></name>;</package>
+
+<comment type="block" format="javadoc">/**
+ * @author Isaac Griffith
+ *
+ */</comment>
+<interface><specifier>public</specifier> interface <name>Run</name> <block>{
+
+}</block></interface>
+</unit>
+
+<unit revision="0.9.5" language="Java" filename="src/main/java/com/sparqline/srcml/test/Walk.java" hash="c03f0ea8ee7511a76d2141f95219a4e932e60f76"><comment type="block" format="javadoc">/**
+ * 
+ */</comment>
+<package>package <name><name>com</name><operator>.</operator><name>sparqline</name><operator>.</operator><name>srcml</name><operator>.</operator><name>test</name></name>;</package>
+
+<comment type="block" format="javadoc">/**
+ * @author Isaac Griffith
+ *
+ */</comment>
+<interface><specifier>public</specifier> interface <name>Walk</name> <block>{
+
+}</block></interface>
+</unit>
+
+<unit revision="0.9.5" language="Java" filename="src/main/java/com/sparqline/srcml/test/Animal.java" hash="b18f07549b5de8a9306fd5fa799e8a3e3e41b973"><comment type="block" format="javadoc">/**
+ * 
+ */</comment>
+<package>package <name><name>com</name><operator>.</operator><name>sparqline</name><operator>.</operator><name>srcml</name><operator>.</operator><name>test</name></name>;</package>
+
+<comment type="block" format="javadoc">/**
+ * @author Isaac Griffith
+ *
+ */</comment>
+<class><specifier>public</specifier> <specifier>abstract</specifier> class <name>Animal</name> <block>{
+
+    <comment type="block" format="javadoc">/**
+     * 
+     */</comment>
+    <constructor><specifier>public</specifier> <name>Animal</name><parameter_list>()</parameter_list>
+    <block>{
+        <comment type="line">// TODO Auto-generated constructor stub</comment>
+    }</block></constructor>
+
+    <function_decl><specifier>public</specifier> <specifier>abstract</specifier> <type><name>void</name></type> <name>test</name><parameter_list>()</parameter_list>;</function_decl>
+}</block></class>
+</unit>
+
+</unit>

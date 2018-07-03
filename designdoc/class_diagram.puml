@@ -1,0 +1,54 @@
+@startuml
+abstract class AbstractFileGenerator {
++ generateFiles()
+}
+
+abstract class AbstractSrcMLBuilder {
++ construct(tree:CodeTree)
+}
+
+abstract class AbstractDirStructGenerator {
++ generateDirStruct()
+}
+
+abstract class AbstractPatternGenerator {
++ generate(CodeTree tree)
+}
+
+abstract class AbstractLanguagePlugin {
+}
+
+interface LanguagePlugin
+
+LanguagePlugin <|.. AbstractLanguagePlugin
+AbstractLanguagePlugin <|-- JavaPlugin
+AbstractLanguagePlugin <|-- RubyPlugin
+AbstractLanguagePlugin <|-- CSharpPlugin
+AbstractLanguagePlugin <|-- CppPlugin
+
+AbstractLanguagePlugin --> AbstractDirStructGenerator
+AbstractLanguagePlugin --> AbstractFileGenerator
+AbstractLanguagePlugin --> AbstractPatternGenerator
+
+AbstractPatternGenerator <|-- JavaPatternGenerator
+AbstractPatternGenerator <|-- RubyPatternGenerator
+AbstractPatternGenerator <|-- CSharpPatternGenerator
+
+AbstractPatternGenerator --> AbstractSrcMLBuilder
+
+AbstractSrcMLBuilder <|-- JavaSrcMLBuilder
+AbstractSrcMLBuilder <|-- CSharpSrcMLBuilder
+
+AbstractFileGenerator <|-- JavaFileGenerator
+AbstractFileGenerator <|-- RubyFileGenerator
+AbstractFileGenerator <|-- CSharpFileGenerator
+
+AbstractDirStructGenerator <|-- JavaDirStructGenerator
+AbstractDirStructGenerator <|-- RubyDirStructGenerator
+AbstractDirStructGenerator <|-- CSharpDirStructGenerator
+
+AbstractLanguagePlugin --> LanguageDescriptor
+
+Generator *--> AbstractLanguagePlugin
+Generator --> GeneratorConfig
+@enduml

@@ -1,0 +1,65 @@
+//  Pattern
+pattern "Observer", {
+  sps {
+    roles {
+      gen_hierarchy "Subject", {
+        classifier_role "Subject", mult: "*", root: true, {
+          structural_feature "SubjectState:SubStateType", mult: "1..*"
+          behavioral_feature "Attach(obsv:Observer)", mult: "1..1", props: ["abstract"]
+          behavioral_feature "Detach(obsv:Observer)", mult: "1..1", props: ["abstract"]
+          behavioral_feature "Notify()", mult: "1..1", props: ["abstract"]
+          behavioral_feature "GetState():SubStateType", mult: "1..*"
+          behavioral_feature "SetState(st:SubStateType)", mult: "1..*"
+        }
+        classifier_role "AbstractSubject", mult: "*"
+        class_role "ConcreteSubject", mult: "1..*", {
+          behavioral_feature "Attach(obsv:Observer)", mult: "1..1" behavioral_feature "Detach(obsv:Observer)", mult: "1..1" behavioral_feature "Notify()", mult: "1..1"
+        }
+      }
+
+      gen_hierarchy "Observer", {
+        classifier_role "Observer", mult: "*", {
+          structural_feature "ObserverState:ObsStateType", mult: "1..*"
+          behavioral_feature "Update()", mult: "1..1", props: ["abstract"]
+        }
+        classifier_role "AbstractObserver", mult: "*"
+        class_role "ConcreteObserver", mult: "1..*", {
+          behavioral_feature "Update()", mult: "1..1"
+        }
+      }
+    }
+
+    relations {
+      aggregation_role "SubjectObservers", {
+        source "Subj", role: "Subject", mult: "1..1"
+        dest "Obs", role: "Observer", mult: "1..*"
+      }
+
+      association_role "ObsSub", {
+        source "Ob", role: "ConcreteObserver", mult: "1..1"
+        dest "Sub", role: "ConcreteSubject", mult: "1..1"
+      }
+      
+      at_least_one {
+        generalization_role "SubjectGeneralization", parent: "Subject", child: "Subject"
+        realization_role "SubjectRealization", parent: "Subject", child: "Subject"
+      }
+
+      at_least_one {
+        generalization_role "ObserverGeneralization", parent: "Observer", child: "Observer"
+        realization_role "ObserverRealization", parent: "Observer", child: "Observer"
+      }
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}

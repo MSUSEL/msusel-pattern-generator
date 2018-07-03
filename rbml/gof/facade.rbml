@@ -1,0 +1,21 @@
+//  Pattern
+pattern "Fascade", {
+  sps {
+    roles {
+    }
+
+    relations {
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}

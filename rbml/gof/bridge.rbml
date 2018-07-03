@@ -1,0 +1,48 @@
+// Bridge Pattern
+pattern "Bridge", {
+  sps {
+    roles {
+    	gen_hierarchy {
+    	  classifier_role "Abstraction", root: true, {
+    	    behavioral_feature "Operation()", mult: "1..*"
+    	  }
+    	  classifier_role "AbstractAbstraction", mult: "0..*"
+    	  class_role "ConcreteAbstraction", mult: "1..*"
+    	}
+
+    	gen_hierarchy {
+    	  classifier_role "Implementor", root: true, {
+    	    behavioral_feature "OperationImp()", mult: "1..*"
+    	  }
+    	  classifier_role "AbstractImplementor", mult: "0..*"
+    	  class_role "ConcreteImplementor", mult: "1..*"
+    	}
+    }
+
+    relations {
+    	association_role "Implements" {
+    	  source "Abs", role: "Abstraction", mult: "1..*"
+    	  dest "Imp", role: "Implementor", mult: "1..*"
+    	}
+    	at_least_one {
+    	  generalization_role "AbsGeneralization", child: "Abstraction", parent: "Abstraction"
+    	  realization_role "AbsRealization", child: "Abstraction", parent: "Abstraction"
+    	}
+    	at_least_one {
+    	  generalization_role "ImplGeneralization", child: "Implementor", parent: "Implementor"
+    	  realization_role "ImplRealization", child: "Implementor", parent: "Implementor"
+    	}
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}

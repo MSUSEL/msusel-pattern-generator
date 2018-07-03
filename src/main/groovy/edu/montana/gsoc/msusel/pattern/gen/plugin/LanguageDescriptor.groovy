@@ -1,0 +1,62 @@
+/**
+ * MIT License
+ *
+ * MSUSEL Design Pattern Generator
+ * Copyright (c) 2017-2018 Montana State University, Gianforte School of Computing
+ * Software Engineering Laboratory
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+package edu.montana.gsoc.msusel.pattern.gen.plugin
+
+import groovy.transform.EqualsAndHashCode
+
+/**
+ * Simple Class for describing a pattern generator language plugin
+ * @author Isaac Griffith
+ * @version 1.3.0
+ */
+@EqualsAndHashCode(includeFields=true, excludes=["cliArgs"])
+class LanguageDescriptor {
+
+    /**
+     * Name of the language
+     */
+	String name
+	/**
+	 * Language source file extensions
+	 */
+    String fileExt
+	/**
+	 * Language description
+	 */
+    String description
+	/**
+	 * Arguments from the command line
+	 */
+    def cliArgs = []
+    
+    /**
+     * Constructs a new Pattern Generator Language Descriptor
+     */
+    LanguageDescriptor()
+    {
+        // TODO Auto-generated constructor stub
+    }
+}

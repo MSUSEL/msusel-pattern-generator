@@ -1,0 +1,48 @@
+//  Pattern
+pattern "Proxy", {
+  sps {
+    roles {
+      gen_hierarchy "Subject", {
+        classifier_role "Subject", mult: "*", root: true, {
+          behavioral_feature "Request()", mult: "1..*", props: ["abstract"]
+        }
+        classifier_role "AbstractRealSubject", mult: "*"
+        class_role "RealSubject", mult: "1..*", {
+          behavioral_feature "Request()", mult: "1..*"
+        }
+        classifier_role "Proxy", mult: "*"
+        class_role "AbstractProxy", mult: "1..*", {
+          behavioral_feature "Request()", mult: "1..*"
+        }
+
+        class_role "Client", mult: "1..*"
+      }
+    }
+
+    relations {
+      association_role "ClntSub", {
+        source "Clnt", role: "Client", mult: "1..1"
+        dest "Subj", role: "Subject", mult: "1..*"
+      }
+      association_role "SubProxy", {
+        source "Sub", role: "RealSubject", mult: "1..1"
+        dest "Prox", role: "Proxy", mult: "1..*"
+      }
+      at_least_one {
+        generalization_role "SubjectGenralization", child: "Subject", parent: "Subject"
+        realization_role "SubjectRealization", child: "Subject", parent: "Subject"
+      }
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}

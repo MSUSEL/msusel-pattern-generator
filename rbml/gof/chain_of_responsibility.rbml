@@ -1,0 +1,43 @@
+//  Pattern
+pattern "Chain of Responsibility", {
+  sps {
+    roles {
+      class_role "Client", mult: "1..*"
+      gen_hierarchy "Handler", {
+        classifier_role "Handler", root: true, {
+          behavioral_feature "HandleRequest()", mult: "1..*", properties: ["abstract"]
+        }
+        class_role "ConcreteHandler", mult: "1..*", {
+          behavioral_feature "HandleRequest()", mult: "1..*"
+        }
+        classifier_role "AbstractHandler", mult: "*"
+      }
+    }
+
+    relations {
+      association_role "ClntHandler", {
+        source "Clnt", role: "Client", mult: "1..*"
+        dest "Handle", role: "Handler", mult: "1..*"
+      }
+      association_role "Successor", {
+        source "prev", role: "Handler", mult: "1..1"
+        dest "succ", role: "Handler", mult: "0..*"
+      }
+      at_least_one {
+        generalization_role "HandlerGeneralization", child: "Handler", parent: "Handler"
+        realization_role "HandlerRealization", child: "Handler", parent: "Handler"
+      }
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}

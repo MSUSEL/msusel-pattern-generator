@@ -1,0 +1,42 @@
+//  Pattern
+pattern "Prototype", {
+  sps {
+    roles {
+      gen_hierarchy "Prototype", {
+        classifier_role "Prototype", mult: "*", root: true, {
+          behavioral_feature "Clone():Prototype", mult: "1..1", props: ["abstract"]
+        }
+        classifier_role "AbstractPrototype", mult: "*"
+        class_role "ConcretePrototype", mult: "1..*", {
+          behavioral_feature "Clone():Prototype", mult: "1..1"
+        }
+      }
+
+      class_role "Client", mult: "*", {
+        behavioral_feature "Operation()", mult: "1..*"
+      }
+    }
+
+    relations {
+      association_role "ClntProto", {
+        source "Clnt", role: "Client", mult: "1..1"
+        dest "Proto", role: "Prototype", mult: "1..*"
+      }
+      at_least_one {
+        generalization_role "PrototypeGeneralization", child: "Prototype", parent: "Prototype"
+        realization_role "PrototypeRealization", child: "Prototype", parent: "Prototype"
+      }
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}

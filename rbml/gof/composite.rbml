@@ -1,0 +1,50 @@
+//  Pattern
+pattern "Composite", {
+  sps {
+    roles {
+      class_role "Client", mult: "*"
+      gen_hierarchy, "Composite", {
+        classifier_role "Component", mult: "*", root: true, {
+          behavioral_feature "Operation()", mult: "1..*"
+          behavioral_feature "Add(c:Composite)", mult: "1..1"
+          behavioral_feature "Remove(c:Composite)", mult: "1..1"
+          behavioral_feature "GetChild(i:Integer):Composite", mult: "1..1"
+        }
+        class_role "Leaf", mult: "1..*"
+        classifier_role "AbstractComponent", mult: "*"
+        class_role "ConcreteComposite", mult: "1..*", {
+          behavioral_feature "Operation()", mult: "1..*"
+          behavioral_feature "Add(c:Composite)", mult: "1..1"
+          behavioral_feature "Remove(c:Composite)", mult: "1..1"
+          behavioral_feature "GetChild(i:Integer):Composite", mult: "1..1"
+        }
+      }
+    }
+
+    relations {
+      association_role "Component", {
+        source "Clnt", role: "Client", mult: "1..1"
+        dest "Comp", role: "Composite", mult: "1..1"
+      }
+      aggregation_role "ContainedChildren", {
+        source "Parent", role: "ConcreteComposite", mult: "1..1"
+        dest "Child", role: "Component", mult: "1..*"
+      }
+      at_least_one {
+        generalization_role "CompGeneralization", child: "Component", parent: "Component"
+        realization_role "CompRealization", child: "Component", parent: "Component"
+      }
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}

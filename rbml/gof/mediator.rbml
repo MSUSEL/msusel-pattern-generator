@@ -1,0 +1,54 @@
+//  Pattern
+pattern "Mediator", {
+  sps {
+    roles {
+      gen_hierarchy "Mediator", {
+        classifier_role "Mediator", mult: "*", root: true, {
+          behavioral_feature "ColleagueOp()", mult: "1..*", props: ["abstract"]
+        }
+        classifier_role "AbstractMediator", mult: "*"
+        class_role "ConcreteMediator", mult: "1..*", {
+          behavioral_feature "ColleagueOp()", mult: "1..*"
+        }
+      }
+
+      gen_hierarchy "Colleague", {
+        classifier_role "Colleague", mult: "*", root: true, {
+          behavioral_feature "ColleagueOp()", mult: "1..*", props: ["abstract"]
+        }
+        classifier_role "AbstractColleague", mult: "*"
+        class_role "ConcreteColleague", mult: "1..*", {
+          behavioral_feature "ColleagueOp()", mult: "1..*"
+        }
+      }
+    }
+
+    relations {
+      association_role "MedCol", {
+        source "Med", role: "Mediator", mult: "1..1"
+        dest "Col", role: "Colleague", mult: "1..*"
+      }
+      usage_role "ConcConc", source: "ConcreteMediator", dest: "ConcreteColleague"
+
+      at_least_one {
+        generalization_role "MediatorGeneralization", child: "Mediator", parent: "Mediator"
+        realization_role "MediatorRealization", child: "Mediator", parent: "Mediator"
+      }
+      at_least_one {
+        generalization_role "ColleagueGeneralization", child: "Colleague", parent: "Colleague"
+        realization_role "ColleagueRealization", child: "Colleague", parent: "Colleague"
+      }
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}

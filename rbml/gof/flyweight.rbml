@@ -1,0 +1,61 @@
+//  Pattern
+pattern "Flyweight", {
+  sps {
+    roles {
+      class_role "FlyweightFactory", mult: "1..1", {
+        behavioral_feature "getFlyweight(key:Key):Flyweight", mult: "1..1"
+      }
+      class_role "Client", mult: "1..*"
+
+      gen_hierarchy "Flyweight", {
+        classifier_role "Flyweight", mult: "*", root: true {
+          behavior_feature "Operation(s:State)", mult: "1..*"
+        }
+        classifier_role "AbstractFlyweight", mult: "*"
+        classifier_role "UnsharedAbstractFlyweight", mult: "*"
+        class_role "ConcreteFlyweight", mult: "1..*", {
+          structural_feature "IntrisicState:State", mult: "1..1"
+          behavioral_feature "Operation(s:State)", mult: "1..*"
+        }
+        class_role "UnsharedConcreteFlyweight", mult: "1..*", {
+          structural_feature "AllState:State", mult: "1..*"
+          behavioral_feature "Operation(s:State)", mult: "1..*"
+        }
+      }
+    }
+
+    relations {
+      composition_role "AvailableFlyweights", {
+        source "Factory", role: "FlyweightFactory", mult: "1..1"
+        dest "Flyweights", role: "Flyweight", mult: "1..*"
+      }
+      association_role "ClientFactory" {
+        source "Fact", role: "FlyweightFactory", mult: "1..1"
+        dest "Clnt", role: "Client", mult: "1..*"
+      }
+      association_role "SharedFlyweight" {
+        source "Cln", role: "Client", mult: "1..1"
+        dest "Fly", role: "ConcreteFlywieght", mult: "1..*"
+      }
+      association_role "UnsharedFlyweight" {
+        source "Ct", role: "Client", mult: "1..1"
+        dest "Fl", role: "UnsharedConcreteFlywieght", mult: "1..*"
+      }
+      at_least_one {
+        generalization_role "", child: "", parent: ""
+        realization_role "", child: "", parent: ""
+      }
+    }
+
+    constraints {
+    }
+  }
+
+  ips {
+    roles {
+    }
+
+    trace {
+    }
+  }
+}
