@@ -26,7 +26,8 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.java
 
-import edu.montana.gsoc.msusel.datamodel.Component
+import edu.isu.isuese.datamodel.Component
+import edu.isu.isuese.datamodel.Enum
 
 /**
  * @author Isaac Griffith
@@ -42,13 +43,13 @@ class EnumLiteralBuilder extends AbstractNodeBuilder {
     def build(BuilderData data) {
         StringBuilder builder = new StringBuilder()
 
-        data.evtMgr.fireLiteralCreationStarted(node.key, lookupFeatureRole(node), builder, data.parent.key)
+        data.evtMgr.fireLiteralCreationStarted(node.key, lookupFeatureRole(data, node), builder, data.parent.key)
         builder << node.key
         if (data.parent instanceof Enum) {
-            if (node != ((Enum) data.parent).literals.last())
+            if (node != ((Enum) data.parent).getLiterals().last())
                 builder << ","
         }
-        data.evtMgr.fireLiteralCreationComplete(node.key, lookupFeatureRole(node), builder, data.parent.key)
+        data.evtMgr.fireLiteralCreationComplete(node.key, lookupFeatureRole(data, node), builder, data.parent.key)
 
         return builder.toString()
     }

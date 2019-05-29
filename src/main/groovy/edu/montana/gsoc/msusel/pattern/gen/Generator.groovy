@@ -51,7 +51,7 @@ class Generator {
      * @param args
      */
     static main(String[] args) {
-        def cli = new CliBuilder(usage:'pattern-gen [options]', footer:'Copyright (c) 2017-2018 Montana State University')
+        def cli = new CliBuilder(usage:'pattern-gen [options]', footer:'Copyright (c) 2017-2019 Montana State University')
         cli.s(longOpt:'spec', args:1, argName:'spec-file', 'RBML Specification file for the pattern to generate')
         cli.p(longOpt:'pgcl', args:1, argName:'pgcl-file', 'PGCL Specification file for the pattern to generate')
         cli.c(longOpt:'config', args:1, argName:'config-file', 'Configuration file to use to guide the pattern generation')

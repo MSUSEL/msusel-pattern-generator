@@ -26,12 +26,13 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.java
 
-import edu.montana.gsoc.msusel.datamodel.member.Field
-import edu.montana.gsoc.msusel.datamodel.member.Literal
-import edu.montana.gsoc.msusel.datamodel.member.Method
-import edu.montana.gsoc.msusel.datamodel.structural.Project
-import edu.montana.gsoc.msusel.datamodel.type.Type
-import edu.montana.gsoc.msusel.datamodel.Component
+import edu.isu.isuese.datamodel.Component
+import edu.isu.isuese.datamodel.Field
+import edu.isu.isuese.datamodel.Literal
+import edu.isu.isuese.datamodel.Method
+import edu.isu.isuese.datamodel.Project
+import edu.isu.isuese.datamodel.Type
+
 
 /**
  * @author Isaac Griffith

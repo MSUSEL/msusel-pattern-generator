@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.plugin
 
-import edu.montana.gsoc.msusel.codetree.CodeTree
+import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.AbstractDirStructGenerator
 import edu.montana.gsoc.msusel.pattern.gen.AbstractFileGenerator
 import edu.montana.gsoc.msusel.pattern.gen.AbstractPatternGenerator
@@ -59,7 +59,7 @@ abstract class AbstractLanguagePlugin implements LanguagePlugin {
      */
     LanguageDescriptor descriptor
 
-    CodeTree tree
+    Project project
 
     @Override
     void execute(config)

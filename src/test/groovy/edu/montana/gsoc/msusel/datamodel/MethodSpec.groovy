@@ -29,28 +29,31 @@
  */
 package edu.montana.gsoc.msusel.datamodel
 
-import edu.montana.gsoc.msusel.codetree.typeref.PrimitiveTypeRef
-import edu.montana.gsoc.msusel.datamodel.member.Method
-import spock.lang.Specification
+import edu.isu.isuese.datamodel.Method
+import edu.isu.isuese.datamodel.TypeRef
+import org.javalite.activejdbc.test.DBSpec
+import org.junit.Test
 
 /**
  * @author Isaac Griffith
  *
  */
-class MethodSpec extends Specification {
+class MethodSpec extends DBSpec {
 
-    def defaultReturnTypeIsVoid() {
-        given: "A newly created method type"
+    @Test
+    void defaultReturnTypeIsVoid() {
+        //given: "A newly created method type"
         def mn = Method.builder().create()
         
-        expect: "type should be void"
-        mn.type == PrimitiveTypeRef.getInstance("void")
-        
-        when: "A newly created method type with a key"
-        mn = Method.builder().key("test")
-        
-        then: "type should be void"
-        mn.type == PrimitiveTypeRef.getInstance("void")
+        //expect: "type should be void"
+        System.out.println(mn.getType())
+        a(mn.getType()).shouldBeEqual(TypeRef.createPrimitiveTypeRef("void"))
+
+        //when: "A newly created method type with a key"
+        mn = Method.builder().compKey("test").create()
+
+        //then: "type should be void"
+        a(mn.getType()).shouldBeEqual(TypeRef.createPrimitiveTypeRef("void"))
     }
 
 }

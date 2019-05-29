@@ -26,10 +26,11 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.csharp
 
-import edu.montana.gsoc.msusel.datamodel.member.Method
-import edu.montana.gsoc.msusel.datamodel.structural.File
-import edu.montana.gsoc.msusel.datamodel.structural.Import
-import edu.montana.gsoc.msusel.datamodel.type.*
+import edu.isu.isuese.datamodel.Method
+import edu.isu.isuese.datamodel.File
+import edu.isu.isuese.datamodel.Import
+import edu.isu.isuese.datamodel.Type
+import edu.isu.isuese.datamodel.Enum
 import edu.montana.gsoc.msusel.pattern.gen.AbstractSourceBuilder
 
 /**
@@ -83,9 +84,9 @@ class CSharpSourceBuilder extends AbstractSourceBuilder {
     def handleImports(File file, StringBuilder builder)
     {
         // TODO need to handle initialized using statements
-        file.imports().each { Import imp ->
+        file.getImports().each { Import imp ->
             builder << "using "
-            builder << imp.getKey()
+            builder << imp.getName()
             builder << ";\n"
         }
     }

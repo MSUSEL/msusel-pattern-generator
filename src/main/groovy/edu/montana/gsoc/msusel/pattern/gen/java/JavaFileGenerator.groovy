@@ -40,7 +40,7 @@ abstract class JavaFileGenerator extends AbstractFileGenerator {
         The MIT License (MIT)
 
         [ProjectName] created by MSUSEL Pattern Generator
-        Copyright (c) 2015-2018 Montana State University, Software Engineering Laboratory
+        Copyright (c) 2015-2019 Montana State University, Software Engineering Laboratory
         
         Permission is hereby granted, free of charge, to any person obtaining a copy
         of this software and associated documentation files (the "Software"), to deal

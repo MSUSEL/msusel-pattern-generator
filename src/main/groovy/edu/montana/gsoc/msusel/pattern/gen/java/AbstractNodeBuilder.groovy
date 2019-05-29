@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.java
 
-import edu.montana.gsoc.msusel.datamodel.Component
+import edu.isu.isuese.datamodel.Component
 
 /**
  * @author Isaac Griffith

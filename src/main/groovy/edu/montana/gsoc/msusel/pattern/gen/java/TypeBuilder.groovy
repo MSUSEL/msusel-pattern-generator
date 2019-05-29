@@ -26,13 +26,13 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.java
 
-import edu.montana.gsoc.msusel.datamodel.Accessibility
-import edu.montana.gsoc.msusel.datamodel.Component
-import edu.montana.gsoc.msusel.datamodel.member.Field
-import edu.montana.gsoc.msusel.datamodel.member.Literal
-import edu.montana.gsoc.msusel.datamodel.member.Method
-import edu.montana.gsoc.msusel.datamodel.type.Enum
-import edu.montana.gsoc.msusel.datamodel.type.Type
+import edu.isu.isuese.datamodel.Accessibility
+import edu.isu.isuese.datamodel.Component
+import edu.isu.isuese.datamodel.Field
+import edu.isu.isuese.datamodel.Literal
+import edu.isu.isuese.datamodel.Method
+import edu.isu.isuese.datamodel.Enum
+import edu.isu.isuese.datamodel.Type
 
 /**
  * @author Isaac Griffith
@@ -48,11 +48,11 @@ class TypeBuilder extends AbstractNodeBuilder {
     def build(BuilderData data) {
         StringBuilder builder = new StringBuilder()
 
-        data.evtMgr.fireTypeCreationStarted(node.key, lookupTypeRole(data, node), builder, node.key)
+        data.evtMgr.fireTypeCreationStarted(node.getCompKey(), lookupTypeRole(data, node), builder, node.key)
         builder << declareComment(data)
         builder << declareTypeHeader(data)
         builder << declareTypeBody(data)
-        data.evtMgr.fireTypeCreationComplete(node.key, lookupTypeRole(data, node), builder, node.key)
+        data.evtMgr.fireTypeCreationComplete(node.getCompKey(), lookupTypeRole(data, node), builder, node.key)
 
         builder.toString()
     }
@@ -71,7 +71,7 @@ class TypeBuilder extends AbstractNodeBuilder {
         StringBuilder builder = new StringBuilder()
 
         Type typ = (Type) node
-        data.evtMgr.fireTypeHeader(typ.key, lookupTypeRole(data, typ), builder, typ.key)
+        data.evtMgr.fireTypeHeader(typ.key, lookupTypeRole(data, typ), builder, typ.compKey)
 
         if (typ.getAccessibility() && typ.getAccessibility() != Accessibility.DEFAULT) {
             builder << typ.getAccessibility().toString().toLowerCase()
@@ -85,21 +85,21 @@ class TypeBuilder extends AbstractNodeBuilder {
 
         builder << "${designator}"
         builder << " "
-        builder << typ.name()
+        builder << typ.getName()
         builder << " "
 
-        def extnds = data.tree.getGeneralizedFrom(typ)
+        def extnds = typ.getGeneralizes()
         if (extnds) {
             builder << "extends "
-            builder << ((Type) extnds[0]).name()
+            builder << ((Type) extnds[0]).getName()
             builder << " "
         }
 
-        List impls = data.tree.getRealizedFrom(typ)
+        List impls = typ.getRealizes()
         if (impls) {
             builder << "implements "
             impls.each { Type type ->
-                builder << type.name()
+                builder << type.getName()
                 if (impls.last() != type)
                     builder << ", "
             }
@@ -115,7 +115,7 @@ class TypeBuilder extends AbstractNodeBuilder {
         StringBuilder builder = new StringBuilder()
 
         if (node instanceof Type) {
-            data.evtMgr.fireTypeBody(node.key, lookupTypeRole(data, node), builder, node.key)
+            data.evtMgr.fireTypeBody(node.compKey, lookupTypeRole(data, node), builder, node.compKey)
 
             builder << "{"
             builder << "\n"
@@ -142,14 +142,14 @@ class TypeBuilder extends AbstractNodeBuilder {
         StringBuilder builder = new StringBuilder()
 
         if (node instanceof Enum) {
-            data.evtMgr.fireLiteralsStarted(node.key, null, builder, node.key)
+            data.evtMgr.fireLiteralsStarted(node.compKey, null, builder, node.compKey)
 
             builder << "    "
             node.getLiterals().each { Literal literal ->
                 builder << NodeBuilderFactory.instance.createBuilder(literal).build(getClonedData(data))
             }
             builder << ";\n"
-            data.evtMgr.fireLiteralsCompleted(node.key, null, builder, node.key)
+            data.evtMgr.fireLiteralsCompleted(node.compKey, null, builder, node.compKey)
         }
 
         builder.toString()
@@ -159,11 +159,11 @@ class TypeBuilder extends AbstractNodeBuilder {
         StringBuilder builder = new StringBuilder()
 
         if (node instanceof Type) {
-            data.evtMgr.fireMethodsStarted(node.key, null, builder, node.key)
-            node.methods().each { Method method ->
+            data.evtMgr.fireMethodsStarted(node.compKey, null, builder, node.compKey)
+            node.getMethods().each { Method method ->
                 builder << NodeBuilderFactory.instance.createBuilder(method).build(getClonedData(data))
             }
-            data.evtMgr.fireMethodsComplete(node.key, null, builder, node.key)
+            data.evtMgr.fireMethodsComplete(node.compKey, null, builder, node.compKey)
         }
 
         builder.toString()
@@ -173,11 +173,11 @@ class TypeBuilder extends AbstractNodeBuilder {
         StringBuilder builder = new StringBuilder()
 
         if (node instanceof Type) {
-            data.evtMgr.fireFieldsStarted(node.key, null, builder, node.key)
-            node.fields().each { Field field ->
+            data.evtMgr.fireFieldsStarted(node.compKey, null, builder, node.compKey)
+            node.getFields().each { Field field ->
                 builder << NodeBuilderFactory.instance.createBuilder(field).build(getClonedData())
             }
-            data.evtMgr.fireFieldsComplete(node.key, lookupTypeRole(data, node), builder, node.key)
+            data.evtMgr.fireFieldsComplete(node.compKey, lookupTypeRole(data, node), builder, node.compKey)
         }
 
         builder.toString()

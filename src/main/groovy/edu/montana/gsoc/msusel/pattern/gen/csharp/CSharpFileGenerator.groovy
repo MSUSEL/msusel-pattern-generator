@@ -26,8 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.csharp
 
-import edu.montana.gsoc.msusel.codetree.CodeTree
-import edu.montana.gsoc.msusel.codetree.node.structural.Project
+import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.AbstractFileGenerator
 import groovy.xml.StreamingMarkupBuilder
 
@@ -71,14 +70,8 @@ class CSharpFileGenerator extends AbstractFileGenerator {
     /**
      * Constructs a new C# File Generator
      */
-    public CSharpFileGenerator() {
+    CSharpFileGenerator() {
         // TODO Auto-generated constructor stub
-    }
-
-    /**
-     * @param tree
-     */
-    void generate(CodeTree tree) {
     }
 
     /**
@@ -308,7 +301,7 @@ class CSharpFileGenerator extends AbstractFileGenerator {
         [assembly: AssemblyFileVersion("1.0.0.0")]
         '''.replaceAll("\\[Year\\]", Year.now().getValue())
         .replaceAll("\\[UUID\\]", id.toString())
-        .replaceAll("\\[ProjectName\\]", ctree.getSystem().getKey())
+        .replaceAll("\\[ProjectName\\]", ctree.getSystem().getKey()) // FIXME
     }
 
     void generateFiles() {

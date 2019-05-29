@@ -26,10 +26,10 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.java
 
-import edu.montana.gsoc.msusel.datamodel.Accessibility
-import edu.montana.gsoc.msusel.datamodel.Component
-import edu.montana.gsoc.msusel.datamodel.member.Constructor
-import edu.montana.gsoc.msusel.datamodel.member.Method
+import edu.isu.isuese.datamodel.Accessibility
+import edu.isu.isuese.datamodel.Component
+import edu.isu.isuese.datamodel.Constructor
+import edu.isu.isuese.datamodel.Method
 
 /**
  * @author Isaac Griffith
@@ -45,13 +45,13 @@ class MethodBuilder extends AbstractNodeBuilder {
     def build(BuilderData data) {
         StringBuilder builder = new StringBuilder()
 
-        data.evtMgr.fireMethodCreationStarted(node.key, lookupFeatureRole(data, node), builder, data.parent.key)
+        data.evtMgr.fireMethodCreationStarted(node.getCompKey(), lookupFeatureRole(data, node), builder, data.getParent().getCompKey())
         builder << declareComment(data)
         builder << "\n"
         builder << declareMethodHeader(data)
         builder << "\n"
         builder << declareMethodBody(data)
-        data.evtMgr.fireMethodCreationComplete(node.key, lookupFeatureRole(data, node), builder, data.parent.key)
+        data.evtMgr.fireMethodCreationComplete(node.getCompKey(), lookupFeatureRole(data, node), builder, data.getParent().getCompKey())
 
         builder.toString()
     }
@@ -104,7 +104,7 @@ class MethodBuilder extends AbstractNodeBuilder {
             if (node instanceof Constructor) {
                 builder << node.getType().name()
                 builder " "
-                builder << node.name()
+                builder << node.getName()
             } else {
                 if (node.getType())
                     builder << node.getType().name()
@@ -113,13 +113,13 @@ class MethodBuilder extends AbstractNodeBuilder {
                 builder << " "
             }
 
-            builder << node.name()
+            builder << node.getName()
             builder << "("
             node.params.each {
-                builder << it.type.name()
+                builder << it.getType().getTypeName()
                 builder << " "
-                builder << it.name()
-                if (it != node.params.last())
+                builder << it.getName()
+                if (it != node.getParams().last())
                     builder << ", "
             }
             builder << ")"

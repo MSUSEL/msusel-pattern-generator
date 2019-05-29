@@ -26,9 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
-import edu.montana.gsoc.msusel.codetree.CodeTree
-import edu.montana.gsoc.msusel.codetree.DefaultCodeTree
-import edu.montana.gsoc.msusel.codetree.node.structural.Project
+import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.cue.CuePattern
 import edu.montana.gsoc.msusel.pattern.cue.CueScriptLoader
 import edu.montana.gsoc.msusel.pattern.gen.java.JavaPlugin
@@ -42,14 +40,13 @@ class JavaPluginSpec extends Specification {
         given:
         File f = new File("testdata")
         f.deleteDir()
-        CodeTree tree = new DefaultCodeTree()
-        tree.setProject(Project.builder().key("Test").create())
+        Project proj = Project.builder().projKey("Test").create()
 
         Pattern rbml = RBMLScriptLoader.load("rbml/gof/singleton.rbml")
         CuePattern cue = CueScriptLoader.load("pgcl/gof/singleton-java.groovy")
 
         GeneratorConfig config = GeneratorConfig.builder()
-            .plugin(new JavaPlugin(tree: tree))
+            .plugin(new JavaPlugin(project: proj))
             .base("testdata")
             .cue(cue)
             .rbml(rbml)

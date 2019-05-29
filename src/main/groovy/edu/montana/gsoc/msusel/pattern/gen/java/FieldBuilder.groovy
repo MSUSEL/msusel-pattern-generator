@@ -26,9 +26,9 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.java
 
-import edu.montana.gsoc.msusel.datamodel.Accessibility
-import edu.montana.gsoc.msusel.datamodel.Component
-import edu.montana.gsoc.msusel.datamodel.member.Field
+import edu.isu.isuese.datamodel.Accessibility
+import edu.isu.isuese.datamodel.Component
+import edu.isu.isuese.datamodel.Field
 
 /**
  * @author Isaac Griffith

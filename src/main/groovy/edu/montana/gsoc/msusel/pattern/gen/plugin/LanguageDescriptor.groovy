@@ -39,20 +39,20 @@ class LanguageDescriptor {
     /**
      * Name of the language
      */
-	String name
-	/**
-	 * Language source file extensions
-	 */
+    String name
+    /**
+     * Language source file extensions
+     */
     String fileExt
-	/**
-	 * Language description
-	 */
+    /**
+     * Language description
+     */
     String description
-	/**
-	 * Arguments from the command line
-	 */
+    /**
+     * Arguments from the command line
+     */
     def cliArgs = []
-    
+
     /**
      * Constructs a new Pattern Generator Language Descriptor
      */

@@ -30,21 +30,22 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Queues
 import com.google.common.graph.GraphBuilder
 import com.google.common.graph.MutableGraph
-import edu.montana.gsoc.msusel.datamodel.AbstractTypeRef
-import edu.montana.gsoc.msusel.datamodel.Accessibility
-import edu.montana.gsoc.msusel.datamodel.DataModelMediator
-import edu.montana.gsoc.msusel.datamodel.Modifier
-import edu.montana.gsoc.msusel.datamodel.member.Constructor
-import edu.montana.gsoc.msusel.datamodel.member.Field
-import edu.montana.gsoc.msusel.datamodel.member.Method
-import edu.montana.gsoc.msusel.datamodel.member.Parameter
-import edu.montana.gsoc.msusel.datamodel.structural.File
-import edu.montana.gsoc.msusel.datamodel.structural.Namespace
-import edu.montana.gsoc.msusel.datamodel.type.Class
-import edu.montana.gsoc.msusel.datamodel.type.Interface
-import edu.montana.gsoc.msusel.datamodel.type.Type
-import edu.montana.gsoc.msusel.datamodel.typeref.PrimitiveTypeRef
-import edu.montana.gsoc.msusel.datamodel.typeref.TypeRef
+import edu.isu.isuese.datamodel.Project
+import edu.isu.isuese.datamodel.RefType
+import edu.isu.isuese.datamodel.Reference
+import edu.isu.isuese.datamodel.TypeRef
+import edu.isu.isuese.datamodel.Accessibility
+import edu.isu.isuese.datamodel.Modifier
+import edu.isu.isuese.datamodel.Constructor
+import edu.isu.isuese.datamodel.Field
+import edu.isu.isuese.datamodel.Method
+import edu.isu.isuese.datamodel.Parameter
+import edu.isu.isuese.datamodel.File
+import edu.isu.isuese.datamodel.Namespace
+import edu.isu.isuese.datamodel.Class
+import edu.isu.isuese.datamodel.Interface
+import edu.isu.isuese.datamodel.Type
+import edu.isu.isuese.datamodel.TypeRefType
 import edu.montana.gsoc.msusel.rbml.PatternManager
 import edu.montana.gsoc.msusel.rbml.model.*
 import org.apache.commons.lang3.tuple.Pair
@@ -61,9 +62,9 @@ import java.security.SecureRandom
 abstract class AbstractPatternGenerator {
 
     /**
-     * The Code Tree containing the date used to generate a pattern instance project with
+     * The Project containing the data used to generate a pattern instance project with
      */
-    DataModelMediator tree
+    Project project
     /**
      * The extension for code files generated
      */
@@ -140,13 +141,13 @@ abstract class AbstractPatternGenerator {
         //mediator = new DefaultDataModelMediator()
 
         (1..numInstances).each { num ->
-            PatternManager.instance.patterns.each { specification ->
+            PatternManager.instance.patterns.each { Pattern specification ->
                 //mediator = new DefaultDataModelMediator()
                 classes = [:]
                 features = [:]
                 //mediator.setSystem(Project.builder().key("${specification.getName()}${lang}${num}").create())
                 graph = GraphBuilder.directed().allowsSelfLoops(false).build()
-                def pkg = createPackage(tree.getProject())
+                def pkg = createPackage(project)
                 builder.setPattern(specification.getName())
 
                 specification.getSps().getClassifiers().each { role ->
@@ -203,12 +204,17 @@ abstract class AbstractPatternGenerator {
                 //                    genStatement(frag, classes)
                 //                }
                 //            }
-                builder.construct(tree.getProject(), tree)
+                builder.construct(project)
             }
         }
     }
 
-    void genClassifier(role, pkg) {
+    /**
+     * Generates a classifier for the given role in the given package
+     * @param role Role defining the classifier
+     * @param pkg The Package to contain the new classifier
+     */
+    void genClassifier(Role role, pkg) {
         if (!classes[role.getName()])
             classes[role.getName()] = []
         def rand = nextRandom(role.mult.lower..role.mult.upper) + 1
@@ -234,7 +240,12 @@ abstract class AbstractPatternGenerator {
         }
     }
 
-    void genInterface(role, pkg) {
+    /**
+     * Generates a new Interface for the given role in the given package
+     * @param role Role defining the interface
+     * @param pkg The package to contain the new Interface
+     */
+    void genInterface(Role role, pkg) {
         classes[role.getName()] = []
         def rand = nextRandom(role.mult.lower..role.mult.upper)
         rand.times {
@@ -252,6 +263,11 @@ abstract class AbstractPatternGenerator {
         }
     }
 
+    /**
+     * Generates a new Class for the given role in the given package
+     * @param role Role defining the Class
+     * @param pkg The package to contain the new Class
+     */
     void genClass(role, pkg) {
         classes[role.getName()] = []
         def rand = nextRandom(role.mult.lower..role.mult.upper)
@@ -296,17 +312,17 @@ abstract class AbstractPatternGenerator {
      * @param source Source Node
      * @param dest Dest Node
      */
-    void createRelationship(relation, source, dest) {
+    void createRelationship(relation, Type source, Type dest) {
         if (relation instanceof Generalization) {
-            tree.addGeneralizes(source, dest)
+            source.generalizes(source)
         } else if (relation instanceof Realization) {
-            tree.addRealizes(source, dest)
+            source.realizes(dest)
         } else if (relation instanceof Association) {
-            tree.addAssociation(source, dest, false)
+            source.associatedTo(dest)
         } else if (relation instanceof Usage) {
-            tree.addUse(source, dest)
+            source.useTo(dest)
         }
-        println "Created Relation from: ${source.name()} to: ${dest.name()} of type: ${relation}"
+        println "Created Relation from: ${source.getName()} to: ${dest.getName()} of type: ${relation}"
     }
 
     /**
@@ -447,22 +463,26 @@ abstract class AbstractPatternGenerator {
      * @param features Map of Features indexed by their associated Role
      * @return The recently created Field
      */
-    def createField(role, owner, features) {
+    def createField(Role role, Type owner, features) {
         def fieldName = role.getName()
 
-        def field = Field.builder().key(fieldName).accessibility(Accessibility.PRIVATE).type(findAppropriateType(owner, role.getType().getName())).create()
+        def field = Field.builder()
+                .compKey(fieldName)
+                .accessibility(Accessibility.PRIVATE)
+                .type(findAppropriateType(owner, role.getType().getName())) // TODO Fix This
+                .create()
         if (!features[role.getName()])
             features[role.getName()] = []
 
         // handle specifiers
         role.props.each { prop ->
-            field.modifiers << Modifier.valueForJava(prop)
+            field.addModifier(Modifier.forName(prop))
         }
 
-        println "Field modifiers: ${field.modifiers}"
+        println "Field modifiers: ${field.getModifiers()}"
 
         features[role.getName()] << field
-        owner.children << field
+        owner.children << field // TODO Fix this
 
         field
     }
@@ -478,7 +498,7 @@ abstract class AbstractPatternGenerator {
      * @return Fully qualified field name
      */
     protected String createFieldIdentifier(Type type, String name) {
-        "${type.getQIdentifier()}#${name}"
+        "${type.getCompKey()}#${name}"
     }
 
     /**
@@ -488,7 +508,7 @@ abstract class AbstractPatternGenerator {
      * @param features Map of Features indexed by their associated Role
      * @return The newly created Method
      */
-    def createMethod(role, Type owner, features) {
+    def createMethod(Role role, Type owner, features) {
         println "Creating Method for role ${role.name}"
         println "\towner: ${owner}"
 
@@ -507,24 +527,31 @@ abstract class AbstractPatternGenerator {
 
             Method mn
             if (constructor)
-                mn = Constructor.builder().key(qId).create()
+                mn = Constructor.builder().compKey(qId).create()
             else {
-                println "\trole.getType().getName(): ${role.getType().getName()}"
-                mn = Method.builder().key(qId).accessibility(Accessibility.PUBLIC).type(findAppropriateType(owner, role.getType().getName())).create()
+                println "\trole.getType().getName(): ${role.getType().getName()}" // TODO Fix this
+                mn = Method.builder()
+                        .compKey(qId)
+                        .accessibility(Accessibility.PUBLIC)
+                        .type(findAppropriateType(owner, role.getType().getName())) // TODO Fix this
+                        .create()
             }
             println mn.type
 
             // handle specifiers
             println "Props: ${role.props}"
             role.props.each { String prop ->
-                mn.modifiers << Modifier.valueForJava(prop)
+                mn.modifiers << Modifier.forName(prop)
             }
 
             role.params.each { param ->
-                mn.children << Parameter.builder().key(param.getName()).type(findAppropriateType(owner, param.getType().getName())).create()
+                mn.children << Parameter.builder()
+                        .name(param.getName())
+                        .type(findAppropriateType(owner, param.getType().getName()))
+                        .create() // TODO Fix This
             }
 
-            owner.children << mn
+            owner.addMember(mn)
             if (!features[role.getName()])
                 features[role.getName()] = []
             features[role.getName()] << mn
@@ -544,7 +571,7 @@ abstract class AbstractPatternGenerator {
      * @return Fully qualified name of the method
      */
     protected String createMethodIdentifier(Type type, String name) {
-        "${type.getKey()}#${name}"
+        "${type.getCompKey()}#${name}"
     }
 
     /**
@@ -558,18 +585,18 @@ abstract class AbstractPatternGenerator {
      */
     def createClass(name, role, pkg, File file, features) {
         String identifier = name
-        String qIdentifier = createTypeIdentifier(pkg.getKey(), identifier)
+        String qIdentifier = createTypeIdentifier(pkg.getKey(), identifier) // TODO Fix This
 
         Type clazz = null
         if (role.isAbstrct()) {
             clazz = Class.builder()
-                    .key(identifier)
+                    .compKey(identifier)
                     .accessibility(Accessibility.PUBLIC)
-                    .specifiers([Modifier.ABSTRACT])
                     .create()
+            clazz.addModifier(Modifier.forName("abstract"))
         } else {
             clazz = Class.builder()
-                    .key(identifier)
+                    .compKey(identifier)
                     .accessibility(Accessibility.PUBLIC)
                     .create()
         }
@@ -585,7 +612,7 @@ abstract class AbstractPatternGenerator {
             createField(feat, clazz, features)
         }
 
-        file.children << clazz
+        file.addType(clazz)
         println "Created Class: ${name} for role: ${role.getName()}"
         clazz
     }
@@ -602,7 +629,10 @@ abstract class AbstractPatternGenerator {
         String identifier = name
         String qIdentifier = createTypeIdentifier(pkg.getKey(), identifier)
 
-        Type clazz = Interface.builder().key(qIdentifier).accessibility(Accessibility.PUBLIC).create()
+        Type clazz = Interface.builder()
+                .compKey(qIdentifier)
+                .accessibility(Accessibility.PUBLIC)
+                .create()
 
         classes[role.getName()] << clazz
         graph.addNode(clazz)
@@ -615,7 +645,7 @@ abstract class AbstractPatternGenerator {
             createField(feat, clazz, features)
         }
 
-        file.children << clazz
+        file.addType(clazz)
         println "Created Interface: ${name} for role: ${role.getName()}"
         clazz
     }
@@ -672,12 +702,11 @@ abstract class AbstractPatternGenerator {
      * @param name
      * @return
      */
-    def createFile(output, pkg, name) {
-        String fullPath = "${output}/${pkg.getKey().replaceAll('\\.', '/')}/${name}.${extension}"
+    def createFile(output, Namespace pkg, name) {
+        String fullPath = "${output}/${pkg.getNsKey().replaceAll('\\.', '/')}/${name}.${extension}"
 
-        def file = File.builder().key(fullPath).create()
-        file.setNamespace(pkg)
-        tree.getProject().children << file
+        def file = File.builder().fileKey(fullPath).create()
+        pkg.addFile(file)
         file
     }
 
@@ -685,16 +714,16 @@ abstract class AbstractPatternGenerator {
      * @param proj
      * @return
      */
-    def createPackage(proj) {
+    def createPackage(Project proj) {
         Collections.shuffle(nsNames)
-        String name = "dpgen.${proj.getKey()}.${nsNames[0]}"
+        String name = "dpgen.${proj.getProjectKey()}.${nsNames[0]}" // TODO Add Module info here
         if ((0.5 <=> randGen.nextDouble()) < 0)
             name += ".${nsNames[1]}"
         if ((0.15 <=> randGen.nextDouble()) < 0)
             name += ".${nsNames[2]}"
 
-        def ns = Namespace.builder().key(name).create()
-        tree.getProject().children << ns
+        def ns = Namespace.builder().nsKey(name).create()
+        proj.addNamespace(ns) // TODO Fix This
         ns
     }
 
@@ -814,16 +843,28 @@ abstract class AbstractPatternGenerator {
      * @param role
      * @return
      */
-    AbstractTypeRef findAppropriateType(Type owner, String role) {
+    TypeRef findAppropriateType(Type owner, String role) {
         def matches = findMatchingClassifiers(role)
         println "matching: ${role}"
 
         if (checkType(owner, matches))
-            return TypeRef.builder().type(owner.getKey()).typeName(owner.name()).create()
+            return TypeRef.builder()
+                    .type(TypeRefType.Type)
+                    .typeName(owner.getName())
+                    .ref(Reference.builder()
+                            .refKey(owner.getRefKey())
+                            .refType(RefType.TYPE).create())
+                    .create()
 
         def match
         if ((match = checkInheritance(owner, matches)))
-            return TypeRef.builder().type(match.getKey()).typeName(match.name()).create()
+            return TypeRef.builder()
+                    .type(TypeRefType.Type)
+                    .typeName(match.getName())
+                    .ref(Reference.builder()
+                            .refKey(match.getRefKey())
+                            .refType(RefType.TYPE).create())
+                    .create()
 
         def conn = []
         conn.addAll(associationsFrom(owner))
@@ -831,24 +872,54 @@ abstract class AbstractPatternGenerator {
 
         for (Type c : conn) {
             if (checkType(c, matches))
-                return TypeRef.builder().type(c.getKey()).typeName(c.name()).create()
+                return TypeRef.builder()
+                        .type(TypeRefType.Type)
+                        .typeName(c.getName())
+                        .ref(Reference.builder()
+                                .refKey(c.getRefKey())
+                                .refType(RefType.TYPE).create())
+                        .create()
 
-            if ((match = checkInheritance(c, matches)))
-                return TypeRef.builder().type(match.getKey()).typeName(match.name()).create()
+            if ((match = checkInheritance(c, matches))) {
+                return TypeRef.builder()
+                        .type(TypeRefType.Type)
+                        .typeName(match.getName()) // TODO Verify this
+                        .ref(Reference.builder()
+                                .refKey(match.getRefKey()) // TODO verify this
+                                .refType(RefType.TYPE).create())
+                        .create()
+            }
         }
 
         println("Couldn't find type for role ${role}")
-        PrimitiveTypeRef.getInstance("void")
+        TypeRef.createPrimitiveTypeRef("void")
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     def findMatchingClassifiers(String name) {
         return classes[name]
     }
 
+    /**
+     *
+     * @param type
+     * @param set
+     * @return
+     */
     def checkType(type, set) {
         (set.contains(type))
     }
 
+    /**
+     *
+     * @param type
+     * @param set
+     * @return
+     */
     def checkInheritance(Type type, set) {
         def stack = inheritanceStack(type)
         while (!stack.isEmpty()) {
@@ -858,28 +929,43 @@ abstract class AbstractPatternGenerator {
         }
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     def associationsFrom(Type type) {
-        (List<Type>) tree.getAssociatedFrom(type)
+        (List<Type>) type.getAssociatedFrom()
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     def usagesFrom(Type type) {
-        (List<Type>) tree.getUseFrom(type)
+        (List<Type>) type.getUseFrom()
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     def inheritanceStack(Type type) {
-        def gen = tree.getGeneralizedFrom(type)
-        def real = tree.getRealizedFrom(type)
+        def gen = type.getGeneralizes()
+        def real = type.getRealizes()
 
-        def stack = new Stack<Type>()
-        def que = Queues.newArrayDeque()
+        Stack<Type> stack = new Stack<>()
+        Queue<Type> que = Queues.newArrayDeque()
         que.addAll(gen)
         que.addAll(real)
 
         while (!que.isEmpty()) {
-            def t = que.poll()
+            Type t = que.poll()
             stack.push(t)
-            que.addAll(tree.getGeneralizedFrom(t))
-            que.addAll(tree.getRealizedFrom(t))
+            que.addAll(t.getGeneralizes())
+            que.addAll(t.getRealizes())
         }
 
         return stack

@@ -27,12 +27,11 @@
 package edu.montana.gsoc.msusel.pattern.gen
 
 import com.google.common.collect.Lists
-import edu.montana.gsoc.msusel.datamodel.DataModelMediator
-import edu.montana.gsoc.msusel.datamodel.member.Method
-import edu.montana.gsoc.msusel.datamodel.structural.File
-import edu.montana.gsoc.msusel.datamodel.structural.Project
-import edu.montana.gsoc.msusel.datamodel.type.Enum
-import edu.montana.gsoc.msusel.datamodel.type.Type
+import edu.isu.isuese.datamodel.Method
+import edu.isu.isuese.datamodel.File
+import edu.isu.isuese.datamodel.Project
+import edu.isu.isuese.datamodel.Enum
+import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.cue.Cue
 import edu.montana.gsoc.msusel.pattern.cue.CueManager
 import edu.montana.gsoc.msusel.pattern.gen.event.EventManager
@@ -43,7 +42,6 @@ import edu.montana.gsoc.msusel.pattern.gen.event.EventManager
 abstract class AbstractSourceBuilder {
 
     String base = "./"
-    DataModelMediator tree
     EventManager evtMgr = EventManager.instance
     
     Cue currentCue
@@ -52,10 +50,9 @@ abstract class AbstractSourceBuilder {
 
     /**
      * @param node
-     * @param tree
      * @return
      */
-    def construct(Project node, DataModelMediator tree) {
+    def construct(Project node) {
         println ""
         println "Constructing Source Files from DataModelMediator"
         println ""
@@ -63,36 +60,36 @@ abstract class AbstractSourceBuilder {
         selectCue()
 
         List<File> defpkg = []
-        defpkg += tree.getUtils().getFiles().findAll { File file ->
-            file.namespace == null
+        defpkg += node.getFiles().findAll { File file ->
+            file.parentNamespaces.isEmpty()
         }
 
-        List<File> files = Lists.newArrayList(tree.getUtils().getFiles())
+        List<File> files = Lists.newArrayList(node.getFiles())
         files.removeAll(defpkg)
 
         def map = [:]
         files.each {
-            if (map[it.namespace.name()])
-                map[it.namespace.name()] << it
+            if (map[it.parentNamespaces.first().getName()])
+                map[it.parentNamespaces.first().getName()] << it
             else
-                map[it.namespace.name()] = [it]
+                map[it.parentNamespaces.first().getName()] = [it]
         }
 
         def filetree = new FileTreeBuilder()
         filetree.dir(base + "/src/main/java") {
             defpkg.each {
-                "${it.name()}"(createUnitContents(it, StringBuilder.newInstance()))
+                "${it.getName()}"(createUnitContents(it, StringBuilder.newInstance()))
             }
         }
 
         map.each {key, val ->
-            File f = new File(base + "/src/main/java/" + key.toString().replaceAll(/\./, '/'))
+            java.io.File f = new java.io.File(base + "/src/main/java/" + key.toString().replaceAll(/\./, '/'))
             f.mkdirs()
             filetree = new FileTreeBuilder(f)
             filetree {
                 val.each { File file ->
-                    println "Creating file: ${file.name()}"
-                    "${file.name()}"(createUnitContents(file, StringBuilder.newInstance()))
+                    println "Creating file: ${file.getName()}"
+                    "${file.getName()}"(createUnitContents(file, StringBuilder.newInstance()))
                 }
             }
         }

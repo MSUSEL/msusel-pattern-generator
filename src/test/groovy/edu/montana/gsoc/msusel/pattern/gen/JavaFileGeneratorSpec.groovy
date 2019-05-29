@@ -26,9 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
-import edu.montana.gsoc.msusel.codetree.CodeTree
-import edu.montana.gsoc.msusel.codetree.DefaultCodeTree
-import edu.montana.gsoc.msusel.codetree.node.structural.Project
+import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.java.*
 import spock.lang.Specification
 
@@ -39,9 +37,8 @@ class JavaFileGeneratorSpec extends Specification {
 
     def testCorrectMavenFileGeneration() {
         given:
-        CodeTree tree = new DefaultCodeTree()
-        tree.setProject(Project.builder().key("Project").create())
-        JavaFileGenerator gen = new JavaMavenFileGenerator(base: "testdata", tree: tree, patternName: "Pattern")
+        Project proj = Project.builder().projKey("Project").create()
+        JavaFileGenerator gen = new JavaMavenFileGenerator(base: "testdata", project: proj, patternName: "Pattern")
         JavaMavenDirStructGenerator dirGen = new JavaMavenDirStructGenerator(base: "testdata")
         deleteDir(new File("testdata"))
         dirGen.generateDirStructure()
@@ -60,9 +57,8 @@ class JavaFileGeneratorSpec extends Specification {
 
     def testCorrectGradleFileGeneration() {
         given:
-        CodeTree tree = new DefaultCodeTree()
-        tree.setProject(Project.builder().key("Project").create())
-        JavaFileGenerator gen = new JavaGradleFileGenerator(base: "testdata", tree: tree, patternName: "Pattern")
+        Project proj = Project.builder().projKey("Project").create()
+        JavaFileGenerator gen = new JavaGradleFileGenerator(base: "testdata", project: proj, patternName: "Pattern")
         JavaGradleDirStructGenerator dirGen = new JavaGradleDirStructGenerator(base: "testdata")
         deleteDir(new File("testdata"))
         dirGen.generateDirStructure()

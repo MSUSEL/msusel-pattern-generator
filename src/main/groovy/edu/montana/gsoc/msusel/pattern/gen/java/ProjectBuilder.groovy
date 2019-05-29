@@ -27,8 +27,9 @@
 package edu.montana.gsoc.msusel.pattern.gen.java
 
 import com.google.common.collect.Lists
-import edu.montana.gsoc.msusel.datamodel.Component
-import edu.montana.gsoc.msusel.datamodel.structural.File
+import edu.isu.isuese.datamodel.Component
+import edu.isu.isuese.datamodel.File
+import edu.isu.isuese.datamodel.Project
 
 /**
  * @author Isaac Griffith
@@ -58,32 +59,35 @@ class ProjectBuilder extends AbstractNodeBuilder {
             file.namespace == null
         }
 
-        List<File> files = Lists.newArrayList(data.tree.getUtils().getFiles())
-        files.removeAll(defpkg)
+        if (node instanceof Project) {
+            Project proj = (Project) node
+            List<File> files = Lists.newArrayList(proj.getFiles())
+            files.removeAll(defpkg)
 
-        def map = [:]
-        files.each {
-            if (map[it.namespace.name()])
-                map[it.namespace.name()] << it
-            else
-                map[it.namespace.name()] = [it]
-        }
-
-        def filetree = new FileTreeBuilder()
-        filetree.dir("$data.base/$data.srcDir") {
-            defpkg.each {
-                "${it.name()}"(createUnitContents(it, StringBuilder.newInstance()))
+            def map = [:]
+            files.each {
+                if (map[it.getParentNamespaces().first().getName()])
+                    map[it.getParentNamespaces().first().getName()] << it
+                else
+                    map[it.getParentNamespaces().first().getName()] = [it]
             }
-        }
 
-        map.each {key, val ->
-            File f = new File(base + "/src/main/java/" + key.toString().replaceAll(/\./, '/'))
-            f.mkdirs()
-            filetree = new FileTreeBuilder(f)
-            filetree {
-                val.each { File file ->
-                    println "Creating file: ${file.name()}"
-                    "${file.name()}"(createUnitContents(file, StringBuilder.newInstance()))
+            def filetree = new FileTreeBuilder()
+            filetree.dir("$data.base/$data.srcDir") {
+                defpkg.each {
+                    "${it.getName()}"(createUnitContents(it, StringBuilder.newInstance()))
+                }
+            }
+
+            map.each { key, val ->
+                java.io.File f = new java.io.File(base + "/src/main/java/" + key.toString().replaceAll(/\./, '/'))
+                f.mkdirs()
+                filetree = new FileTreeBuilder(f)
+                filetree {
+                    val.each { File file ->
+                        println "Creating file: ${file.getName()}"
+                        "${file.getName()}"(createUnitContents(file, StringBuilder.newInstance())) // TODO Fix this
+                    }
                 }
             }
         }

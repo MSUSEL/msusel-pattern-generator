@@ -24,9 +24,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-/**
- * 
- */
 package edu.montana.gsoc.msusel.pattern.cue.factory
 
 import spock.lang.Specification

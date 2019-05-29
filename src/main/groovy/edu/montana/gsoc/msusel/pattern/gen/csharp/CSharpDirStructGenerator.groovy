@@ -59,7 +59,7 @@ class CSharpDirStructGenerator extends AbstractDirStructGenerator {
     /**
      * Constructs a new C# Directory Structure Generator
      */
-    public CSharpDirStructGenerator()
+    CSharpDirStructGenerator()
     {
         // TODO Auto-generated constructor stub
     }
@@ -82,7 +82,7 @@ class CSharpDirStructGenerator extends AbstractDirStructGenerator {
                // for each module in project construct a directory with a subdirectory "Properties" containing the AssemblyInfo.cs file
                //   each module folder will contain all the files and the .csproj file
                //   as each file is created it is added to a map (along with its UUID), in the FileGenerator for use when creating the solution file
-               dir(project.name()) {
+               dir(project.getName()) {
                    Properties {
                        'AssemblyInfo.cs'(fileGen.generateAssemblyInfo())
                    }

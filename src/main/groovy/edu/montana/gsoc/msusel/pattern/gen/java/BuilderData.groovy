@@ -26,8 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.java
 
-import edu.montana.gsoc.msusel.datamodel.Component
-import edu.montana.gsoc.msusel.datamodel.DataModelMediator
+import edu.isu.isuese.datamodel.Component
 import edu.montana.gsoc.msusel.pattern.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.AbstractPatternGenerator
 import edu.montana.gsoc.msusel.pattern.gen.event.EventManager
@@ -42,7 +41,6 @@ class BuilderData {
 
     String base = "./"
     EventManager evtMgr = EventManager.instance
-    DataModelMediator tree
     Cue currentCue
     AbstractPatternGenerator pg
     String pattern
@@ -56,7 +54,6 @@ class BuilderData {
             .currentCue(currentCue)
             .evtMgr(evtMgr)
             .pattern(pattern)
-            .tree(tree)
             .build()
     }
 }

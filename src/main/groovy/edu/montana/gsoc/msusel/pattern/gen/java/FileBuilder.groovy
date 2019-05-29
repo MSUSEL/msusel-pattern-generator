@@ -26,10 +26,10 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.java
 
-import edu.montana.gsoc.msusel.datamodel.Component
-import edu.montana.gsoc.msusel.datamodel.structural.File
-import edu.montana.gsoc.msusel.datamodel.structural.Import
-import edu.montana.gsoc.msusel.datamodel.type.Type
+import edu.isu.isuese.datamodel.Component
+import edu.isu.isuese.datamodel.File
+import edu.isu.isuese.datamodel.Import
+import edu.isu.isuese.datamodel.Type
 
 /**
  * @author Isaac Griffith

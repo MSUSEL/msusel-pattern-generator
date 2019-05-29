@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
-import edu.montana.gsoc.msusel.codetree.CodeTree
+import edu.isu.isuese.datamodel.Project
 
 /**
  * Abstract Base class for Project File Generation
@@ -42,7 +42,7 @@ abstract class AbstractFileGenerator {
 	/**
 	 * Code Tree containing the data for the project to be generated
 	 */
-	CodeTree tree
+	Project project
 	/**
 	 * Project base path
 	 */
