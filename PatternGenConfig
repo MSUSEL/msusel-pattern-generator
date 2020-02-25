@@ -1,0 +1,31 @@
+output = "."
+language = "java"
+patterns = ["singleton"]
+numInstances = 5
+maxBreadth = 5
+maxDepth = 3
+version = "1.0.0"
+arities = [1, 3, 5]
+srcPath = "src/main/java"
+srcExt = ".java"
+
+license {
+    name = "MIT"
+    year = 2020
+    holder = 'Isaac D Griffith'
+    project = 'Design Pattern Generator'
+    url = 'isu-ese.github.io/patterngen'
+}
+
+db {
+    driver = "org.sqlite.JDBC"
+    url = "jdbc:sqlite:data/testing.db"
+    user = "dev1"
+    pass = "passwd"
+}
+
+build {
+    project = 'test'
+    artifact = 'test'
+    description = 'a test project'
+}

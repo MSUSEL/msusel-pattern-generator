@@ -56,8 +56,5 @@ class LanguageDescriptor {
     /**
      * Constructs a new Pattern Generator Language Descriptor
      */
-    LanguageDescriptor()
-    {
-        // TODO Auto-generated constructor stub
-    }
+    LanguageDescriptor() { }
 }

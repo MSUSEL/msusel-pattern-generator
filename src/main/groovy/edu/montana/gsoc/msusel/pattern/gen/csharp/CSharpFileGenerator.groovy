@@ -27,7 +27,6 @@
 package edu.montana.gsoc.msusel.pattern.gen.csharp
 
 import edu.isu.isuese.datamodel.Project
-import edu.montana.gsoc.msusel.pattern.gen.AbstractFileGenerator
 import groovy.xml.StreamingMarkupBuilder
 
 import java.time.Year
@@ -36,7 +35,7 @@ import java.time.Year
  * @author Isaac Griffith
  * @version 1.3.0
  */
-class CSharpFileGenerator extends AbstractFileGenerator {
+class CSharpFileGenerator {
 
     /**
      * UUID for project
@@ -70,9 +69,7 @@ class CSharpFileGenerator extends AbstractFileGenerator {
     /**
      * Constructs a new C# File Generator
      */
-    CSharpFileGenerator() {
-        // TODO Auto-generated constructor stub
-    }
+    CSharpFileGenerator() { }
 
     /**
      * 
@@ -80,11 +77,15 @@ class CSharpFileGenerator extends AbstractFileGenerator {
     private void createNuGetConfig() {
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     def createBuildFile() {
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     def createLicenseFile() {
         '''
         The MIT License (MIT)
@@ -112,7 +113,9 @@ class CSharpFileGenerator extends AbstractFileGenerator {
         '''.replaceAll("\\[ProjectName\\]", "${ctree.getSystem().getKey()}")
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     def createReadmeMDFile() {
         '''
         #[ProjectName]

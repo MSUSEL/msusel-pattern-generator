@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.csharp
 
-import edu.montana.gsoc.msusel.pattern.gen.plugin.AbstractLanguagePlugin
+
 import edu.montana.gsoc.msusel.pattern.gen.plugin.LanguageDescriptor
 
 /**
@@ -34,19 +34,23 @@ import edu.montana.gsoc.msusel.pattern.gen.plugin.LanguageDescriptor
  * @author Isaac Griffith
  * @version 1.3.0
  */
-class CSharpPlugin extends AbstractLanguagePlugin {
+class CSharpPlugin {
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     def languageDescriptor()
     {
         new LanguageDescriptor(name: "C#", fileExt: "cs", description: "something", cliArgs: ["cs", "csharp", "C#"])
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     void initialize(base, pattern)
     {
         fileGen = new CSharpFileGenerator()
-        dirGen = new CSharpDirStructGenerator(fileGen: fileGen, base: base)
-        patternGen = new CSharpPatternGenerator(builder: new CSharpSourceBuilder(base: base))
+        dirGen = new CSharpDirStructGenerator()
+        patternGen = new CSharpPatternGenerator()
     }
 }

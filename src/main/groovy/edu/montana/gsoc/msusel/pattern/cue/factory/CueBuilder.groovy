@@ -25,6 +25,7 @@
  * SOFTWARE.
  */
 package edu.montana.gsoc.msusel.pattern.cue.factory
+
 /**
  * @author Isaac Griffith
  * @version 1.3.0

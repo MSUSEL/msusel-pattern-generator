@@ -36,7 +36,7 @@ interface LanguagePlugin {
     /**
      * @return A Descriptor for the Language
      */
-    def languageDescriptor()
+    LanguageDescriptor languageDescriptor()
     
     /**
      * Initializes the Plugin with the given base directory

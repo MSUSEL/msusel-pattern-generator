@@ -28,8 +28,6 @@ package edu.montana.gsoc.msusel.pattern.gen.csharp
 
 import java.nio.file.Path
 
-import edu.montana.gsoc.msusel.pattern.gen.AbstractDirStructGenerator
-
 /**
  * Constructs the following directory structure for C# projects
  * 
@@ -52,19 +50,18 @@ import edu.montana.gsoc.msusel.pattern.gen.AbstractDirStructGenerator
  * @author Isaac Griffith
  * @version 1.3.0
  */
-class CSharpDirStructGenerator extends AbstractDirStructGenerator {
+class CSharpDirStructGenerator {
 
     private Path projDir
     
     /**
      * Constructs a new C# Directory Structure Generator
      */
-    CSharpDirStructGenerator()
-    {
-        // TODO Auto-generated constructor stub
-    }
-    
-    @Override
+    CSharpDirStructGenerator() { }
+
+    /**
+     * {@inheritDoc}
+     */
     void generateDirStructure() {
         def tree = new FileTreeBuilder()
         tree.dir("base\\${ProjectName}") {

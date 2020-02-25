@@ -27,38 +27,39 @@
 package edu.montana.gsoc.msusel.pattern.cue
 
 import edu.montana.gsoc.msusel.pattern.cue.factory.CueBuilder
-import edu.montana.gsoc.msusel.pattern.gen.event.GeneratorEvent.EventType
+import edu.montana.gsoc.msusel.pattern.gen.event.EventType
+
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
 abstract class CueScript extends Script {
 
-    public static final EventType UnitCreationStarted = EventType.UnitCreationStarted 
-    public static final EventType UnitCreationComplete = EventType.UnitCreationComplete
-    public static final EventType TypesStarted = EventType.TypesStarted
-    public static final EventType TypesComplete = EventType.TypesComplete
-    public static final EventType TypeCreationStarted = EventType.TypeCreationStarted
-    public static final EventType TypeCreationComplete = EventType.TypeCreationComplete
-    public static final EventType TypeHeader = EventType.TypeHeader
-    public static final EventType TypeBody = EventType.TypeBody
-    public static final EventType FieldsStarted = EventType.FieldsStarted
-    public static final EventType FieldsComplete = EventType.FieldsComplete
-    public static final EventType FieldCreationStarted = EventType.FieldCreationStarted
-    public static final EventType FieldCreationComplete = EventType.FieldCreationComplete
-    public static final EventType FieldInitialization = EventType.FieldInitialization
-    public static final EventType FieldDefinition = EventType.FieldDefinition
-    public static final EventType MethodsStarted = EventType.MethodsStarted
-    public static final EventType MethodsComplete = EventType.MethodsComplete
-    public static final EventType MethodCreationStarted = EventType.MethodCreationStarted
-    public static final EventType MethodCreationComplete = EventType.MethodCreationComplete
-    public static final EventType MethodHeader = EventType.MethodHeader
-    public static final EventType MethodBody = EventType.MethodBody
-    public static final EventType LiteralsStarted = EventType.LiteralsStarted
-    public static final EventType LiteralsComplete = EventType.LiteralsComplete
-    public static final EventType LiteralCreationStarted = EventType.LiteralCreationStarted
-    public static final EventType LiteralCreationComplete = EventType.LiteralCreationComplete
-    public static final EventType Disregard = EventType.Disregard
+    static final EventType UnitCreationStarted = EventType.UnitCreationStarted
+    static final EventType UnitCreationComplete = EventType.UnitCreationComplete
+    static final EventType TypesStarted = EventType.TypesStarted
+    static final EventType TypesComplete = EventType.TypesComplete
+    static final EventType TypeCreationStarted = EventType.TypeCreationStarted
+    static final EventType TypeCreationComplete = EventType.TypeCreationComplete
+    static final EventType TypeHeader = EventType.TypeHeader
+    static final EventType TypeBody = EventType.TypeBody
+    static final EventType FieldsStarted = EventType.FieldsStarted
+    static final EventType FieldsComplete = EventType.FieldsComplete
+    static final EventType FieldCreationStarted = EventType.FieldCreationStarted
+    static final EventType FieldCreationComplete = EventType.FieldCreationComplete
+    static final EventType FieldInitialization = EventType.FieldInitialization
+    static final EventType FieldDefinition = EventType.FieldDefinition
+    static final EventType MethodsStarted = EventType.MethodsStarted
+    static final EventType MethodsComplete = EventType.MethodsComplete
+    static final EventType MethodCreationStarted = EventType.MethodCreationStarted
+    static final EventType MethodCreationComplete = EventType.MethodCreationComplete
+    static final EventType MethodHeader = EventType.MethodHeader
+    static final EventType MethodBody = EventType.MethodBody
+    static final EventType LiteralsStarted = EventType.LiteralsStarted
+    static final EventType LiteralsComplete = EventType.LiteralsComplete
+    static final EventType LiteralCreationStarted = EventType.LiteralCreationStarted
+    static final EventType LiteralCreationComplete = EventType.LiteralCreationComplete
+    static final EventType Disregard = EventType.Disregard
     
     CueBuilder builder = new CueBuilder()
     

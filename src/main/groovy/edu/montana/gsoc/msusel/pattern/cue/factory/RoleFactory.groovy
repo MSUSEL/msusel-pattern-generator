@@ -28,6 +28,7 @@ package edu.montana.gsoc.msusel.pattern.cue.factory
 
 import edu.montana.gsoc.msusel.pattern.cue.Cue
 import edu.montana.gsoc.msusel.pattern.cue.CueRole
+
 /**
  * @author Isaac Griffith
  * @version 1.3.0
@@ -37,9 +38,7 @@ class RoleFactory extends AbstractFactory {
     /**
      * 
      */
-    RoleFactory() {
-        // TODO Auto-generated constructor stub
-    }
+    RoleFactory() { }
 
     boolean isLeaf() {
         return true

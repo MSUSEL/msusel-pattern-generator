@@ -28,6 +28,7 @@ package edu.montana.gsoc.msusel.pattern.cue.factory
 
 import edu.montana.gsoc.msusel.pattern.cue.Cue
 import edu.montana.gsoc.msusel.pattern.cue.CuePattern
+
 /**
  * @author Isaac Griffith
  * @version 1.3.0
@@ -37,11 +38,12 @@ class CueFactory extends AbstractFactory {
     /**
      * 
      */
-    CueFactory()
-    {
-        // TODO Auto-generated constructor stub
-    }
+    CueFactory() { }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     boolean isLeaf() {
         return false
     }
@@ -49,6 +51,7 @@ class CueFactory extends AbstractFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     def newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attributes)
     throws InstantiationException, IllegalAccessException {
         Cue cue = new Cue(attributes)

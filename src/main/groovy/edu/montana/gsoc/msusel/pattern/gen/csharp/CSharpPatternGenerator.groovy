@@ -26,20 +26,15 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.csharp
 
-import edu.montana.gsoc.msusel.pattern.gen.AbstractPatternGenerator
-
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-class CSharpPatternGenerator extends AbstractPatternGenerator {
+class CSharpPatternGenerator {
 
     /**
      * 
      */
-    CSharpPatternGenerator()
-    {
-        // TODO Auto-generated constructor stub
-    }
+    CSharpPatternGenerator() { }
 
 }

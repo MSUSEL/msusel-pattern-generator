@@ -27,10 +27,7 @@
 package edu.montana.gsoc.msusel.pattern.gen.plugin
 
 import edu.isu.isuese.datamodel.Project
-import edu.montana.gsoc.msusel.pattern.gen.AbstractDirStructGenerator
-import edu.montana.gsoc.msusel.pattern.gen.AbstractFileGenerator
-import edu.montana.gsoc.msusel.pattern.gen.AbstractPatternGenerator
-import edu.montana.gsoc.msusel.pattern.gen.AbstractSourceBuilder
+
 /**
  * Abstract Base class for Language Plugins
  * @author Isaac Griffith
@@ -41,19 +38,19 @@ abstract class AbstractLanguagePlugin implements LanguagePlugin {
     /**
      * The File Generator
      */
-	AbstractFileGenerator fileGen
+//	AbstractFileGenerator fileGen
     /**
      * The Pattern Generator
      */
-	AbstractPatternGenerator patternGen
+//	AbstractPatternGenerator patternGen
     /**
      * The Directory Structure Generator
      */
-	AbstractDirStructGenerator dirGen
+//	AbstractDirStructGenerator dirGen
     /**
      *
      */
-    AbstractSourceBuilder sourceBuilder
+//    AbstractSourceBuilder sourceBuilder
     /**
      * A description of the language provided by the plugin
      */
@@ -61,16 +58,19 @@ abstract class AbstractLanguagePlugin implements LanguagePlugin {
 
     Project project
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     void execute(config)
     {
-        patternGen.setNumInstances config.numInstances
-        patternGen.setMaxBreadth config.maxBreadth
-        patternGen.setMaxDepth config.maxDepth
-        
-        dirGen.generateDirStructure()
-        fileGen.generateFiles()
-        patternGen.generate()
+//        patternGen.setNumInstances config.numInstances
+//        patternGen.setMaxBreadth config.maxBreadth
+//        patternGen.setMaxDepth config.maxDepth
+//
+//        dirGen.generateDirStructure()
+//        fileGen.generateFiles()
+//        patternGen.generate()
 //        sourceBuilder.construct(mediator.getSystem(), mediator)
     }
 }

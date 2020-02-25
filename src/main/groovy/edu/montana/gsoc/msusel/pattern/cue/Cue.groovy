@@ -24,9 +24,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-/**
- * 
- */
 package edu.montana.gsoc.msusel.pattern.cue
 
 import groovy.transform.ToString
@@ -44,10 +41,7 @@ class Cue {
     /**
      * 
      */
-    Cue()
-    {
-        // TODO Auto-generated constructor stub
-    }
+    Cue() {}
 
     void register() {
         roles.each {key, cue ->

@@ -26,9 +26,8 @@
  */
 package edu.montana.gsoc.msusel.pattern.cue
 
-import edu.montana.gsoc.msusel.pattern.gen.event.EventManager
-import edu.montana.gsoc.msusel.pattern.gen.event.GeneratorEvent
-import edu.montana.gsoc.msusel.pattern.gen.event.GeneratorEventListener
+
+import edu.montana.gsoc.msusel.pattern.gen.event.EventType
 import groovy.transform.ToString
 
 /**
@@ -36,63 +35,36 @@ import groovy.transform.ToString
  * @version 1.3.0
  */
 @ToString(includes = ["name"], includePackage = false, includeNames = true)
-class CueRole implements GeneratorEventListener {
+class CueRole {
 
     String name
-    GeneratorEvent.EventType event
+    EventType event
     String content
     String definition
     boolean disregard = false
 
     /**
-     * 
+     *
      */
-    CueRole() {
-        // TODO Auto-generated constructor stub
+    CueRole() { }
+
+    def content(String ownerKey) {
+        def temp = parameterize(ownerKey, content)
+        temp
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    def handleEvent(evt) {
-        if (evt.type == event && name == evt.role) {
-            println "Event"
-            println "\tkey: ${evt.key}"
-            println "\tbuilder: ${evt.builder}"
-            println "\trole: ${evt.role}"
-            println "\ttype: ${evt.type}"
-            println "\townerKey: ${evt.ownerKey}"
-            if (!disregard) {
-                if (content) {
-                    println "content: ${content}"
-                    def temp = content
-                    if (temp.contains("[InstName]") && evt.ownerKey)
-                        temp = temp.replaceAll(/\[InstName\]/, evt.ownerKey.split("\\.").last())
-                    if (temp.contains("[TypeName]") && evt.ownerKey)
-                        temp = temp.replaceAll(/\[TypeName\]/, evt.ownerKey.split("\\.").last())
-                    evt.builder << temp
-                    println "temp: ${temp}"
-                    evt.builder << temp
-                } else if (definition) {
-                    println "definition: ${definition}"
-                    def temp = definition
-                    if (temp.contains("[InstName]") && evt.ownerKey)
-                        temp = temp.replaceAll(/\[InstName\]/, evt.ownerKey.split("\\.").last())
-                    if (temp.contains("[TypeName]") && evt.ownerKey)
-                        temp = temp.replaceAll(/\[TypeName\]/, evt.ownerKey.split("\\.").last())
-                    evt.builder << temp
-                    println "temp: ${temp}"
-                }
-            evt.builder << ""
-            }
-            else {
-                EventManager.instance.fireDisregard(evt.key)
-            }
-        }
+
+    def definition(String ownerKey) {
+        def temp = parameterize(ownerKey, definition)
+        temp
     }
-    
-    def register() {
-        EventManager.instance.registerListener(this, event)
+
+    private def parameterize(String ownerKey, String value) {
+        String newValue = value
+        if (newValue.contains("[InstName]") && ownerKey)
+            newValue = newValue.replaceAll(/\[InstName]/, ownerKey.split("\\.").last())
+        if (newValue.contains("[TypeName]") && ownerKey)
+            newValue = newValue.replaceAll(/\[TypeName]/, ownerKey.split("\\.").last())
+
+        newValue
     }
 }

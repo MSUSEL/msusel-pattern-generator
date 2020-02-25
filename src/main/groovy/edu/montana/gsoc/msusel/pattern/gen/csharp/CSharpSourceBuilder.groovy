@@ -26,47 +26,49 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.csharp
 
-import edu.isu.isuese.datamodel.Method
-import edu.isu.isuese.datamodel.File
-import edu.isu.isuese.datamodel.Import
-import edu.isu.isuese.datamodel.Type
-import edu.isu.isuese.datamodel.Enum
-import edu.montana.gsoc.msusel.pattern.gen.AbstractSourceBuilder
+import edu.isu.isuese.datamodel.*
 
 /**
  * C# srcML Builder
  * @author Isaac Griffith
  * @version 1.3.0
  */
-class CSharpSourceBuilder extends AbstractSourceBuilder {
+class CSharpSourceBuilder {
 
     /**
      * Constructs a new C# SrcML Builder
      */
-    CSharpSourceBuilder()
-    {
-        // TODO Auto-generated constructor stub
-    }
+    CSharpSourceBuilder() { }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     def createTypeHeader(String designator, Type typ, StringBuilder builder) {
     }
-    
-    @Override
+
+    /**
+     * {@inheritDoc}
+     */
     def createEnumItems(Enum typ, StringBuilder builder) {
     }
-    
-    @Override
+
+    /**
+     * {@inheritDoc}
+     */
     def createFields(Type typ, StringBuilder builder) {
         
     }
-    
-    @Override
+
+    /**
+     * {@inheritDoc}
+     */
     def createMethods(Type typ, StringBuilder builder) {
         
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     def handleNamespace(File file, StringBuilder builder)
     {
         if (file.getNamespace()) {
@@ -80,7 +82,9 @@ class CSharpSourceBuilder extends AbstractSourceBuilder {
         }
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     def handleImports(File file, StringBuilder builder)
     {
         // TODO need to handle initialized using statements
@@ -91,7 +95,9 @@ class CSharpSourceBuilder extends AbstractSourceBuilder {
         }
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     def createTypeComment(Type type, StringBuilder builder)
     {
         builder << "/// \n"
@@ -99,7 +105,9 @@ class CSharpSourceBuilder extends AbstractSourceBuilder {
         builder << "/// \n"
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     def createMethodComment(Type type, Method method, StringBuilder builder)
     {
         builder << "/// \n"
@@ -107,13 +115,17 @@ class CSharpSourceBuilder extends AbstractSourceBuilder {
         builder << "/// \n"
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     String getLanguage()
     {
         return "C#"
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     def createUnitContents(File file, StringBuilder builder)
     {
         builder << "\n"
@@ -124,13 +136,17 @@ class CSharpSourceBuilder extends AbstractSourceBuilder {
         builder << "\n"
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     def createTypes(File file, StringBuilder builder)
     {
 
     }
-    
-    @Override
+
+    /**
+     * {@inheritDoc}
+     */
     def createProperty(Type type, StringBuilder builder)
     {
 
