@@ -1,6 +1,7 @@
 package edu.montana.gsoc.msusel.pattern.gen
 
-import edu.montana.gsoc.msusel.pattern.gen.current.LanguageProvider
+import edu.montana.gsoc.msusel.pattern.gen.generators.LanguageProvider
+import edu.montana.gsoc.msusel.pattern.gen.generators.java.JavaLanguageProvider
 import edu.montana.gsoc.msusel.pattern.gen.plugin.LanguageDescriptor
 import org.reflections.Reflections
 
@@ -11,14 +12,12 @@ class PluginLoader {
     static Map<String, LanguageProvider> langMap = [:]
 
     void loadBuiltInLanguageProviders() {
-        Reflections reflections = new Reflections(PLUGIN_PKG)
 
-        Set<Class<? extends LanguageProvider>> plugins = reflections.getSubTypesOf(LanguageProvider.class)
+        def plugins = [new JavaLanguageProvider()]
 
         plugins.each {
-            LanguageProvider inst = it.newInstance()
-            LanguageDescriptor desc = inst.languageDescriptor()
-            langMap[desc.name] = inst
+            LanguageDescriptor desc = it.languageDescriptor()
+            langMap[desc.name] = it
         }
     }
 

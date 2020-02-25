@@ -29,7 +29,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 import com.google.common.collect.Sets
 import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.cue.CueRole
-import edu.montana.gsoc.msusel.pattern.gen.current.TypeGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.TypeGenerator
 import edu.montana.gsoc.msusel.pattern.gen.event.EventType
 
 /**

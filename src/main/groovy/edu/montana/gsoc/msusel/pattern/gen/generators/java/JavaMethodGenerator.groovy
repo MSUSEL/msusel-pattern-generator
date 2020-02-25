@@ -33,7 +33,7 @@ import edu.isu.isuese.datamodel.Interface
 import edu.isu.isuese.datamodel.Method
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.cue.CueRole
-import edu.montana.gsoc.msusel.pattern.gen.current.MethodGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.MethodGenerator
 import edu.montana.gsoc.msusel.rbml.model.Role
 
 /**

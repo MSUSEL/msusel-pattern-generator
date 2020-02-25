@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
-import edu.montana.gsoc.msusel.pattern.gen.current.LanguageProvider
+import edu.montana.gsoc.msusel.pattern.gen.generators.LanguageProvider
 import edu.montana.gsoc.msusel.pattern.gen.plugin.AbstractLanguagePlugin
 import org.reflections.Reflections
 

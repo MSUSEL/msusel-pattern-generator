@@ -27,7 +27,7 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
-import edu.montana.gsoc.msusel.pattern.gen.current.BuildFileGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.BuildFileGenerator
 
 /**
  * @author Isaac Griffith

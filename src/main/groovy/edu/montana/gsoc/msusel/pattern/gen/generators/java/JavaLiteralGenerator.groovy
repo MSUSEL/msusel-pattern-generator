@@ -28,7 +28,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.Literal
 import edu.isu.isuese.datamodel.Type
-import edu.montana.gsoc.msusel.pattern.gen.current.LiteralGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.LiteralGenerator
 
 /**
  * @author Isaac Griffith

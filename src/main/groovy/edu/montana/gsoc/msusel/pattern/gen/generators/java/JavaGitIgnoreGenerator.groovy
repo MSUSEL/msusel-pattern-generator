@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
-import edu.montana.gsoc.msusel.pattern.gen.current.GitIgnoreGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.GitIgnoreGenerator
 
 /**
  * @author Isaac Griffith

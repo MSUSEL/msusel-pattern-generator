@@ -30,7 +30,7 @@ import edu.isu.isuese.datamodel.Module
 import edu.isu.isuese.datamodel.Namespace
 import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.System
-import edu.montana.gsoc.msusel.pattern.gen.current.CodeGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.CodeGenerator
 import org.javalite.activejdbc.test.DBSpec
 import org.junit.After
 import org.junit.Before

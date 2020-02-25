@@ -26,14 +26,14 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
-import edu.montana.gsoc.msusel.pattern.gen.current.FileGenerator
-import edu.montana.gsoc.msusel.pattern.gen.current.LanguageProvider
-import edu.montana.gsoc.msusel.pattern.gen.current.LicenseGenerator
-import edu.montana.gsoc.msusel.pattern.gen.current.ModuleGenerator
-import edu.montana.gsoc.msusel.pattern.gen.current.NamespaceGenerator
-import edu.montana.gsoc.msusel.pattern.gen.current.ProjectGenerator
-import edu.montana.gsoc.msusel.pattern.gen.current.ReadmeGenerator
-import edu.montana.gsoc.msusel.pattern.gen.current.SystemGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.FileGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.LanguageProvider
+import edu.montana.gsoc.msusel.pattern.gen.generators.LicenseGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.ModuleGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.NamespaceGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.ProjectGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.ReadmeGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.SystemGenerator
 import spock.lang.Specification
 
 class JavaLanguageProviderTest extends Specification {

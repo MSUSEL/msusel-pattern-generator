@@ -27,10 +27,10 @@
 package edu.montana.gsoc.msusel.pattern.gen
 
 import edu.montana.gsoc.msusel.pattern.cue.Cue
-import edu.montana.gsoc.msusel.pattern.gen.current.*
-import edu.montana.gsoc.msusel.pattern.gen.current.pb.*
-import edu.montana.gsoc.msusel.pattern.gen.current.pb.tree.RampedHalfHalf
-import edu.montana.gsoc.msusel.pattern.gen.current.pb.tree.TreeGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.*
+import edu.montana.gsoc.msusel.pattern.gen.generators.pb.*
+import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.RampedHalfHalf
+import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.TreeGenerator
 
 /**
  * @author Isaac Griffith

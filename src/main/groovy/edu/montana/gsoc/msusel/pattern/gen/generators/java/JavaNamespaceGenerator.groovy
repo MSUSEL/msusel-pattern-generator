@@ -27,7 +27,7 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.Namespace
-import edu.montana.gsoc.msusel.pattern.gen.current.NamespaceGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.NamespaceGenerator
 
 /**
  * @author Isaac Griffith

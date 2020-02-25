@@ -32,7 +32,7 @@ import edu.isu.isuese.datamodel.Namespace
 import edu.isu.isuese.datamodel.Relation
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
-import edu.montana.gsoc.msusel.pattern.gen.current.pb.tree.Tree
+import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.Tree
 import edu.montana.gsoc.msusel.rbml.model.ClassRole
 import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.GeneralizationHierarchy
