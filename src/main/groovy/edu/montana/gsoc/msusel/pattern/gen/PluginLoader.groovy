@@ -3,7 +3,6 @@ package edu.montana.gsoc.msusel.pattern.gen
 import edu.montana.gsoc.msusel.pattern.gen.generators.LanguageProvider
 import edu.montana.gsoc.msusel.pattern.gen.generators.java.JavaLanguageProvider
 import edu.montana.gsoc.msusel.pattern.gen.plugin.LanguageDescriptor
-import org.reflections.Reflections
 
 @Singleton
 class PluginLoader {

@@ -54,7 +54,7 @@ class JavaCodeGenerator extends CodeGenerator {
             ns.namespaces.each {
                 handleNamespace(it, tree)
             }
-            ns.types.each {
+            ns.allTypes.each {
                 typegen.generate(it)
             }
         }

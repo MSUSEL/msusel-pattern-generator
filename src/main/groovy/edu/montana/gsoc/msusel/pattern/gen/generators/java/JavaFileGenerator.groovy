@@ -97,7 +97,7 @@ class JavaFileGenerator extends FileGenerator {
     private def createImportStatements(File file) {
         List<String> imports = file.getImports()*.getName()
 
-        file.getTypedMembers().each {
+        file.getAllTypedMembers().each {
             addTypeToImports(file, it.getType(), imports)
 
             if (it instanceof Method) {
@@ -135,7 +135,7 @@ class JavaFileGenerator extends FileGenerator {
 
         def output = ""
 
-        file.getTypes().each {
+        file.getAllTypes().each {
             ctx.typeGen.init(type: it, parent: file)
             output += "\n" + ctx.typeGen.generate()
         }
