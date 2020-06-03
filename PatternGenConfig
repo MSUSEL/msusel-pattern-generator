@@ -22,6 +22,7 @@ db {
     url = "jdbc:sqlite:data/testing.db"
     user = "dev1"
     pass = "passwd"
+    type = "sqlite"
 }
 
 build {

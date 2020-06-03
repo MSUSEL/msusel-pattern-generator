@@ -26,7 +26,9 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
+import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.System
+import edu.isu.isuese.datamodel.util.DBManager
 
 /**
  * @author Isaac Griffith
@@ -41,18 +43,18 @@ class Director {
         context = GeneratorContext.getInstance()
         context.resetPatternBuilderComponents()
         context.resetComponentGenerators()
-        manager = new DBManager(context: context)
+        manager = DBManager.instance
     }
 
     void execute() {
 
         if (context.resetDb) {
-            manager.createDatabase()
+            manager.createDatabase(context.db.type, context.db.driver, context.db.url, context.db.user, context.db.pass)
         }
 
         if (!context.resetOnly) {
             // Open DB Connection
-            manager.open()
+            manager.open(context.db.driver, context.db.url, context.db.user, context.db.pass)
 
             if (!context.generateOnly) {
                 context.patterns.each {
@@ -63,10 +65,11 @@ class Director {
             }
 
             if (!context.dataOnly) {
-                System.findAll().each {
-                    if (it instanceof System) {
-                        context.loader.loadPatternCues(it.name)
-
+                context.projectKeys.each {
+                    Project proj = Project.findFirst("projKey = ?", it)
+                    if (proj) {
+                        System sys = proj.getParentSystem()
+                        context.loader.loadPatternCues(sys.name)
                         context.sysGen.init()
                         context.sysGen.generate()
                     }

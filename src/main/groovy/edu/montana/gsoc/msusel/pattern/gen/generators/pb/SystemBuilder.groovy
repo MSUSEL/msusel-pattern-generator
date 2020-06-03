@@ -26,6 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
+import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.System
 
 /**
@@ -50,7 +51,8 @@ class SystemBuilder extends AbstractBuilder {
 
         num.times {
             ctx.projBuilder.init(parent: sys, pattern: params.pattern, name: "${params.pattern}-${it + 1}", version: "1.0.0")
-            ctx.projBuilder?.create()
+            Project proj = ctx.projBuilder?.create()
+            ctx.projectKeys << proj.getProjectKey()
         }
 
         sys

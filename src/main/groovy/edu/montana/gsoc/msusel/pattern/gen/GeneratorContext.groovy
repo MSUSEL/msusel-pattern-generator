@@ -26,6 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
+import com.google.common.flogger.FluentLogger
 import edu.montana.gsoc.msusel.pattern.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.generators.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.*
@@ -56,6 +57,9 @@ class GeneratorContext {
     String srcPath
     String srcExt
     Cue cue
+    FluentLogger logger
+    List<String> projectKeys = []
+    List<String> patternKeys = []
 
     // director flags
     boolean generateOnly = false
@@ -133,5 +137,37 @@ class GeneratorContext {
         projGen    = plugin.createProjectGenerator(this)
         sysGen     = plugin.createSystemGenerator(this)
         typeGen    = plugin.createTypeGenerator(this)
+    }
+
+    @Override
+    String toString() {
+        """\
+        base            => ${base.toString()}
+        output          => ${output}
+        patterns        => ${patterns}
+        numInstances    => ${numInstances}
+        maxBreadth      => ${maxBreadth}
+        maxDepth        => ${maxDepth}
+        version         => ${version}
+        arities         => ${arities}
+        srcPath         => ${srcPath}
+        srcExt          => ${srcExt}
+        license: 
+            name        => ${license.name}
+            year        => ${license.year}
+            holder      => ${license.holder}
+            project     => ${license.project}
+            url         => ${license.url}
+        build:
+            project     => ${build.project}
+            artifact    => ${build.artifact}
+            description => ${build.description}
+        db:
+            driver      => ${db.driver}
+            url         => ${db.url}
+            user        => ${db.user}
+            pass        => ${db.pass}
+            type        => ${db.type}
+        """
     }
 }

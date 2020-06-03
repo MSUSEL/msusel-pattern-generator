@@ -28,6 +28,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import edu.isu.isuese.datamodel.Module
 import edu.isu.isuese.datamodel.Namespace
+import edu.isu.isuese.datamodel.PatternInstance
 
 /**
  * @author Isaac Griffith
@@ -66,7 +67,8 @@ class NamespaceBuilder extends AbstractBuilder {
 
             ((Module) params.parent).addNamespace(first)
             ctx.patternBuilder.init(parent: first, pattern: params.pattern)
-            ctx.patternBuilder?.create()
+            PatternInstance inst = ctx.patternBuilder?.create()
+            ctx.patternKeys << inst.getInstKey()
 
             first
         }
@@ -78,7 +80,8 @@ class NamespaceBuilder extends AbstractBuilder {
             parent.addNamespace(holder)
 
             ctx.patternBuilder.init(parent: holder, pattern: pattern)
-            ctx.patternBuilder?.create()
+            PatternInstance inst = ctx.patternBuilder?.create()
+            ctx.patternKeys << inst.getInstKey()
 
             holder
         }
