@@ -30,6 +30,10 @@ import edu.montana.gsoc.msusel.pattern.gen.generators.LanguageProvider
 import edu.montana.gsoc.msusel.pattern.gen.generators.java.JavaLanguageProvider
 import edu.montana.gsoc.msusel.pattern.gen.plugin.LanguageDescriptor
 
+/**
+ * @author Isaac Griffith
+ * @version 1.3.0
+ */
 @Singleton
 class PluginLoader {
 
