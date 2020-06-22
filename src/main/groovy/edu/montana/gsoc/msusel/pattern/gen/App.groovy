@@ -26,6 +26,9 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
+import groovy.cli.picocli.CliBuilder
+import groovy.cli.picocli.OptionAccessor
+
 /**
  * @author Isaac Griffith
  * @version 1.3.0
@@ -96,7 +99,7 @@ enum CommandLineInterface {
         OptionAccessor options = cliBuilder.parse(args)
 
         if (!options) {
-            System.err << 'Error while parsing command-line options.\n'
+            System.err.println 'Error while parsing command-line options.\n'
             System.exit 1
         }
 
