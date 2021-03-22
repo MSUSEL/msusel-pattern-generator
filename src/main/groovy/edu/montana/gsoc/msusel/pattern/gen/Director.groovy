@@ -28,6 +28,7 @@ package edu.montana.gsoc.msusel.pattern.gen
 
 import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.System
+import edu.isu.isuese.datamodel.util.DBCredentials
 import edu.isu.isuese.datamodel.util.DBManager
 
 /**
@@ -47,14 +48,20 @@ class Director {
     }
 
     void execute() {
-
+        DBCredentials creds = DBCredentials.builder()
+                .driver(context.db.driver)
+                .type(context.db.type)
+                .url(context.db.url)
+                .user(context.db.user)
+                .pass(context.db.pass)
+                .create()
         if (context.resetDb) {
-            manager.createDatabase(context.db.type, context.db.driver, context.db.url, context.db.user, context.db.pass)
+            manager.createDatabase(creds)
         }
 
         if (!context.resetOnly) {
             // Open DB Connection
-            manager.open(context.db.driver, context.db.url, context.db.user, context.db.pass)
+            manager.open(creds)
 
             if (!context.generateOnly) {
                 context.patterns.each {
