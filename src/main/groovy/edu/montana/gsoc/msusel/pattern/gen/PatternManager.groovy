@@ -49,14 +49,17 @@ class PatternManager {
     }
 
     Cue loadAndSelectCue(String pattern) {
-        CuePattern cues = this.loadPatternCues(getPatternName(pattern))
-        def list = cues.cues.keySet().asList()
-        if (list) {
-            if (list.size() > 1) {
-                Random rand = new Random()
-                return (Cue) cues.cues[list[rand.nextInt(list.size())]]
-            } else {
-                return (Cue) cues.cues[list[0]]
+        CuePattern cues = this.loadPatternCues(getPatternName(pattern.toLowerCase()))
+        if (cues) {
+            def list = cues.cues.keySet().asList()
+
+            if (list) {
+                if (list.size() > 1) {
+                    Random rand = new Random()
+                    return (Cue) cues.cues[list[rand.nextInt(list.size())]]
+                } else {
+                    return (Cue) cues.cues[list[0]]
+                }
             }
         }
 

@@ -40,6 +40,7 @@ class JavaFileGeneratorTest extends DBSpec {
     File data
     java.io.File testDir
     FileTreeBuilder builder
+    Project proj
 
     @Before
     void setup() {
@@ -56,6 +57,13 @@ class JavaFileGeneratorTest extends DBSpec {
                 .name("Test.java")
                 .fileKey("Test.java")
                 .create()
+        proj = Project.builder()
+                .version("1.0")
+                .name("project")
+                .projKey("test")
+                .create()
+        proj.saveIt()
+        proj.addFile(data)
     }
 
     @After
@@ -71,11 +79,13 @@ class JavaFileGeneratorTest extends DBSpec {
                 .name("ns1")
                 .create()
         Namespace ns2 = Namespace.builder()
-                .nsKey("ns2")
-                .name("ns2")
+                .nsKey("ns1.ns2")
+                .name("ns1.ns2")
                 .create()
         ns1.addNamespace(ns2)
         ns2.addFile(data)
+        proj.addNamespace(ns1)
+        proj.addNamespace(ns2)
 
         Class clazz = Class.builder()
                 .name("Test")
@@ -144,11 +154,13 @@ class JavaFileGeneratorTest extends DBSpec {
                 .name("ns1")
                 .create()
         Namespace ns2 = Namespace.builder()
-                .nsKey("ns2")
-                .name("ns2")
+                .nsKey("ns1.ns2")
+                .name("ns1.ns2")
                 .create()
         ns1.addNamespace(ns2)
         ns2.addFile(data)
+        proj.addNamespace(ns1)
+        proj.addNamespace(ns2)
 
         Class clazz = Class.builder()
                 .name("Test")
@@ -156,6 +168,7 @@ class JavaFileGeneratorTest extends DBSpec {
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.addType(clazz)
+        ns2.addType(clazz)
 
         File other = File.builder()
                 .type(FileType.SOURCE)
@@ -169,7 +182,9 @@ class JavaFileGeneratorTest extends DBSpec {
                 .compKey("Reference")
                 .create()
         other.addType(ref)
+        ns1.addType(ref)
         ns1.addFile(other)
+        proj.addFile(other)
 
         Method method = Method.builder()
                 .name("method")
@@ -185,11 +200,6 @@ class JavaFileGeneratorTest extends DBSpec {
                 .create()
         clazz.addMember(method)
 
-        Project proj = Project.builder()
-                .name("project")
-                .projKey("project")
-                .version("1.0")
-                .create()
         Module mod = Module.builder()
                 .name("module")
                 .moduleKey("module")
@@ -224,7 +234,7 @@ class JavaFileGeneratorTest extends DBSpec {
          * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
          * SOFTWARE.
          */
-                
+        
         package ns1.ns2;
         
         import ns1.Reference;
@@ -239,7 +249,7 @@ class JavaFileGeneratorTest extends DBSpec {
         public class Test {
         
             /**
-             * 
+             *
              * @return
              */
             public Reference method() {
@@ -263,11 +273,14 @@ class JavaFileGeneratorTest extends DBSpec {
                 .name("ns1")
                 .create()
         Namespace ns2 = Namespace.builder()
-                .nsKey("ns2")
-                .name("ns2")
+                .nsKey("ns1.ns2")
+                .name("ns1.ns2")
                 .create()
         ns1.addNamespace(ns2)
         ns2.addFile(data)
+
+        proj.addNamespace(ns1)
+        proj.addNamespace(ns2)
 
         Class clazz = Class.builder()
                 .name("Test")
@@ -275,6 +288,7 @@ class JavaFileGeneratorTest extends DBSpec {
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.addType(clazz)
+        ns2.addType(clazz)
 
         File other = File.builder()
                 .type(FileType.SOURCE)
@@ -289,6 +303,7 @@ class JavaFileGeneratorTest extends DBSpec {
                 .create()
         other.addType(ref)
         ns1.addFile(other)
+        ns1.addType(ref)
 
         Field method = Field.builder()
                 .name("ref")
@@ -305,11 +320,6 @@ class JavaFileGeneratorTest extends DBSpec {
                 .create()
         clazz.addMember(method)
 
-        Project proj = Project.builder()
-                .name("project")
-                .projKey("project")
-                .version("1.0")
-                .create()
         Module mod = Module.builder()
                 .name("module")
                 .moduleKey("module")
@@ -442,11 +452,13 @@ class JavaFileGeneratorTest extends DBSpec {
                 .name("ns1")
                 .create()
         Namespace ns2 = Namespace.builder()
-                .nsKey("ns2")
-                .name("ns2")
+                .nsKey("ns1.ns2")
+                .name("ns1.ns2")
                 .create()
         ns1.addNamespace(ns2)
         ns2.addFile(data)
+        proj.addNamespace(ns1)
+        proj.addNamespace(ns2)
 
         ctx.fileGen.init(file: data, builder: builder)
         ctx.fileGen.generate()
@@ -496,17 +508,20 @@ class JavaFileGeneratorTest extends DBSpec {
                 .name("ns1")
                 .create()
         Namespace ns2 = Namespace.builder()
-                .nsKey("ns2")
-                .name("ns2")
+                .nsKey("ns1.ns2")
+                .name("ns1.ns2")
                 .create()
         ns1.addNamespace(ns2)
         ns2.addFile(data)
+        proj.addNamespace(ns1)
+        proj.addNamespace(ns2)
 
         Class clazz = Class.builder()
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.addType(clazz)
+        ns2.addType(clazz)
 
         def expected = """\
         /**
@@ -565,22 +580,26 @@ class JavaFileGeneratorTest extends DBSpec {
                 .name("ns1")
                 .create()
         Namespace ns2 = Namespace.builder()
-                .nsKey("ns2")
-                .name("ns2")
+                .nsKey("ns1.ns2")
+                .name("ns1.ns2")
                 .create()
         ns1.addNamespace(ns2)
         ns2.addFile(data)
+        proj.addNamespace(ns1)
+        proj.addNamespace(ns2)
 
         Class clazz = Class.builder()
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.addType(clazz)
+        ns1.addType(clazz)
         Class clazz2 = Class.builder()
                 .name("Test2")
                 .accessibility(Accessibility.DEFAULT)
                 .create()
         data.addType(clazz2)
+        ns1.addType(clazz2)
 
         def expected = """\
         /**

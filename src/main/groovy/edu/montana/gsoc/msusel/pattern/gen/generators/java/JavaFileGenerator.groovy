@@ -28,12 +28,19 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.FileGenerator
+import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log
 class JavaFileGenerator extends FileGenerator {
+
+    JavaFileGenerator() {
+        LoggerInit.init(log)
+    }
 
     @Override
     def generate() {
@@ -87,8 +94,8 @@ class JavaFileGenerator extends FileGenerator {
 
     private def createPackageStatement(File file) {
         def pkg = ""
-        if (file.getParentNamespaces()) {
-            Namespace parent = file.getParentNamespaces().first()
+        if (file.getParentNamespace()) {
+            Namespace parent = file.getParentNamespace()
             pkg = "package ${parent.getFullName()};"
         }
         pkg
@@ -120,8 +127,8 @@ class JavaFileGenerator extends FileGenerator {
 
     private def addTypeToImports(File file, TypeRef type, List<String> imports) {
         if (type.getType() == TypeRefType.Type) {
-            if (file.getParentProjects()) {
-                Type t = type.getType(file.getParentProjects().first().getProjectKey())
+            if (file.getParentProject()) {
+                Type t = type.getType(file.getParentProject().getProjectKey())
                 if (t) imports << t.getFullName()
             }
         }

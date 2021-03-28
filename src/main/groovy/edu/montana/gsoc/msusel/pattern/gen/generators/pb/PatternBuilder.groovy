@@ -42,16 +42,19 @@ import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.GeneralizationHierarchy
 import edu.montana.gsoc.msusel.rbml.model.Role
 import edu.montana.gsoc.msusel.rbml.model.SPS
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log
 class PatternBuilder extends AbstractBuilder {
 
     Map<String, Integer> patternCounts = [:]
 
     def create() {
+        log.info("Generating pattern")
         if (!params.pattern)
             throw new IllegalArgumentException("create: pattern cannot be null or empty")
         if (!params.parent)
@@ -64,8 +67,10 @@ class PatternBuilder extends AbstractBuilder {
         if (!projects.isEmpty())
             parentProj = projects.first()
 
+        log.info("Loading pattern: ${pattern}")
         SPS rbml = ctx.loader.loadPattern(pattern)
-        if (!rbml) {
+        println("RBML: $rbml")
+        if (rbml) {
             ctx.relationBuilder.init(ns: ns, rbml: rbml)
             ctx.relationBuilder.create()
         }
@@ -75,6 +80,9 @@ class PatternBuilder extends AbstractBuilder {
                 ctx.clsBuilder.createFeatures(it)
         }
 
+        println("RBML: $rbml")
+        println("Pattern: $pattern")
+        println("ParentProj: $parentProj")
         createInstance(rbml, pattern, parentProj)
     }
 
@@ -87,7 +95,7 @@ class PatternBuilder extends AbstractBuilder {
                 .create()
 
         Pattern pat = (Pattern) Pattern.find("name = ?", pattern.capitalize()).first()
-
+        println(pat)
         if (pat) {
             updateRoles(pat, rbml)
 
@@ -181,7 +189,7 @@ class PatternBuilder extends AbstractBuilder {
             c.structFeats.each {
                 edu.isu.isuese.datamodel.Role struct = edu.isu.isuese.datamodel.Role.builder()
                         .name(c.name)
-                        .roleKey("${pat.patternKey}:${c.name}")
+                        .roleKey("${pat.patternKey}:${it.name}")
                         .type(RoleType.STRUCT_FEAT)
                         .create()
                 pat.addRole(struct)
@@ -190,7 +198,7 @@ class PatternBuilder extends AbstractBuilder {
             c.behFeats.each {
                 edu.isu.isuese.datamodel.Role behav = edu.isu.isuese.datamodel.Role.builder()
                         .name(c.name)
-                        .roleKey("${pat.patternKey}:${c.name}")
+                        .roleKey("${pat.patternKey}:${it.name}")
                         .type(RoleType.BEHAVE_FEAT)
                         .create()
                 pat.addRole(behav)

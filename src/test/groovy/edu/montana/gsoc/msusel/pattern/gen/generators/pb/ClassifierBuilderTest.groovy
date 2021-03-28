@@ -29,6 +29,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 import edu.isu.isuese.datamodel.Accessibility
 import edu.isu.isuese.datamodel.Class
 import edu.isu.isuese.datamodel.Namespace
+import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import edu.montana.gsoc.msusel.rbml.model.BehavioralFeature
@@ -43,11 +44,20 @@ import org.junit.Test
 class ClassifierBuilderTest extends DBSpec {
 
     GeneratorContext ctx
+    Namespace ns
 
     @Before
     void setup() {
         ctx = GeneratorContext.getInstance()
         ctx.resetPatternBuilderComponents()
+
+        Project project = Project.builder()
+                .name("Test")
+                .projKey("Test")
+                .version("1.0")
+                .create()
+        ns = Namespace.builder().nsKey("ns").name("ns").create()
+        project.addNamespace(ns)
     }
 
     @After
@@ -61,7 +71,6 @@ class ClassifierBuilderTest extends DBSpec {
                 .name("Classifier")
                 .mult(Multiplicity.fromString("1..1"))
                 .create()
-        Namespace ns = Namespace.builder().nsKey("ns").name("ns").create()
 
         // when:
         ctx.clsBuilder.init(classifier: clazz, ns: ns)
@@ -77,7 +86,6 @@ class ClassifierBuilderTest extends DBSpec {
     void "test createClassifier with null"() {
         // given:
         Classifier clazz = null
-        Namespace ns = Namespace.builder().nsKey("ns").name("ns").create()
 
         // when:
         ctx.clsBuilder.init(classifier: clazz, ns: ns)
@@ -96,8 +104,6 @@ class ClassifierBuilderTest extends DBSpec {
                 .compKey("Class")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
-
-        Namespace ns = Namespace.builder().nsKey("ns").name("ns").create()
 
         ctx.rbmlManager.addMapping(role, type)
 

@@ -29,6 +29,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 import edu.isu.isuese.datamodel.Module
 import edu.isu.isuese.datamodel.Namespace
 import edu.isu.isuese.datamodel.PatternInstance
+import edu.isu.isuese.datamodel.Project
 
 /**
  * @author Isaac Griffith
@@ -48,23 +49,25 @@ class NamespaceBuilder extends AbstractBuilder {
             int ndx = ((String) params.name).indexOf(".")
             String nsName = ((String) params.name).substring(0, ndx)
             String next = ((String) params.name).substring(ndx + 1)
-            String key = "${((Module) params.parent).moduleKey}:${nsName}"
+            String key = "${((Module) params.parent).getParentProject().projectKey}:${nsName}"
 
             Namespace first = Namespace.builder()
                 .name(nsName)
                 .nsKey(key)
                 .create()
 
+            ((Module) params.parent).getParentProject().addNamespace(first)
             ((Module) params.parent).addNamespace(first)
-            createNamespaceRec(first, next, (String) params.pattern)
+            createNamespaceRec(((Module) params.parent), first, next, (String) params.pattern)
         } else {
-            String key = "${((Module) params.parent).moduleKey}:${params.name}"
+            String key = "${((Module) params.parent).getParentProject().projectKey}:${params.name}"
 
             Namespace first = Namespace.builder()
                     .name((String) params.name)
                     .nsKey(key)
                     .create()
 
+            ((Module) params.parent).getParentProject().addNamespace(first)
             ((Module) params.parent).addNamespace(first)
             ctx.patternBuilder.init(parent: first, pattern: params.pattern)
             PatternInstance inst = ctx.patternBuilder?.create()
@@ -74,12 +77,14 @@ class NamespaceBuilder extends AbstractBuilder {
         }
     }
 
-    def createNamespaceRec(Namespace parent, String name, String pattern) {
+    def createNamespaceRec(Module owner, Namespace parent, String name, String pattern) {
         if (!name.contains(".")) {
             Namespace holder = createChildNamespace(parent, name)
+            owner.getParentProject().addNamespace(holder)
             parent.addNamespace(holder)
 
             ctx.patternBuilder.init(parent: holder, pattern: pattern)
+            println("Pattern Builder = ${ctx.patternBuilder}")
             PatternInstance inst = ctx.patternBuilder?.create()
             ctx.patternKeys << inst.getInstKey()
 
@@ -91,15 +96,16 @@ class NamespaceBuilder extends AbstractBuilder {
             String next = name.substring(ndx + 1)
             Namespace newParent = createChildNamespace(parent, nsName)
 
-            parent.addNamespace(newParent)
+            owner.addNamespace(newParent)
+            owner.getParentProject().addNamespace(newParent)
 
-            createNamespaceRec(newParent, next, pattern)
+            createNamespaceRec(owner, newParent, next, pattern)
         }
     }
 
     private Namespace createChildNamespace(Namespace parent, String name) {
         Namespace.builder()
-                .name(name)
+                .name(parent.getFullName() + "." + name)
                 .nsKey("${parent.nsKey}.$name")
                 .create()
     }

@@ -28,12 +28,19 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.System
 import edu.montana.gsoc.msusel.pattern.gen.generators.SystemGenerator
+import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log
 class JavaSystemGenerator extends SystemGenerator {
+
+    JavaSystemGenerator() {
+        LoggerInit.init(log)
+    }
 
     @Override
     def generate() {
@@ -42,6 +49,7 @@ class JavaSystemGenerator extends SystemGenerator {
         if (!params.builder)
             throw new IllegalArgumentException("FileTreeBuilder cannot be null")
 
+        log.info("Generating system")
         System sys = (System) params.sys
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
         String pattern = params.pattern
@@ -52,11 +60,12 @@ class JavaSystemGenerator extends SystemGenerator {
                     "${proj.name}" {
                         if (pattern)
                             ctx.cue = ctx.loader.loadAndSelectCue(pattern)
-                        ctx.projGen.init(proj: proj, builder: builder)
+                        ctx.projGen.init(proj: proj, builder: builder, num: params.num, pattern: params.pattern)
                         ctx.projGen.generate()
                     }
                 }
             }
         }
+        log.info("Done generating system")
     }
 }

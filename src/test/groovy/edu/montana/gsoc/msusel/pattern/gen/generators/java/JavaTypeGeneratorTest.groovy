@@ -263,7 +263,7 @@ public final class Test {
 public class Test {
 
     /**
-     * 
+     *
      */
     public void test() {
     }
@@ -306,13 +306,13 @@ public class Test {
 public class Test {
 
     /**
-     * 
+     *
      */
     public void test() {
     }
 
     /**
-     * 
+     *
      */
     public void test2() {
     }
@@ -461,7 +461,7 @@ public class Test {
 public interface Test {
 
     /**
-     * 
+     *
      */
     void test();
 }
@@ -505,12 +505,12 @@ public interface Test {
 public interface Test {
 
     /**
-     * 
+     *
      */
     void test();
 
     /**
-     * 
+     *
      */
     void test2();
 }

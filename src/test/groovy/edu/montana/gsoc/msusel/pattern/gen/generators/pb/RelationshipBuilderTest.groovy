@@ -28,6 +28,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import edu.isu.isuese.datamodel.Class
 import edu.isu.isuese.datamodel.Namespace
+import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.Relation
 import edu.isu.isuese.datamodel.RelationType
 import edu.isu.isuese.datamodel.Type
@@ -123,8 +124,14 @@ SPS:
         ctx.resetPatternBuilderComponents()
         ctx.setMaxBreadth(3)
         ctx.srcExt = ".java"
-        ctx.srcPath = "src/main/java/"
+        ctx.srcPath = "src/main/java"
+        Project project = Project.builder()
+                .name("Test")
+                .projKey("Test")
+                .version("1.0")
+                .create()
         ns = Namespace.builder().name("test").nsKey("test").create()
+        project.addNamespace(ns)
         SpecificationReader reader = new SpecificationReader()
         Yaml yaml = new Yaml()
         def map = yaml.load(yml)

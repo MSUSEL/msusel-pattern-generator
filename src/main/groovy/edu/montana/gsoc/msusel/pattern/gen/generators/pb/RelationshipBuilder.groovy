@@ -52,6 +52,10 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         Namespace ns = (Namespace) params.ns
         SPS sps = (SPS) params.rbml
 
+        println("SPS: ${params.rbml}")
+        println("SPS Relations: ${sps.relations}")
+        println("SPS GHs: ${sps.genHierarchies}")
+
         sps.relations.each { rel ->
             if (rel instanceof Relationship) {
                 processRole(ns, rel.source(), rel.srcPort)
@@ -84,12 +88,13 @@ class RelationshipBuilder extends AbstractComponentBuilder {
     List<Type> generateClassifier(Namespace ns, Classifier role, boolean ghRoot = false) {
         if (!role)
             throw new IllegalArgumentException("generateClassifier: role cannot be null")
+        println("Generating Classifier: $role")
 
         Random rand = new Random()
         int num
 
         if (role.mult.lower == role.mult.upper) {
-            num = (Integer) (role.mult.upper < ctx.maxBreadth ? role.mult.upper : params.maxBreadth)
+            num = (Integer) (role.mult.upper < ctx.maxBreadth ? role.mult.upper : ctx.maxBreadth)
 
         } else if (role.mult.upper == -1) {
             num = rand.nextInt(ctx.maxBreadth) + role.mult.lower
@@ -323,24 +328,28 @@ class RelationshipBuilder extends AbstractComponentBuilder {
     }
 
     private createFields(Type src, Type dest, String srcName, String destName, int srcUpper, int destUpper) {
-        TypeRef destRef = createTypeRef(dest)
-        Field srcField = Field.builder()
-                .name(destName)
-                .accessibility(Accessibility.PRIVATE)
-                .compKey(destName)
-                .type(destRef)
-                .create()
-        src.addMember(srcField)
+        if (!src.hasFieldWithName(destName)) {
+            TypeRef destRef = createTypeRef(dest)
+            Field srcField = Field.builder()
+                    .name(destName)
+                    .accessibility(Accessibility.PRIVATE)
+                    .compKey(src.getCompKey() + "." + destName)
+                    .type(destRef)
+                    .create()
+            src.addMember(srcField)
+        }
 
         if (srcUpper == -1 && destUpper == -1) {
-            TypeRef srcRef = createTypeRef(src)
-            Field destField = Field.builder()
-                    .name(srcName)
-                    .accessibility(Accessibility.PRIVATE)
-                    .compKey(srcName)
-                    .type(srcRef)
-                    .create()
-            dest.addMember(destField)
+            if (!dest.hasFieldWithName(srcName)) {
+                TypeRef srcRef = createTypeRef(src)
+                Field destField = Field.builder()
+                        .name(srcName)
+                        .accessibility(Accessibility.PRIVATE)
+                        .compKey(dest.getCompKey() + "." + srcName)
+                        .type(srcRef)
+                        .create()
+                dest.addMember(destField)
+            }
         }
     }
 

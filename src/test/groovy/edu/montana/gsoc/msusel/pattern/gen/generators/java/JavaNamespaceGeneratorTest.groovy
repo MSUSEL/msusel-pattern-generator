@@ -29,6 +29,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 import edu.isu.isuese.datamodel.File
 import edu.isu.isuese.datamodel.FileType
 import edu.isu.isuese.datamodel.Namespace
+import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import org.javalite.activejdbc.test.DBSpec
 import org.junit.After
@@ -44,6 +45,7 @@ class JavaNamespaceGeneratorTest extends DBSpec {
     Namespace ns2
     Namespace ns3
     Namespace ns4
+    Project proj
 
     @Before
     void setup() {
@@ -56,22 +58,32 @@ class JavaNamespaceGeneratorTest extends DBSpec {
                 .create()
 
         ns2 = Namespace.builder()
-                .name("ns2")
-                .nsKey("ns2")
+                .name("ns1.ns2")
+                .nsKey("ns1.ns2")
                 .create()
         ns1.addNamespace(ns2)
 
         ns3 = Namespace.builder()
-                .name("ns3")
-                .nsKey("ns3")
+                .name("ns1.ns3")
+                .nsKey("ns1.ns3")
                 .create()
         ns1.addNamespace(ns3)
 
         ns4 = Namespace.builder()
-                .name("ns4")
-                .nsKey("ns4")
+                .name("ns1.ns2.ns4")
+                .nsKey("ns1.ns2.ns4")
                 .create()
         ns2.addNamespace(ns4)
+
+        proj = Project.builder()
+                .name("Test")
+                .projKey("Test")
+                .version("1.0")
+                .create()
+        proj.addNamespace(ns1)
+        proj.addNamespace(ns2)
+        proj.addNamespace(ns3)
+        proj.addNamespace(ns4)
 
         ctx = GeneratorContext.instance
         ctx.resetPatternBuilderComponents()
@@ -90,7 +102,7 @@ class JavaNamespaceGeneratorTest extends DBSpec {
         ctx.nsGen.init(ns: ns4, builder: builder)
         ctx.nsGen.generate()
 
-        java.io.File ns4dir = new java.io.File(testDir, "ns4")
+        java.io.File ns4dir = new java.io.File(testDir, "ns1/ns2/ns4")
 
         a(ns4dir.exists()).shouldBeTrue()
         a(ns4dir.isDirectory()).shouldBeTrue()
@@ -99,6 +111,12 @@ class JavaNamespaceGeneratorTest extends DBSpec {
     @Test
     void "Nested namespaces"() {
         ctx.nsGen.init(ns: ns1, builder: builder)
+        ctx.nsGen.generate()
+        ctx.nsGen.init(ns: ns2, builder: builder)
+        ctx.nsGen.generate()
+        ctx.nsGen.init(ns: ns3, builder: builder)
+        ctx.nsGen.generate()
+        ctx.nsGen.init(ns: ns4, builder: builder)
         ctx.nsGen.generate()
 
         java.io.File ns1dir = new java.io.File(testDir, "ns1")
@@ -116,58 +134,5 @@ class JavaNamespaceGeneratorTest extends DBSpec {
         a(ns2dir.isDirectory()).shouldBeTrue()
         a(ns3dir.isDirectory()).shouldBeTrue()
         a(ns4dir.isDirectory()).shouldBeTrue()
-    }
-
-    @Test
-    void "generate namespace with a file"() {
-        File file = File.builder()
-                .name("File.java")
-                .type(FileType.SOURCE)
-                .fileKey("file")
-                .create()
-
-        ns4.addFile(file)
-
-        ctx.nsGen.init(ns: ns4, builder: builder)
-        ctx.nsGen.generate()
-
-        java.io.File ns4dir = new java.io.File(testDir, "ns4")
-        java.io.File ns4file = new java.io.File(ns4dir, "File.java")
-
-        a(ns4dir.exists()).shouldBeTrue()
-        a(ns4dir.isDirectory()).shouldBeTrue()
-        a(ns4file.exists()).shouldBeTrue()
-        a(ns4file.isDirectory()).shouldBeFalse()
-    }
-
-    @Test
-    void "generate namespace with multiple files"() {
-        File file = File.builder()
-                .name("File.java")
-                .type(FileType.SOURCE)
-                .fileKey("file")
-                .create()
-        File file2 = File.builder()
-                .name("File2.java")
-                .type(FileType.SOURCE)
-                .fileKey("file2")
-                .create()
-
-        ns4.addFile(file)
-        ns4.addFile(file2)
-
-        ctx.nsGen.init(ns: ns4, builder: builder)
-        ctx.nsGen.generate()
-
-        java.io.File ns4dir = new java.io.File(testDir, "ns4")
-        java.io.File ns4file = new java.io.File(ns4dir, "File.java")
-        java.io.File ns4file2 = new java.io.File(ns4dir, "File2.java")
-
-        a(ns4dir.exists()).shouldBeTrue()
-        a(ns4dir.isDirectory()).shouldBeTrue()
-        a(ns4file.exists()).shouldBeTrue()
-        a(ns4file.isDirectory()).shouldBeFalse()
-        a(ns4file2.exists()).shouldBeTrue()
-        a(ns4file2.isDirectory()).shouldBeFalse()
     }
 }

@@ -76,23 +76,28 @@ class JavaCodeGeneratorTest extends DBSpec {
                 .create()
 
         Namespace ns2 = Namespace.builder()
-                .name("ns2")
-                .nsKey("ns2")
+                .name("ns1.ns2")
+                .nsKey("ns1.ns2")
                 .create()
         ns1.addNamespace(ns2)
 
         Namespace ns3 = Namespace.builder()
-                .name("ns3")
-                .nsKey("ns3")
+                .name("ns1.ns3")
+                .nsKey("ns1.ns3")
                 .create()
         ns1.addNamespace(ns3)
 
         Namespace ns4 = Namespace.builder()
-                .name("ns4")
-                .nsKey("ns4")
+                .name("ns1.ns2.ns4")
+                .nsKey("ns1.ns2.ns4")
                 .create()
         ns2.addNamespace(ns4)
         mod.addNamespace(ns1)
+
+        proj.addNamespace(ns1)
+        proj.addNamespace(ns2)
+        proj.addNamespace(ns3)
+        proj.addNamespace(ns4)
 
         fixture = new JavaCodeGenerator(system: sys)
     }
@@ -111,6 +116,8 @@ class JavaCodeGeneratorTest extends DBSpec {
         File ns2 = new File(ns1, "ns2")
         File ns3 = new File(ns1, "ns3")
         File ns4 = new File(ns2, "ns4")
+
+        println("$testDir")
 
         assertTrue("base dir exists", testDir.exists())
         assertTrue("ns1 exists", ns1.exists())

@@ -28,31 +28,40 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.Namespace
 import edu.montana.gsoc.msusel.pattern.gen.generators.NamespaceGenerator
+import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log
 class JavaNamespaceGenerator extends NamespaceGenerator {
+
+    JavaNamespaceGenerator() {
+        LoggerInit.init(log)
+    }
 
     @Override
     def generate() {
+        log.info("Generating namespace")
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
         Namespace ns = (Namespace) params.ns
 
         generateRec(ns, builder)
+        log.info("Done generating namespace")
     }
 
     private def generateRec(Namespace ns, FileTreeBuilder builder) {
         builder {
-            builder."${ns.getName()}" {
-                ns.getFiles().each {
-                    ctx.fileGen.init(file: it, builder: builder)
-                    ctx.fileGen.generate()
-                }
-                ns.getNamespaces().each {
-                    generateRec(it, builder)
-                }
+            builder."${ns.getName().replaceAll(/\./, File.separator)}" {
+//                ns.getFiles().each {
+//                    ctx.fileGen.init(file: it, builder: builder)
+//                    ctx.fileGen.generate()
+//                }
+//                ns.getNamespaces().each {
+//                    generateRec(it, builder)
+//                }
             }
         }
     }

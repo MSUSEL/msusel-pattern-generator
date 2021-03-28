@@ -33,7 +33,7 @@ class JavaGitIgnoreGeneratorTest extends Specification {
 
     GeneratorContext ctx
     FileTreeBuilder builder
-    final File testDir = new File('testdir')
+    File testDir = new File('testdir')
 
     def setup() {
         ctx = GeneratorContext.instance

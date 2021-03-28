@@ -40,6 +40,7 @@ class JavaModuleGeneratorTest extends DBSpec {
     FileTreeBuilder builder
     final File testDir = new File('testdir')
     Module data
+    Project proj
 
     @Before
     void setup() {
@@ -72,8 +73,13 @@ class JavaModuleGeneratorTest extends DBSpec {
 
     @Test
     void "module as subproject"() {
-
-        ctx.modGen.init(project: null, mod: data, builder: builder, subproject: true, num: 10, pattern: "test")
+        Project p = Project.builder()
+                .name("Test")
+                .projKey("Test")
+                .version("1.0")
+                .create()
+        p.addModule(data)
+        ctx.modGen.init(project: p, mod: data, builder: builder, subproject: true, num: 10, pattern: "test")
         ctx.modGen.generate()
 
         File settings = new File(testDir, "settings.gradle")

@@ -27,14 +27,21 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import edu.isu.isuese.datamodel.*
+import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
 import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.InterfaceRole
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log
 class ClassifierBuilder extends AbstractBuilder {
+
+    ClassifierBuilder() {
+        LoggerInit.init(log)
+    }
 
     Type create() {
         if (!params.classifier)
@@ -43,6 +50,9 @@ class ClassifierBuilder extends AbstractBuilder {
         Type t
         String name = getClassName()
         String compKey = ((Namespace) params.ns).getNsKey() + ":" + name
+        if (Class.findFirst("compKey = ?", compKey)) {
+            return Class.findFirst("compKey = ?", compKey)
+        }
         if (params.classifier instanceof InterfaceRole) {
             t = Interface.builder()
                     .name(name)
@@ -52,7 +62,6 @@ class ClassifierBuilder extends AbstractBuilder {
             if (((Classifier) params.classifier).isAbstrct())
                 t.addModifier(Modifier.forName("ABSTRACT"))
         } else {
-
             t = Class.builder()
                     .name(name)
                     .accessibility(Accessibility.PUBLIC)
@@ -65,15 +74,21 @@ class ClassifierBuilder extends AbstractBuilder {
         ctx.rbmlManager.addMapping((Classifier) params.classifier, t)
 
         ctx.fileBuilder.init(parent: params.ns, typeName: t.getName())
-        ctx.fileBuilder.create()
+        File f = ctx.fileBuilder.create()
+
+        ((Namespace) params.ns).addType(t)
+        f.addType(t)
 
         t
     }
 
     void createFeatures(Classifier classifier) {
+        log.info("Creating features for ${classifier.name}")
         if (!classifier)
             throw new IllegalArgumentException("createFeatures: classifier cannot be null")
         ctx.rbmlManager.getTypes(classifier).each { Type t ->
+            log.info("Number of structural features: ${classifier.structFeats.size()}")
+            log.info("Number of behavioral features: ${classifier.behFeats.size()}")
             classifier.structFeats.each {
                 ctx.fldBuilder.init(feature: it)
                 t.addMember((Field) ctx.fldBuilder.create())
@@ -84,6 +99,7 @@ class ClassifierBuilder extends AbstractBuilder {
                 t.addMember((Method) ctx.methBuilder.create())
             }
         }
+        log.info("Done creating features for ${classifier.name}")
     }
 
     private String getClassName() {

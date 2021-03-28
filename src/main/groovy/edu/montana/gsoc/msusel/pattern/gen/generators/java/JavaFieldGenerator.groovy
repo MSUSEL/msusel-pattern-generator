@@ -31,13 +31,20 @@ import edu.isu.isuese.datamodel.Interface
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.cue.CueRole
 import edu.montana.gsoc.msusel.pattern.gen.generators.FieldGenerator
+import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
 import edu.montana.gsoc.msusel.rbml.model.Role
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log
 class JavaFieldGenerator extends FieldGenerator {
+
+    JavaFieldGenerator() {
+        LoggerInit.init(log)
+    }
 
     @Override
     String generate() {
@@ -79,7 +86,7 @@ class JavaFieldGenerator extends FieldGenerator {
     }
 
     private boolean defaultAccessiblity(Field field) {
-        field.getAccessibility().toString().toLowerCase() == "default"
+        field.getAccessibility().toString().toLowerCase() == ""
     }
 
     private boolean parentIsNotNullOrInterface(Field field) {

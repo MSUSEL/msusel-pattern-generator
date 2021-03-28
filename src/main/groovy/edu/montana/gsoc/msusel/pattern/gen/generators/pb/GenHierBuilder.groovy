@@ -57,6 +57,8 @@ class GenHierBuilder extends AbstractBuilder {
         if (ghmap == null)
             throw new IllegalArgumentException("createGenHierarchy: ghmap cannot be empty or null")
 
+        println("Generating Hierarchy")
+
         GeneralizationHierarchy gh = (GeneralizationHierarchy) params.gh
         Namespace ns = (Namespace) params.ns
 
@@ -79,9 +81,21 @@ class GenHierBuilder extends AbstractBuilder {
     }
 
     protected void updateLists(GeneralizationHierarchy gh) {
-        roots = ghmap[gh.name]['roots']
-        nonterms = ghmap[gh.name]['nonterms']
-        terms = ghmap[gh.name]['terms']
+        if (ghmap) {
+            if (ghmap[gh.name]) {
+                roots = ghmap[gh.name]['roots']
+                nonterms = ghmap[gh.name]['nonterms']
+                terms = ghmap[gh.name]['terms']
+            } else {
+                roots = []
+                nonterms = []
+                terms = []
+            }
+        } else {
+            roots = []
+            nonterms = []
+            terms = []
+        }
     }
 
     protected void populateTree(GeneralizationHierarchy gh, Namespace ns, Tree tree) {
@@ -101,8 +115,8 @@ class GenHierBuilder extends AbstractBuilder {
             Node n = q.poll()
             if (n.getValue()) {
                 createClassifier(ns, getClassifier(gh, n.getValue()), n)
-                if (n.parent) {
-                    generalizes(n.parent.type, n.type)
+                if (n.parent && n.parent.getType()) {
+                    generalizes(n.parent.getType(), n.getType())
                 }
 
                 q.addAll(n.children)

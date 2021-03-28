@@ -29,6 +29,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 import edu.isu.isuese.datamodel.Class
 import edu.isu.isuese.datamodel.Interface
 import edu.isu.isuese.datamodel.Namespace
+import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.Relation
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
@@ -47,11 +48,17 @@ import org.junit.Test
 class GenHierBuilderTest extends DBSpec {
 
     GeneratorContext ctx
+    Project project
 
     @Before
     void setup() {
         ctx = GeneratorContext.instance
         ctx.resetPatternBuilderComponents()
+        project = Project.builder()
+                .name("Test")
+                .projKey("Test")
+                .version("1.0")
+                .create()
     }
 
     @After
@@ -137,6 +144,7 @@ class GenHierBuilderTest extends DBSpec {
     void "test createClassifier"() {
         // given:
         Namespace ns = Namespace.builder().name("Test").nsKey("Test").create()
+        project.addNamespace(ns)
         Classifier role = ClassRole.builder().name("Test").create()
         Node n = new Node(value: "Test")
 
@@ -249,6 +257,7 @@ class GenHierBuilderTest extends DBSpec {
         ]
         gh.setChildren(roles)
         Namespace ns = Namespace.builder().name("Test").nsKey("Test").create()
+        project.addNamespace(ns)
         Tree tree = new Tree()
         Node root = new Node(value: "AbsTest")
         Node child1 = root.addChild("ConTest")

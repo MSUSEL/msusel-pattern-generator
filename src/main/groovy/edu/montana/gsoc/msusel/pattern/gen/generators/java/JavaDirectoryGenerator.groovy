@@ -29,12 +29,19 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 import edu.isu.isuese.datamodel.Module
 import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.generators.DirectoryGenerator
+import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log
 class JavaDirectoryGenerator extends DirectoryGenerator {
+
+    JavaDirectoryGenerator() {
+        LoggerInit.init(log)
+    }
 
     /**
      * Constructs the following directory structure for java projects
@@ -54,8 +61,9 @@ class JavaDirectoryGenerator extends DirectoryGenerator {
      */
     @Override
     def generate() {
+        log.info("generating the source directory")
         FileTreeBuilder builder = (FileTreeBuilder) params.tree
-        Module mod = (Module)params.module
+        Module mod = (Module) params.module
         Project proj = (Project) params.project
         boolean subproject = (boolean) params.subproject
 
@@ -63,8 +71,8 @@ class JavaDirectoryGenerator extends DirectoryGenerator {
             src {
                 main {
                     java {
-                        if (mod) {
-                            mod.getNamespaces().each {
+                        if (proj) {
+                            proj.getNamespaces().each {
                                 ctx.nsGen.init(ns: it, builder: builder)
                                 ctx.nsGen?.generate()
                             }
@@ -77,6 +85,10 @@ class JavaDirectoryGenerator extends DirectoryGenerator {
                     resources {}
                 }
             }
+            proj.getFiles().each {
+                ctx.fileGen.init(file: it, builder: builder)
+                ctx.fileGen?.generate()
+            }
             ctx.licGen?.init(tree: builder)
             ctx.readmeGen?.init(tree: builder, number: params.num, pattern: params.pattern)
             ctx.ignoreGen?.init(tree: builder)
@@ -87,11 +99,12 @@ class JavaDirectoryGenerator extends DirectoryGenerator {
             if (subproject) {
                 ctx.buildGen?.init(tree: builder)
                 ctx.buildGen?.generateSubproject(builder)
-            }
-            else {
+            } else {
                 ctx.buildGen?.init(tree: builder, project: proj)
                 ctx.buildGen?.generate()
             }
         }
+
+        log.info("Done generating the source directory")
     }
 }

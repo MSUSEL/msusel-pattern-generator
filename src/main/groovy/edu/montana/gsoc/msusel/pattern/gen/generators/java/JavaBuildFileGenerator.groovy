@@ -28,12 +28,19 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import edu.montana.gsoc.msusel.pattern.gen.generators.BuildFileGenerator
+import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log
 abstract class JavaBuildFileGenerator extends BuildFileGenerator {
+
+    JavaBuildFileGenerator() {
+        LoggerInit.init(log)
+    }
 
     static JavaBuildFileGenerator getInstance(String type = "gradle", GeneratorContext ctx) {
         switch (type.toLowerCase()) {

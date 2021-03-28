@@ -47,6 +47,13 @@ class JavaProjectGeneratorTest extends DBSpec {
         ctx.resetPatternBuilderComponents()
         ctx.plugin = new JavaLanguageProvider()
         ctx.resetComponentGenerators()
+        ctx.license = [
+                "name": "MIT",
+                "year": "2020",
+                "holder": "Developer",
+                "project": "TestProj",
+                "url": "https://testproj.com"
+        ]
         testDir.mkdirs()
         builder = new FileTreeBuilder(testDir)
 

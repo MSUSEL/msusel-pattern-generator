@@ -29,6 +29,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 import edu.isu.isuese.datamodel.File
 import edu.isu.isuese.datamodel.FileType
 import edu.isu.isuese.datamodel.Namespace
+import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import org.javalite.activejdbc.test.DBSpec
 import org.junit.After
@@ -44,13 +45,19 @@ class FileBuilderTest extends DBSpec {
     void setUp() throws Exception {
         ctx = GeneratorContext.getInstance()
         ctx.resetPatternBuilderComponents()
-        ctx.srcExt = "java"
-        ctx.srcPath = "src/main/java/"
+        ctx.srcExt = ".java"
+        ctx.srcPath = "src/main/java"
 
+        Project project = Project.builder()
+                .name("Test")
+                .projKey("Test")
+                .version("1.0")
+                .create()
         data = Namespace.builder()
                 .name("ns")
                 .nsKey("ns")
                 .create()
+        project.addNamespace(data)
     }
 
     @After
@@ -72,7 +79,7 @@ class FileBuilderTest extends DBSpec {
         the(files.size()).shouldEqual(1)
         the(data.files.size()).shouldEqual(1)
         the(files[0].name).shouldEqual("src/main/java/ns/Type.java")
-        the(files[0].fileKey).shouldEqual("src/main/java/ns/Type.java")
+        the(files[0].fileKey).shouldEqual("Test:src/main/java/ns/Type.java")
         the(files[0].type).shouldEqual(FileType.SOURCE)
     }
 

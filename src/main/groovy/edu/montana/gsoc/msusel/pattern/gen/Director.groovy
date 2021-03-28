@@ -59,6 +59,10 @@ class Director {
             manager.createDatabase(creds)
         }
 
+        println(creds.getUrl())
+
+        List<System> systems = []
+
         if (!context.resetOnly) {
             // Open DB Connection
             manager.open(creds)
@@ -67,19 +71,15 @@ class Director {
                 context.patterns.each {
                     context.resetPatternBuilderComponents()
                     context.sysBuilder.init(pattern: it, num: context.numInstances)
-                    context.sysBuilder.create()
+                    systems += context.sysBuilder.create()
                 }
             }
 
             if (!context.dataOnly) {
-                context.projectKeys.each {
-                    Project proj = Project.findFirst("projKey = ?", it)
-                    if (proj) {
-                        System sys = proj.getParentSystem()
-                        context.loader.loadPatternCues(sys.name)
-                        context.sysGen.init()
-                        context.sysGen.generate()
-                    }
+                systems.each {
+                    context.loader.loadPatternCues(it.name)
+                    context.sysGen.init(sys: it, builder: new FileTreeBuilder(new File(context.getOutput())), num: context.getNumInstances(), pattern: it.getName())
+                    context.sysGen.generate()
                 }
             }
 

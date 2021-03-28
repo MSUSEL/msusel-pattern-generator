@@ -27,12 +27,19 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.Project
+import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log
 class JavaGradleBuildFileGenerator extends JavaBuildFileGenerator {
+
+    JavaGradleBuildFileGenerator() {
+        LoggerInit.init(log)
+    }
 
     @Override
     void generateSubprojectBuild(FileTreeBuilder tree) {
@@ -116,12 +123,15 @@ class JavaGradleBuildFileGenerator extends JavaBuildFileGenerator {
 
     @Override
     void generateBuild(FileTreeBuilder tree) {
+        log.info("generating build")
         if (!tree)
             throw new IllegalArgumentException("File Tree Builder cannot be null")
 
         tree.'build.gradle'('''\
         // Apply the java plugin to add support for Java
-        apply plugin: 'java'
+        plugins {
+            id 'java'
+        }
         
         // In this section you declare where to find the dependencies of your project
         repositories {

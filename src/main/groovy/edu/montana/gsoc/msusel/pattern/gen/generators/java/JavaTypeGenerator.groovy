@@ -31,24 +31,37 @@ import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.cue.CueRole
 import edu.montana.gsoc.msusel.pattern.gen.generators.TypeGenerator
 import edu.montana.gsoc.msusel.pattern.gen.event.EventType
+import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log
 class JavaTypeGenerator extends TypeGenerator {
 
     CueRole cueRole
 
+    JavaTypeGenerator() {
+        LoggerInit.init(log)
+    }
+
     @Override
     String generate() {
-
         File parent = (File) params.parent
         Type type = (Type) params.type
 
+        log.info("""\
+        Generating type:
+            Name: ${type.name}
+            Number of Fields: ${type.getFields().size()}
+            Number of Methods: ${type.getAllMethods().size()}
+        """)
+
         edu.montana.gsoc.msusel.rbml.model.Role role = findRole(type)
-        if (role)
-            cueRole = (CueRole) ctx.cue.roles[role.name]
+//        if (role)
+//            cueRole = (CueRole) ctx.cue.roles[role.name]
 
         // fire TypeCreationStarted event
 //        events.fireTypeCreationStarted(type.compKey, null, this, parent.fileKey)
@@ -75,6 +88,7 @@ class JavaTypeGenerator extends TypeGenerator {
         // fire TypeCreationCompleted event
 //        events.fireTypeCreationComplete(type.compKey, null, this, parent.fileKey)
 
+        log.info("Done generating type")
         output
     }
 
@@ -110,7 +124,7 @@ class JavaTypeGenerator extends TypeGenerator {
 
     private String access(Type type) {
         String access = type.accessibility.toString().toLowerCase().replaceAll(/_/, " ") + " "
-        if (access == "default ")
+        if (access == "default " || access == " ")
             access = ""
 
         access
@@ -123,6 +137,8 @@ class JavaTypeGenerator extends TypeGenerator {
             content += type.modifiers.collect { it.name.toLowerCase() }.join(" ")
             content += " "
         }
+        if (content.contains("abstract ") && type instanceof Interface)
+            content = content.replace("abstract ", "")
 
         content
     }

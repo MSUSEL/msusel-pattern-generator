@@ -34,18 +34,26 @@ import edu.isu.isuese.datamodel.Method
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.cue.CueRole
 import edu.montana.gsoc.msusel.pattern.gen.generators.MethodGenerator
+import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
 import edu.montana.gsoc.msusel.rbml.model.Role
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log
 class JavaMethodGenerator extends MethodGenerator {
 
     CueRole cueRole
 
+    JavaMethodGenerator() {
+        LoggerInit.init(log)
+    }
+
     @Override
     String generate() {
+        log.info("Generating Method")
         if (!params.method && !params.field)
             throw new IllegalArgumentException("Method and Field cannot be null")
 
@@ -64,6 +72,7 @@ class JavaMethodGenerator extends MethodGenerator {
         else if (field)
             output += generate(field)
 
+        log.info("Done generating method")
         output
     }
 
@@ -97,9 +106,11 @@ class JavaMethodGenerator extends MethodGenerator {
 
         String line = """\
             ${createAccessor(field)}"""
-        if (!field.modifiers.find { it.name == "FINAL" })
-        line += """
-            ${createMutator(field)}"""
+
+        if (!field.hasModifier("FINAL")) {
+            line += """
+                ${createMutator(field)}"""
+        }
         line
     }
 
@@ -112,7 +123,7 @@ class JavaMethodGenerator extends MethodGenerator {
         String type = method.type.typeName
         String comment = getComment(method)
         String access = method.accessibility.toString().toLowerCase()
-        access = access != "default" ? access + " " : ""
+        access = access != "" ? access + " " : ""
 
         String excepts = ""
         if (method.exceptions) {
@@ -242,7 +253,7 @@ class JavaMethodGenerator extends MethodGenerator {
             /**
              * @param $name the new value for $name
              */
-            public ${field.modifiers.find { it.name == 'STATIC' } ? 'static ' : ''}void set$capName($type $name) {
+            public ${field.hasModifier("STATIC") ? 'static ' : ''}void set$capName($type $name) {
                 this.$name = $name;
             }"""
     }
@@ -256,7 +267,7 @@ class JavaMethodGenerator extends MethodGenerator {
             /**
              * @return the value of $name
              */
-            public ${field.modifiers.find { it.name == 'STATIC' } ? 'static ' : ''}$type get$capName() {
+            public ${field.hasModifier("STATIC") ? 'static ' : ''}$type get$capName() {
                 return $name;
             }"""
         } else {
@@ -264,7 +275,7 @@ class JavaMethodGenerator extends MethodGenerator {
             /**
              * @return the value of $name
              */
-            public ${field.modifiers.find { it.name == 'STATIC' } ? 'static ' : ''}$type is$capName() {
+            public ${field.hasModifier("STATIC") ? 'static ' : ''}$type is$capName() {
                 return $name;
             }"""
         }

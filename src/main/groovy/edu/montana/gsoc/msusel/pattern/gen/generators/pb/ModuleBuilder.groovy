@@ -49,9 +49,9 @@ class ModuleBuilder extends AbstractBuilder {
                 .moduleKey(key)
                 .create()
 
-        ((Project) params.parent).add(mod)
+        ((Project) params.parent).addModule(mod)
 
-        ctx.nsBuilder.init(parent: mod, name: "edu.isu.xrese.patterngen.${params.pattern}", pattern: params.pattern)
+        ctx.nsBuilder.init(parent: mod, name: "patterngen.${params.pattern}", pattern: params.pattern)
         ctx.nsBuilder?.create()
         mod
     }

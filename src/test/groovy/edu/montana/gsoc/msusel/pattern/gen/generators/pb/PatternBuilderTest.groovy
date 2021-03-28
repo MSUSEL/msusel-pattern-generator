@@ -69,6 +69,7 @@ class PatternBuilderTest extends DBSpec {
                 .nsKey("test")
                 .create()
         project.addModule(mod)
+        project.addNamespace(parent)
         mod.addNamespace(parent)
         String pattern = "strategy"
 

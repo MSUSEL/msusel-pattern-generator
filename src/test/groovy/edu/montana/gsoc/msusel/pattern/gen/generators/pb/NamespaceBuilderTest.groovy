@@ -28,6 +28,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import edu.isu.isuese.datamodel.Module
 import edu.isu.isuese.datamodel.Namespace
+import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import org.javalite.activejdbc.test.DBSpec
 import org.junit.After
@@ -44,10 +45,16 @@ class NamespaceBuilderTest extends DBSpec {
         ctx = GeneratorContext.instance
         ctx.resetPatternBuilderComponents()
 
+        Project project = Project.builder()
+                .name("Test")
+                .projKey("Test")
+                .version("1.0")
+                .create()
         data = Module.builder()
                 .name("Test")
                 .moduleKey("Test")
                 .create()
+        project.addModule(data)
     }
 
     @After
@@ -92,7 +99,7 @@ class NamespaceBuilderTest extends DBSpec {
         the(ns[0].name).shouldEqual("ns")
         the(ns[0].namespaces.size()).shouldEqual(1)
         the(ns[1].nsKey).shouldEqual("Test:ns.ns1")
-        the(ns[1].name).shouldEqual("ns1")
+        the(ns[1].name).shouldEqual("ns.ns1")
     }
 
     @Test
@@ -108,16 +115,16 @@ class NamespaceBuilderTest extends DBSpec {
         List<Namespace> ns = Namespace.findAll()
 
         // then:
-        the(data.namespaces.size()).shouldEqual(1)
+        the(data.namespaces.size()).shouldEqual(2) // 1
         the(ns.size()).shouldEqual(3)
         the(ns[0].nsKey).shouldEqual("Test:ns")
         the(ns[0].name).shouldEqual("ns")
-        the(ns[0].namespaces.size()).shouldEqual(1)
+        the(ns[0].namespaces.size()).shouldEqual(0) // 1
         the(ns[1].nsKey).shouldEqual("Test:ns.ns1")
-        the(ns[1].name).shouldEqual("ns1")
+        the(ns[1].name).shouldEqual("ns.ns1")
         the(ns[1].namespaces.size()).shouldEqual(1)
         the(ns[2].nsKey).shouldEqual("Test:ns.ns1.ns2")
-        the(ns[2].name).shouldEqual("ns2")
+        the(ns[2].name).shouldEqual("ns.ns1.ns2")
     }
 
     @Test(expected = IllegalArgumentException.class)

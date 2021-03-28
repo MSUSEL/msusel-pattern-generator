@@ -32,6 +32,7 @@ import edu.montana.gsoc.msusel.pattern.gen.generators.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.RampedHalfHalf
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.TreeGenerator
+import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
@@ -46,14 +47,14 @@ class GeneratorContext {
     LanguageProvider plugin
     PatternManager loader
     List<String> patterns
-    int numInstances
-    int maxBreadth
-    int maxDepth
+    int numInstances = 1
+    int maxBreadth = 1
+    int maxDepth = 1
     String version
     Map<String, String> license
     Map<String, String> db
     Map<String, String> build
-    List<Integer> arities
+    List<Integer> arities = [1]
     String srcPath
     String srcExt
     Cue cue

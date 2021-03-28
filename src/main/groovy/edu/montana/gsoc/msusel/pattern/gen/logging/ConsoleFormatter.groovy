@@ -24,40 +24,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package edu.montana.gsoc.msusel.pattern.gen.generators.pb
+package edu.montana.gsoc.msusel.pattern.gen.logging
 
-import edu.isu.isuese.datamodel.File
-import edu.isu.isuese.datamodel.FileType
-import edu.isu.isuese.datamodel.Namespace
-import edu.isu.isuese.datamodel.Project
+import java.util.logging.Formatter
+import java.util.logging.LogRecord
 
-/**
- * @author Isaac Griffith
- * @version 1.3.0
- */
-class FileBuilder extends AbstractBuilder {
+class ConsoleFormatter extends Formatter {
 
-    def create() {
-        if (!params.parent)
-            throw new IllegalArgumentException("createFile: parent cannot be null")
-        if (!params.typeName)
-            throw new IllegalArgumentException("createFile: typeName cannot be empty or null")
-
-        String srcPath = ctx.srcPath
-        String srcExt = ctx.srcExt
-        String path = "${srcPath}${java.io.File.separator}${((Namespace) params.parent).getFullName().replaceAll(/\./, java.io.File.separator)}${java.io.File.separator}${params.typeName}${srcExt}"
-
-        println("Creating file: ${path}")
-
-        File file = File.builder()
-                .name(path)
-                .fileKey(((Namespace) params.parent).getParentProject().projectKey + ":" + path)
-                .type(FileType.SOURCE)
-                .create()
-        file.save()
-
-        ((Namespace) params.parent)?.getParentProject()?.addFile(file)
-        ((Namespace) params.parent)?.addFile(file)
-        file
+    @Override
+    String format(LogRecord logRecord) {
+        return "[${logRecord.level}]  ${logRecord.message}"
     }
 }
