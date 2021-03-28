@@ -149,6 +149,11 @@ class PatternBuilder extends AbstractBuilder {
     private void updateRoles(Pattern pat, SPS rbml) {
         rbml.classifiers.each {
             if (it instanceof Classifier) {
+                rbml.genHierarchies.each { gh ->
+                    if (gh instanceof GeneralizationHierarchy) {
+                        gh.children.contains(it)
+                    }
+                }
                 buildClassifierRole((Classifier) it, pat)
             }
         }
