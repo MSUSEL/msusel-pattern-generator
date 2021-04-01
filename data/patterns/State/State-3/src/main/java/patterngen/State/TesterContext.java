@@ -26,6 +26,9 @@
  */
 
 package patterngen.State;
+
+import patterngen.State.TableState;
+import patterngen.State.TableState;
 import java.util.*;
 
 /**
@@ -34,17 +37,60 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class MetadataConcreteState extends InfoAbstractState {
+public class TesterContext {
+
+    private TableState st;
+    private TableState context;
 
     /**
-     * 
+     * @return the value of st
      */
-    public void character() {
+    public TableState getSt() {
+        return st;
+    }
+
+    /**
+     * @param st the new value for st
+     */
+    public void setSt(TableState st) {
+        this.st = st;
+    }
+
+    /**
+     * @return the value of context
+     */
+    public TableState getContext() {
+        return context;
+    }
+
+    /**
+     * @param context the new value for context
+     */
+    public void setContext(TableState context) {
+        this.context = context;
     }
 
     /**
      * 
      */
-    public void marshaller() {
+    public void download() {
+    }
+
+    /**
+     * 
+     */
+    public void engine() {
+    }
+
+    /**
+     * 
+     */
+    public void of() {
+    }
+
+    /**
+     * 
+     */
+    public void definition() {
     }
 }

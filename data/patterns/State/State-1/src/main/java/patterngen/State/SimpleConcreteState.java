@@ -34,17 +34,17 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class MetadataConcreteState extends InfoAbstractState {
+public class SimpleConcreteState extends DispatcherState {
 
     /**
      * 
      */
-    public void character() {
+    public void container() {
     }
 
     /**
      * 
      */
-    public void marshaller() {
+    public void to() {
     }
 }

@@ -34,17 +34,20 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class MetadataConcreteState extends InfoAbstractState {
+public abstract class TableState {
 
     /**
      * 
      */
-    public void character() {
-    }
+    public abstract void of();
 
     /**
      * 
      */
-    public void marshaller() {
-    }
+    public abstract void check();
+
+    /**
+     * 
+     */
+    public abstract void remove();
 }

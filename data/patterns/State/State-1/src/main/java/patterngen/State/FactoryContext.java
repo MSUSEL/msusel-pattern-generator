@@ -26,6 +26,9 @@
  */
 
 package patterngen.State;
+
+import patterngen.State.ModalState;
+import patterngen.State.ModalState;
 import java.util.*;
 
 /**
@@ -34,17 +37,48 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class MetadataConcreteState extends InfoAbstractState {
+public class FactoryContext {
+
+    private ModalState st;
+    private ModalState table;
 
     /**
-     * 
+     * @return the value of st
      */
-    public void character() {
+    public ModalState getSt() {
+        return st;
+    }
+
+    /**
+     * @param st the new value for st
+     */
+    public void setSt(ModalState st) {
+        this.st = st;
+    }
+
+    /**
+     * @return the value of table
+     */
+    public ModalState getTable() {
+        return table;
+    }
+
+    /**
+     * @param table the new value for table
+     */
+    public void setTable(ModalState table) {
+        this.table = table;
     }
 
     /**
      * 
      */
-    public void marshaller() {
+    public void thread() {
+    }
+
+    /**
+     * 
+     */
+    public void visitor() {
     }
 }

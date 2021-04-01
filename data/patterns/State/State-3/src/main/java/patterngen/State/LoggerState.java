@@ -34,17 +34,23 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class MetadataConcreteState extends InfoAbstractState {
+public abstract class LoggerState {
 
     /**
      * 
      */
-    public void character() {
-    }
+    @Override
+    public abstract void of();
 
     /**
      * 
      */
-    public void marshaller() {
-    }
+    @Override
+    public abstract void check();
+
+    /**
+     * 
+     */
+    @Override
+    public abstract void remove();
 }

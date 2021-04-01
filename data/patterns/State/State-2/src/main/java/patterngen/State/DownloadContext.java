@@ -26,6 +26,9 @@
  */
 
 package patterngen.State;
+
+import patterngen.State.SharedState;
+import patterngen.State.SharedState;
 import java.util.*;
 
 /**
@@ -34,17 +37,42 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class MetadataConcreteState extends InfoAbstractState {
+public class DownloadContext {
+
+    private SharedState st;
+    private SharedState decoder;
 
     /**
-     * 
+     * @return the value of st
      */
-    public void character() {
+    public SharedState getSt() {
+        return st;
+    }
+
+    /**
+     * @param st the new value for st
+     */
+    public void setSt(SharedState st) {
+        this.st = st;
+    }
+
+    /**
+     * @return the value of decoder
+     */
+    public SharedState getDecoder() {
+        return decoder;
+    }
+
+    /**
+     * @param decoder the new value for decoder
+     */
+    public void setDecoder(SharedState decoder) {
+        this.decoder = decoder;
     }
 
     /**
      * 
      */
-    public void marshaller() {
+    public void channel() {
     }
 }

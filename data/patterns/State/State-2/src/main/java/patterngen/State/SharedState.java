@@ -34,17 +34,15 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class MetadataConcreteState extends InfoAbstractState {
+public interface SharedState {
 
     /**
      * 
      */
-    public void character() {
-    }
+    void character();
 
     /**
      * 
      */
-    public void marshaller() {
-    }
+    void marshaller();
 }

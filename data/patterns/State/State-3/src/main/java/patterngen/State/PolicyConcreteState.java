@@ -34,17 +34,23 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class MetadataConcreteState extends InfoAbstractState {
+public class PolicyConcreteState extends VisitorAbstractState {
 
     /**
      * 
      */
-    public void character() {
+    public void of() {
     }
 
     /**
      * 
      */
-    public void marshaller() {
+    public void check() {
+    }
+
+    /**
+     * 
+     */
+    public void remove() {
     }
 }

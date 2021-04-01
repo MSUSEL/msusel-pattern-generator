@@ -107,7 +107,7 @@ class JavaMethodGenerator extends MethodGenerator {
 
     private String createMethod(Method method) {
         String name = method.name
-        String body = method.isAbstract() ? ";" : getMethodBody()
+        String body = getMethodBody(method)
         String paramList = getParamList(method)
         String modifiers = getModifiers(method)
         modifiers = modifiers ? modifiers + " " : ""
@@ -207,7 +207,7 @@ class JavaMethodGenerator extends MethodGenerator {
     private String createConstructor(Method method) {
         String name = method.name
 
-        String body = getMethodBody()
+        String body = getMethodBody(method)
         String paramList = ""
         String comment = """/**
              * Construct a new $name instance
@@ -219,9 +219,13 @@ class JavaMethodGenerator extends MethodGenerator {
             $access $name($paramList) $body"""
     }
 
-    private String getMethodBody() {
-        """{
+    private String getMethodBody(method) {
+        if (method.isAbstract())
+            ";"
+        else {
+            """{
             }"""
+        }
     }
 
     private String createDestructor() {

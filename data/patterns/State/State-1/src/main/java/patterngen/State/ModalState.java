@@ -34,17 +34,15 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class MetadataConcreteState extends InfoAbstractState {
+public interface ModalState {
 
     /**
      * 
      */
-    public void character() {
-    }
+    void container();
 
     /**
      * 
      */
-    public void marshaller() {
-    }
+    void to();
 }
