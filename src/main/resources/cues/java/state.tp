@@ -1,0 +1,111 @@
+start_pattern: adjacencyList
+start_type: Context
+[[ClassComment]]
+[[typedef]] {
+
+    start_field: currentState 
+    private [[AbstractState.root]] currentState;
+    end_field: currentState
+[[fields]]
+
+    public [[InstName]]() {
+    	currentState = [[ConcreteState.random]].instance(this)
+    }
+
+    public void changeCurrentState([[AbstractState.root]] state) {
+        currentState = state;
+        currentState.run()
+    }
+
+    start_method: Request
+    public void [[name]]() {
+        currentState.[[Handle.name]]()
+    }
+    end_method: Request
+[[methods]]
+}
+end_type: Context
+
+start_type: ConcreteState
+[[ClassComment]]
+public class [InstName] {
+
+    private static [[InstName]] instance;
+    private [[Context.name]] context
+[[fields]]
+
+    private [[InstName]]([[Context.name]] ctx) {
+        this.context = ctx;
+    }
+
+    public static [[InstName]] instance([[Context.name]] ctx) {
+        if (instance == null) {
+            instance = new [[InstName]]();
+        }
+        return instance;
+    }
+
+    public run() {}
+
+    start_method: Handle
+    public void [[name]]() {
+	ctx.changeCurrentState([[ConcreteState.random]].instance(context))
+    }
+    end_method: Handle
+
+[[methods]]
+}
+end_type: ConcreteState
+end_pattern: adjacencyList
+
+# cue: adjacencyMatrix
+# [[begin: Context]]
+# [[copyright]]
+# 
+# [[package]]
+# 
+# [[imports]]
+# 
+# [[classComment]]
+# public class [InstName] {
+# 
+#     private int[][] transitions;
+#     [[begin: currentState]]private int currentState = 0;[[end: currentState]]
+#     [[fields]]
+# 
+#     public [[InstName]]() {
+#         transitions = new int[[[ConcreteState.count]]][[[ConcreteState.count]]];
+#     }
+# 
+#     public void changeCurrentState(int next) {
+#         currentState = transitions[currentState][next];
+#         state[currentState].run();
+#     }
+# 
+#     [[methods]]
+# }
+# [[end: Context]]
+# 
+# [[begin: ConcreteState]]
+# [[copyright]]
+# 
+# [[package]]
+# 
+# [[imports]]
+# 
+# [[classComment]]
+# public class [InstName] {
+# 
+#     [[fields]]
+# 
+#     public run() {}
+# 
+#     [[begin: Handle()]]
+#     public void [[name]]() {
+# 
+#     }
+#     [[end: Handle()]]
+# 
+#     [[methods]]
+# }
+# [[end: ConcreteState]]

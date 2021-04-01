@@ -54,7 +54,7 @@ class PatternBuilder extends AbstractBuilder {
     Map<String, Integer> patternCounts = [:]
 
     def create() {
-        log.info("Generating pattern")
+        ctx.logger.atInfo().log("Generating pattern")
         if (!params.pattern)
             throw new IllegalArgumentException("create: pattern cannot be null or empty")
         if (!params.parent)
@@ -67,9 +67,8 @@ class PatternBuilder extends AbstractBuilder {
         if (!projects.isEmpty())
             parentProj = projects.first()
 
-        log.info("Loading pattern: ${pattern}")
+        ctx.logger.atInfo().log("Loading pattern: ${pattern}")
         SPS rbml = ctx.loader.loadPattern(pattern)
-        println("RBML: $rbml")
         if (rbml) {
             ctx.relationBuilder.init(ns: ns, rbml: rbml)
             ctx.relationBuilder.create()
@@ -80,9 +79,6 @@ class PatternBuilder extends AbstractBuilder {
                 ctx.clsBuilder.createFeatures(it)
         }
 
-        println("RBML: $rbml")
-        println("Pattern: $pattern")
-        println("ParentProj: $parentProj")
         createInstance(rbml, pattern, parentProj)
     }
 
@@ -95,7 +91,6 @@ class PatternBuilder extends AbstractBuilder {
                 .create()
 
         Pattern pat = (Pattern) Pattern.find("name = ?", pattern.capitalize()).first()
-        println(pat)
         if (pat) {
             updateRoles(pat, rbml)
 

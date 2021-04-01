@@ -58,7 +58,7 @@ class GeneratorContext {
     List<Integer> arities = [1]
     String srcPath
     String srcExt
-    FluentLogger logger
+    static final FluentLogger logger = FluentLogger.forEnclosingClass()
     List<String> projectKeys = []
     List<String> patternKeys = []
 

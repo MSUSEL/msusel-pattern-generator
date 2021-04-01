@@ -57,7 +57,7 @@ class GenHierBuilder extends AbstractBuilder {
         if (ghmap == null)
             throw new IllegalArgumentException("createGenHierarchy: ghmap cannot be empty or null")
 
-        println("Generating Hierarchy")
+        ctx.logger.atInfo().log("Generating Hierarchy")
 
         GeneralizationHierarchy gh = (GeneralizationHierarchy) params.gh
         Namespace ns = (Namespace) params.ns

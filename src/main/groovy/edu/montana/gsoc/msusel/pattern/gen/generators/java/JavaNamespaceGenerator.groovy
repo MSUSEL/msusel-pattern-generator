@@ -44,12 +44,12 @@ class JavaNamespaceGenerator extends NamespaceGenerator {
 
     @Override
     def generate() {
-        log.info("Generating namespace")
+        ctx.logger.atInfo().log("Generating namespace")
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
         Namespace ns = (Namespace) params.ns
 
         generateRec(ns, builder)
-        log.info("Done generating namespace")
+        ctx.logger.atInfo().log("Done generating namespace")
     }
 
     private def generateRec(Namespace ns, FileTreeBuilder builder) {

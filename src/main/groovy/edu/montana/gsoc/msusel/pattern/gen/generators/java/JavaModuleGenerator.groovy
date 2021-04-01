@@ -45,7 +45,7 @@ class JavaModuleGenerator extends ModuleGenerator {
 
     @Override
     File generate() {
-        log.info("Generating Module")
+        ctx.logger.atInfo().log("Generating Module")
         Project project = (Project) params.project
         Module module = (Module) params.mod
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
@@ -55,6 +55,6 @@ class JavaModuleGenerator extends ModuleGenerator {
             ctx.dirGen.init(project: project, module: module, tree: builder, subproject: subproject, num: params.num, pattern: params.pattern)
             ctx.dirGen.generate()
         }
-        log.info("Done generating module")
+        ctx.logger.atInfo().log("Done generating module")
     }
 }

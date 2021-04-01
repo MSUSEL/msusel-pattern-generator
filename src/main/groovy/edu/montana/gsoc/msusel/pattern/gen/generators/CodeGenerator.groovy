@@ -27,6 +27,7 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators
 
 import edu.isu.isuese.datamodel.System
+import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 
 /**
  * @author Isaac Griffith
@@ -36,6 +37,8 @@ abstract class CodeGenerator {
 
     TypeGenerator typegen
     System system
+
+    GeneratorContext ctx
 
     abstract void generate(FileTreeBuilder tree)
 }

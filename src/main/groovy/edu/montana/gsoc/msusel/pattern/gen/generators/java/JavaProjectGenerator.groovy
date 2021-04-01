@@ -45,7 +45,7 @@ class JavaProjectGenerator extends ProjectGenerator {
 
     @Override
     def generate() {
-        log.info("Generating Project")
+        ctx.logger.atInfo().log("Generating Project")
         Project proj = (Project) params.proj
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
 
@@ -62,6 +62,6 @@ class JavaProjectGenerator extends ProjectGenerator {
             ctx.modGen.init(project: proj, mod: proj.getModules().first(), builder: builder, subproject: false, num: params.num, pattern: params.pattern)
             ctx.modGen.generate()
         }
-        log.info("Done generating project")
+        ctx.logger.atInfo().log("Done generating project")
     }
 }

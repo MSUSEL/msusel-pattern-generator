@@ -30,6 +30,7 @@ import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.System
 import edu.isu.isuese.datamodel.util.DBCredentials
 import edu.isu.isuese.datamodel.util.DBManager
+import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 
 /**
  * @author Isaac Griffith
@@ -59,8 +60,6 @@ class Director {
             manager.createDatabase(creds)
         }
 
-        println(creds.getUrl())
-
         List<System> systems = []
 
         if (!context.resetOnly) {
@@ -76,7 +75,8 @@ class Director {
 
             if (!context.dataOnly) {
                 systems.each {
-                    //context.loader.loadPatternCues(it.name)
+                    context.loader.loadPatternCues(it.name, "java")
+                    println("Current Cue: ${CueManager.instance.getCurrent()}")
                     context.sysGen.init(sys: it, builder: new FileTreeBuilder(new File(context.getOutput())), num: context.getNumInstances(), pattern: it.getName())
                     context.sysGen.generate()
                 }

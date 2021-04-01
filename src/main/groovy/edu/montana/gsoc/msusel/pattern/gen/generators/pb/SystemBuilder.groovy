@@ -44,14 +44,9 @@ class SystemBuilder extends AbstractBuilder {
         String name = params.pattern
         String key = params.pattern
         int num = (Integer) params.num
-        println("Name = $name")
-        println("Num = $num")
-        println("Key = $key")
-        println(ctx.getOutput())
         System sys = System.builder().key(key).name(name).basePath(ctx.getOutput() + "/" + name).create()
 
         num.times {
-            println("\nNumber: $it\n")
             ctx.projBuilder.init(parent: sys, pattern: params.pattern, name: "${params.pattern}-${it + 1}", version: "1.0.0")
             Project proj = ctx.projBuilder?.create()
             ctx.projectKeys << proj.getProjectKey()

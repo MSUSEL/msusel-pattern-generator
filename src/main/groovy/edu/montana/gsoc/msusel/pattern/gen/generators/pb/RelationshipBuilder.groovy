@@ -52,10 +52,6 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         Namespace ns = (Namespace) params.ns
         SPS sps = (SPS) params.rbml
 
-        println("SPS: ${params.rbml}")
-        println("SPS Relations: ${sps.relations}")
-        println("SPS GHs: ${sps.genHierarchies}")
-
         sps.relations.each { rel ->
             if (rel instanceof Relationship) {
                 processRole(ns, rel.source(), rel.srcPort)
@@ -88,7 +84,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
     List<Type> generateClassifier(Namespace ns, Classifier role, boolean ghRoot = false) {
         if (!role)
             throw new IllegalArgumentException("generateClassifier: role cannot be null")
-        println("Generating Classifier: $role")
+        ctx.logger.atInfo().log("Generating Classifier: $role")
 
         Random rand = new Random()
         int num
@@ -281,7 +277,6 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             }
         } else if (sources.size() > 1 && dests.size() == 1) {
             sources.each {
-                println(dests)
                 createRelationship(it, dests[0], type, srcName, destName, srcUpper, destUpper)
             }
         } else if (sources.size() >= 1 && dests.size() >= 1) {

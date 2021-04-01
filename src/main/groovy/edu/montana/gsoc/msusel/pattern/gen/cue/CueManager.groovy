@@ -36,10 +36,10 @@ class CueManager {
     Map<String, Cue> cues
 
     def loadCues(String pattern, String language) {
-        this.pattern = pattern
+        this.pattern = pattern.toLowerCase().replaceAll(/\s/, "_")
         this.language = language
 
-        cues = CueReader.instance.read("/templates/${language}/${pattern}.tp")
+        cues = CueReader.instance.read("/cues/${language}/${this.pattern}.tp")
     }
 
     def selectCue() {

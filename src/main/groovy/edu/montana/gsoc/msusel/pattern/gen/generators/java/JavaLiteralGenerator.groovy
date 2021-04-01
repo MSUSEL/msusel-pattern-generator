@@ -45,7 +45,7 @@ class JavaLiteralGenerator extends LiteralGenerator {
 
     @Override
     String generate() {
-        log.info("Generating Literal")
+        ctx.logger.atInfo().log("Generating Literal")
         Literal literal = (Literal) params.literal
         Type parent = (Type) params.parent
 
@@ -55,7 +55,7 @@ class JavaLiteralGenerator extends LiteralGenerator {
         if (!literal)
             throw new IllegalArgumentException("literal cannot be null")
 
-        log.info("Done generating literal")
+        ctx.logger.atInfo().log("Done generating literal")
         "    ${literal.name}"
 
         // fire LiteralCreationComplete event

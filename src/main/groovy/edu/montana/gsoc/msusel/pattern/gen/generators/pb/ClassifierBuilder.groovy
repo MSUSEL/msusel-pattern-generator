@@ -84,19 +84,17 @@ class ClassifierBuilder extends AbstractBuilder {
     }
 
     void createFeatures(Classifier classifier) {
-        log.info("Creating features for ${classifier.name}")
+        ctx.logger.atInfo().log("Creating features for ${classifier.name}")
         if (!classifier)
             throw new IllegalArgumentException("createFeatures: classifier cannot be null")
         ctx.rbmlManager.getTypes(classifier).each { Type t ->
-            log.info("Number of structural features: ${classifier.structFeats.size()}")
-            log.info("Number of behavioral features: ${classifier.behFeats.size()}")
+            ctx.logger.atInfo().log("Number of structural features: ${classifier.structFeats.size()}")
+            ctx.logger.atInfo().log("Number of behavioral features: ${classifier.behFeats.size()}")
 
             createFieldNames(classifier)
             createMethodNames(classifier)
 
             classifier.structFeats.each {structFeat ->
-                println("Owner: $t")
-                println(ctx.rbmlManager.fieldNames[structFeat])
                 ctx.rbmlManager.fieldNames[structFeat.name].each {name ->
                     ctx.fldBuilder.init(owner: t, feature: structFeat, fieldName: name)
                     t.addMember((Field) ctx.fldBuilder.create())
@@ -112,7 +110,7 @@ class ClassifierBuilder extends AbstractBuilder {
                 }
             }
         }
-        log.info("Done creating features for ${classifier.name}")
+        ctx.logger.atInfo().log("Done creating features for ${classifier.name}")
     }
 
     private List createFieldNames(Classifier classifier) {
@@ -130,7 +128,7 @@ class ClassifierBuilder extends AbstractBuilder {
 
                 Set<String> set = Sets.newHashSet()
                 Random rand = new Random()
-                println("Max: $max Min: $min")
+
                 int num
                 if (min == max)
                     num = min
@@ -146,7 +144,6 @@ class ClassifierBuilder extends AbstractBuilder {
     private List createMethodNames(Classifier classifier) {
         classifier.behFeats.each {
             if (!ctx.rbmlManager.methodNames[it.name]) {
-                println("Role Name for Method Creation: " + it.name)
                 int min = it.getMult().lower
                 int max = it.getMult().upper
                 if (min < 0) {
@@ -160,7 +157,6 @@ class ClassifierBuilder extends AbstractBuilder {
                 Set<String> set = Sets.newHashSet()
                 Random rand = new Random()
                 int num
-                println("Max: $max Min: $min")
                 if (min == max)
                     num = min
                 else

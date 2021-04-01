@@ -43,7 +43,7 @@ class JavaGitIgnoreGenerator extends GitIgnoreGenerator {
 
     @Override
     def generate() {
-        log.info("Generating GitIgnore File")
+        ctx.logger.atInfo().log("Generating GitIgnore File")
         if (!params.tree)
             throw new IllegalArgumentException("File Tree Builder cannot be null")
 

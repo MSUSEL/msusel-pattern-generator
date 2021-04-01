@@ -35,12 +35,7 @@ import groovy.util.logging.Log
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
 class JavaSystemGenerator extends SystemGenerator {
-
-    JavaSystemGenerator() {
-        LoggerInit.init(log)
-    }
 
     @Override
     def generate() {
@@ -49,10 +44,10 @@ class JavaSystemGenerator extends SystemGenerator {
         if (!params.builder)
             throw new IllegalArgumentException("FileTreeBuilder cannot be null")
 
-        log.info("Generating system")
+        ctx.logger.atInfo().log("Generating system")
         System sys = (System) params.sys
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
-        String pattern = params.pattern
+//        String pattern = params.pattern
 
         builder {
             "${sys.name}" {
@@ -66,6 +61,10 @@ class JavaSystemGenerator extends SystemGenerator {
                 }
             }
         }
-        log.info("Done generating system")
+        ctx.logger.atInfo().log("Done generating system")
+    }
+
+    JavaSystemGenerator() {
+//        LoggerInit.init(log)
     }
 }

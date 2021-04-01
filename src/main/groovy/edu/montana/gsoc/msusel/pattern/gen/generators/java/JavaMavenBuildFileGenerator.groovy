@@ -61,7 +61,7 @@ class JavaMavenBuildFileGenerator extends JavaBuildFileGenerator {
 
     @Override
     void generateBuild(FileTreeBuilder tree) {
-        log.info("Generating maven build")
+        ctx.logger.atInfo().log("Generating maven build")
         if (!tree)
             throw new IllegalArgumentException("File Tree Builder cannot be null")
 

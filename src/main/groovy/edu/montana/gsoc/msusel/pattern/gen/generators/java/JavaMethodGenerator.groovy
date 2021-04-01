@@ -50,17 +50,17 @@ class JavaMethodGenerator extends MethodGenerator {
 
     @Override
     String generate() {
-        log.info("Generating Method")
+        ctx.logger.atInfo().log("Generating Method")
         if (!params.method && !params.field)
             throw new IllegalArgumentException("Method and Field cannot be null")
 
         Method method = (Method) params.method
         Field field = (Field) params.field
 
-//        String roleName = findRole(method)?.name
-//        Cue cue = CueManager.getInstance().getCurrent()
-//        if (roleName && cue.hasCueForRole(roleName, method))
-//            return ""
+        String roleName = findRole(method)?.name
+        Cue cue = CueManager.getInstance().getCurrent()
+        if (roleName && cue.hasCueForRole(roleName, method))
+            return ""
 
         String output = ""
 
@@ -69,7 +69,7 @@ class JavaMethodGenerator extends MethodGenerator {
         else if (field)
             output += generate(field)
 
-        log.info("Done generating method")
+        ctx.logger.atInfo().log("Done generating method")
         output
     }
 
@@ -166,10 +166,10 @@ class JavaMethodGenerator extends MethodGenerator {
         String comment = """/**
              * $params${ret ?: ""}$excepts
              */"""
-        if (method.isOverriding()) {
-            comment += """
-            @Override"""
-        }
+//        if (method.isOverriding()) {
+//            comment += """
+//            @Override"""
+//        }
         comment
     }
 

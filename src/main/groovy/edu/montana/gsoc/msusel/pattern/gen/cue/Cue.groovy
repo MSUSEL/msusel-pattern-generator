@@ -31,6 +31,7 @@ import edu.isu.isuese.datamodel.Component
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.RBML2DataModelManager
 import edu.montana.gsoc.msusel.rbml.model.Role
+import groovy.transform.ToString
 import groovy.transform.TupleConstructor
 
 @TupleConstructor(includeFields = true, includeProperties = true)
@@ -124,4 +125,9 @@ abstract class Cue {
     abstract def getCueForRole(String roleName, Classifier c)
 
     abstract def hasCueForRole(String roleName, Component t)
+
+    @Override
+    String toString() {
+        return name
+    }
 }

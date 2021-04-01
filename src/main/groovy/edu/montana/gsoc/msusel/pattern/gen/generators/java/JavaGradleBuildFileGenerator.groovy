@@ -123,7 +123,7 @@ class JavaGradleBuildFileGenerator extends JavaBuildFileGenerator {
 
     @Override
     void generateBuild(FileTreeBuilder tree) {
-        log.info("generating build")
+        ctx.logger.atInfo().log("generating build")
         if (!tree)
             throw new IllegalArgumentException("File Tree Builder cannot be null")
 

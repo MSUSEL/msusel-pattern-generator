@@ -54,6 +54,8 @@ class PatternCue extends CueContainer {
         children.each { key, value ->
             if (key == roleName)
                 return true
+            else if (value.hasCueForRole(roleName, t))
+                return true
         }
         return false
     }

@@ -64,7 +64,7 @@ class JavaLanguageProvider extends LanguageProvider {
 
     @Override
     CodeGenerator createCodeGenerator(GeneratorContext ctx) {
-        return new JavaCodeGenerator()
+        return new JavaCodeGenerator(ctx: ctx)
     }
 
     @Override

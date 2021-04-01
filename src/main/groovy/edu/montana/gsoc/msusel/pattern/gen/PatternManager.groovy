@@ -42,6 +42,7 @@ class PatternManager {
 
     void loadPatternCues(String pattern, language) {
         CueManager.instance.loadCues(pattern, language)
+        selectCue()
     }
 
     void selectCue() {

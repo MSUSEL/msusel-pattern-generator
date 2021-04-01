@@ -61,7 +61,7 @@ class JavaDirectoryGenerator extends DirectoryGenerator {
      */
     @Override
     def generate() {
-        log.info("generating the source directory")
+        ctx.logger.atInfo().log("generating the source directory")
         FileTreeBuilder builder = (FileTreeBuilder) params.tree
         Module mod = (Module) params.module
         Project proj = (Project) params.project
@@ -105,6 +105,6 @@ class JavaDirectoryGenerator extends DirectoryGenerator {
             }
         }
 
-        log.info("Done generating the source directory")
+        ctx.logger.atInfo().log("Done generating the source directory")
     }
 }

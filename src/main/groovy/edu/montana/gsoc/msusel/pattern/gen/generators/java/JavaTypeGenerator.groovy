@@ -32,31 +32,27 @@ import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueParams
 import edu.montana.gsoc.msusel.pattern.gen.generators.TypeGenerator
-import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
-import groovy.util.logging.Log
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
 class JavaTypeGenerator extends TypeGenerator {
-
-    JavaTypeGenerator() {
-        LoggerInit.init(log)
-    }
 
     @Override
     String generate() {
         Type type = (Type) params.type
 
-//        String roleName = findRole(type)?.name
-//        Cue cue = CueManager.getInstance().getCurrent()
+        String roleName = findRole(type)?.name
+        Cue cue = CueManager.getInstance().getCurrent()
 
         String output = ""
-//        if (roleName && cue.hasCueForRole(roleName, type)) {
-//            output = fromCue(cue, type)
-//        } else {
+
+        println("Role Name: $roleName")
+        println(cue.hasCueForRole(roleName, type))
+        if (roleName && cue.hasCueForRole(roleName, type)) {
+            output = fromCue(cue, type)
+        } else {
             switch (type) {
                 case Class:
                     output = createTemplate("class", type)
@@ -68,9 +64,9 @@ class JavaTypeGenerator extends TypeGenerator {
                     output = createTemplate("interface", type)
                     break
             }
-//        }
+        }
 
-        log.info("Done generating type")
+        ctx.logger.atInfo().log("Done generating type")
         output
     }
 
@@ -85,7 +81,7 @@ class JavaTypeGenerator extends TypeGenerator {
         params.setParam("InstName", type.name)
         params.setParam("ClassComment", typeComment())
 
-        cue.compile(params, ctx.rbmlManager)
+        cue.compile(type, params, ctx.rbmlManager)
     }
 
     private String createTemplate(String kind, Type type) {
@@ -213,7 +209,7 @@ class JavaTypeGenerator extends TypeGenerator {
                 content += ctx.methodGen.generate()
             }
         }
-        println("Number of Methods to generate: ${type.methods.size()}")
+
         type.methods.each { Method m ->
             ctx.methodGen.init(method: m, parent: type)
             content += "\n    "

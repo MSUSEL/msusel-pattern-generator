@@ -45,7 +45,6 @@ class NamespaceBuilder extends AbstractBuilder {
         if (!params.pattern)
             throw new IllegalArgumentException("createNamespace: pattern cannot be null or empty")
 
-        println("NSBuilder: ${params.name}")
         if (((String) params.name).contains(".")) {
             int ndx = ((String) params.name).indexOf(".")
             String nsName = ((String) params.name).substring(0, ndx)
@@ -79,14 +78,12 @@ class NamespaceBuilder extends AbstractBuilder {
     }
 
     def createNamespaceRec(Module owner, Namespace parent, String name, String pattern) {
-        println("Namespace Rec: $name")
         if (!name.contains(".")) {
             Namespace holder = createChildNamespace(parent, name)
             owner.getParentProject().addNamespace(holder)
             parent.addNamespace(holder)
 
             ctx.patternBuilder.init(parent: holder, pattern: pattern)
-            println("Pattern Builder = ${ctx.patternBuilder}")
             PatternInstance inst = ctx.patternBuilder?.create()
             ctx.patternKeys << inst.getInstKey()
 

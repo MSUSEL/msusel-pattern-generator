@@ -73,21 +73,21 @@ class RBML2DataModelManager {
         if (!type)
             throw new IllegalArgumentException("type must not be null")
 
-        roleMapping[type] ?: null
+        roleMapping[type]
     }
 
     Role getRole(Method method) {
         if (!method)
             throw new IllegalArgumentException("getRole: method must not be null")
 
-        roleMethodMapping[method] ?: null
+        roleMethodMapping[method]
     }
 
     Role getRole(Field field) {
         if (!field)
             throw new IllegalArgumentException("getRole: field must not be null")
 
-        roleFieldMapping[field] ?: null
+        roleFieldMapping[field]
     }
 
     def addMapping(Role role, Type type) {
@@ -105,6 +105,7 @@ class RBML2DataModelManager {
             typeMapping[r].remove(type)
         }
         roleMapping[type] = role
+        println("Added Type Mapped to Role $role")
     }
 
     def addMapping(Role role, Method method) {
@@ -112,6 +113,7 @@ class RBML2DataModelManager {
             return
 
         roleMethodMapping[method] = role
+        println("Added Method Mapped to role $role")
     }
 
     def addMapping(Role role, Field field) {
@@ -119,6 +121,7 @@ class RBML2DataModelManager {
             return
 
         roleFieldMapping[field] = role
+        println("Added Field Mapped to Role $role")
     }
 
     def removeMapping(Role role, Type type) {

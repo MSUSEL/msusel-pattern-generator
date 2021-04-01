@@ -52,10 +52,10 @@ class JavaFieldGenerator extends FieldGenerator {
 
         Field field = (Field) params.field
 
-//        String roleName = findRole(field)?.name
-//        Cue cue = CueManager.getInstance().getCurrent()
-//        if (roleName && cue.hasCueForRole(roleName, field))
-//            return ""
+        String roleName = findRole(field)?.name
+        Cue cue = CueManager.getInstance().getCurrent()
+        if (roleName && cue.hasCueForRole(roleName, field))
+            return ""
 
         String retVal = ""
 

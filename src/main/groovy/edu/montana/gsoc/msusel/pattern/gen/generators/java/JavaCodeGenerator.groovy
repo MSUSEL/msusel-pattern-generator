@@ -35,31 +35,24 @@ import groovy.util.logging.Log
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
 class JavaCodeGenerator extends CodeGenerator {
-
-    JavaCodeGenerator() {
-        LoggerInit.init(log)
-    }
 
     @Override
     void generate(FileTreeBuilder tree) {
-        log.info("Generating file tree")
+        ctx.logger.atInfo().log("Generating file tree")
         if (!tree)
             throw new IllegalArgumentException("File Tree Builder cannot be null")
 
         tree {
             system.namespaces.each { Namespace ns ->
-                println(ns.name)
-                println(ns.class.name)
                 handleNamespace(ns, tree)
             }
         }
-        log.info("Done generating file tree")
+        ctx.logger.atInfo().log("Done generating file tree")
     }
 
     private void handleNamespace(Namespace ns, FileTreeBuilder tree) {
-        log.info("Handling the namespace")
+        ctx.logger.atInfo().log("Handling the namespace")
         tree.dir("${ns.name.replaceAll(/\./, "/")}") {
             ns.namespaces.each {
                 handleNamespace(it, tree)
@@ -68,6 +61,6 @@ class JavaCodeGenerator extends CodeGenerator {
                 typegen.generate(it)
             }
         }
-        log.info("Done with the namespace")
+        ctx.logger.atInfo().log("Done with the namespace")
     }
 }
