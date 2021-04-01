@@ -69,7 +69,6 @@ class Director {
 
             if (!context.generateOnly) {
                 context.patterns.each {
-                    context.resetPatternBuilderComponents()
                     context.sysBuilder.init(pattern: it, num: context.numInstances)
                     systems += context.sysBuilder.create()
                 }
@@ -77,7 +76,7 @@ class Director {
 
             if (!context.dataOnly) {
                 systems.each {
-                    context.loader.loadPatternCues(it.name)
+                    //context.loader.loadPatternCues(it.name)
                     context.sysGen.init(sys: it, builder: new FileTreeBuilder(new File(context.getOutput())), num: context.getNumInstances(), pattern: it.getName())
                     context.sysGen.generate()
                 }

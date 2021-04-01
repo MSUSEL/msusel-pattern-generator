@@ -27,12 +27,11 @@
 package edu.montana.gsoc.msusel.pattern.gen
 
 import com.google.common.flogger.FluentLogger
-import edu.montana.gsoc.msusel.pattern.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.generators.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.RampedHalfHalf
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.TreeGenerator
-import groovy.util.logging.Log
+import edu.montana.gsoc.msusel.rbml.model.Role
 
 /**
  * @author Isaac Griffith
@@ -50,6 +49,8 @@ class GeneratorContext {
     int numInstances = 1
     int maxBreadth = 1
     int maxDepth = 1
+    int maxMethods = 5
+    int maxFields = 5
     String version
     Map<String, String> license
     Map<String, String> db
@@ -57,7 +58,6 @@ class GeneratorContext {
     List<Integer> arities = [1]
     String srcPath
     String srcExt
-    Cue cue
     FluentLogger logger
     List<String> projectKeys = []
     List<String> patternKeys = []

@@ -42,11 +42,15 @@ class MethodBuilder extends AbstractComponentBuilder {
 
     Method create() {
         if (!params.feature)
-            throw new IllegalArgumentException("feature cannot be null")
+            throw new IllegalArgumentException("createMethod: feature cannot be null")
+        if (!params.methodName)
+            throw new IllegalArgumentException("createMethod: methodName cannot be null")
+        if (!params.owner)
+            throw new IllegalArgumentException("createMethod: owner cannot be null")
 
         BehavioralFeature feature = (BehavioralFeature) params.feature
 
-        String name = getMethodName()
+        String name = params.methodName
         Type type = ctx.rbmlManager.getType(feature.type)
         TypeRef tr = createTypeRef(type)
 
@@ -77,14 +81,20 @@ class MethodBuilder extends AbstractComponentBuilder {
         return TypeRef.createPrimitiveTypeRef("void")
     }
 
-    private String getMethodName() {
+    String getMethodName() {
         String name = ""
         Random rand = new Random()
         int nums = rand.nextInt(2) + 1
+        boolean isFirst = true
         nums.each{ int entry ->
             String[] lines = MethodBuilder.class.getResourceAsStream("/edu/montana/gsoc/msusel/pattern/gen/methodnames${entry}.txt").readLines()
             int ndx = rand.nextInt(lines.length)
-            name += lines[ndx]
+            if (isFirst) {
+                name += lines[ndx].toLowerCase()
+                isFirst = false
+            } else {
+                name += lines[ndx]
+            }
         }
 
         name

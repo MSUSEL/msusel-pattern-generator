@@ -58,8 +58,8 @@ class JavaSystemGenerator extends SystemGenerator {
             "${sys.name}" {
                 sys.getProjects().each { proj ->
                     "${proj.name}" {
-                        if (pattern)
-                            ctx.cue = ctx.loader.loadAndSelectCue(pattern)
+//                        if (pattern)
+//                            ctx.cue = ctx.loader.loadAndSelectCue(pattern)
                         ctx.projGen.init(proj: proj, builder: builder, num: params.num, pattern: params.pattern)
                         ctx.projGen.generate()
                     }

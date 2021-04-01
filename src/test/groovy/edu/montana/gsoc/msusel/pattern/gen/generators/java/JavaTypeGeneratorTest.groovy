@@ -27,8 +27,6 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.*
-import edu.montana.gsoc.msusel.pattern.cue.Cue
-import edu.montana.gsoc.msusel.pattern.cue.CueRole
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import edu.montana.gsoc.msusel.rbml.model.ClassRole
 import org.javalite.activejdbc.test.DBSpec
@@ -875,115 +873,115 @@ public enum Test implements Parent, Parent2, Parent3 {
         assertEquals(expected, observed)
     }
 
-    @Test
-    void "test generate with pgcl and disregard"() {
-        edu.isu.isuese.datamodel.File file = edu.isu.isuese.datamodel.File.builder()
-                .name("file")
-                .fileKey("file")
-                .create()
-        data = Class.builder()
-                .name("Test")
-                .compKey("test")
-                .accessibility(Accessibility.PUBLIC)
-                .create()
-        file.addType(data)
-
-        edu.montana.gsoc.msusel.rbml.model.Role role = ClassRole.builder()
-                .name("test")
-                .create()
-        ctx.rbmlManager.addMapping(role, data)
-
-        CueRole cueRole = new CueRole()
-        cueRole.disregard = true
-        cueRole.content = "Testing"
-
-        Cue cue = new Cue()
-        cue.name = "Test"
-        cue.roles = ["test": cueRole]
-        ctx.cue = cue
-
-        ctx.typeGen.init(type: data, parent: file)
-        String observed = ctx.typeGen.generate()
-        String expected = ""
-
-        assertEquals(expected, observed)
-    }
-
-    @Test
-    void "test generate with pgcl and content"() {
-        edu.isu.isuese.datamodel.File file = edu.isu.isuese.datamodel.File.builder()
-                .name("file")
-                .fileKey("file")
-                .create()
-        data = Class.builder()
-                .name("Test")
-                .compKey("test")
-                .accessibility(Accessibility.PUBLIC)
-                .create()
-        file.addType(data)
-
-        edu.montana.gsoc.msusel.rbml.model.Role role = ClassRole.builder()
-                .name("test")
-                .create()
-        ctx.rbmlManager.addMapping(role, data)
-
-        CueRole cueRole = new CueRole()
-        cueRole.disregard = false
-        cueRole.content = "Testing"
-
-        Cue cue = new Cue()
-        cue.name = "Test"
-        cue.roles = ["test": cueRole]
-        ctx.cue = cue
-
-        ctx.typeGen.init(type: data, parent: file)
-        String observed = ctx.typeGen.generate().stripIndent(8)
-        String expected = """\
-/**
- * Generated Class
- *
- * @author Isaac Griffith
- * @version 1.0
- */
-public class Test {
-    Testing
-}
-"""
-
-        assertEquals(expected, observed)
-    }
-
-    @Test
-    void "test generate with pgcl and definition"() {
-        edu.isu.isuese.datamodel.File file = edu.isu.isuese.datamodel.File.builder()
-                .name("file")
-                .fileKey("file")
-                .create()
-        data = Class.builder()
-                .name("Test")
-                .compKey("test")
-                .accessibility(Accessibility.PUBLIC)
-                .create()
-        file.addType(data)
-
-        edu.montana.gsoc.msusel.rbml.model.Role role = ClassRole.builder()
-                .name("test")
-                .create()
-        ctx.rbmlManager.addMapping(role, data)
-
-        CueRole cueRole = new CueRole()
-        cueRole.disregard = false
-        cueRole.definition = "Testing"
-
-        Cue cue = new Cue()
-        cue.name = "Test"
-        cue.roles = ["test": cueRole]
-        ctx.cue = cue
-
-        ctx.typeGen.init(type: data, parent: file)
-        String observed = ctx.typeGen.generate()
-        String expected = "Testing"
-
-        assertEquals(expected, observed)
-    }
+//    @Test
+//    void "test generate with pgcl and disregard"() {
+//        edu.isu.isuese.datamodel.File file = edu.isu.isuese.datamodel.File.builder()
+//                .name("file")
+//                .fileKey("file")
+//                .create()
+//        data = Class.builder()
+//                .name("Test")
+//                .compKey("test")
+//                .accessibility(Accessibility.PUBLIC)
+//                .create()
+//        file.addType(data)
+//
+//        edu.montana.gsoc.msusel.rbml.model.Role role = ClassRole.builder()
+//                .name("test")
+//                .create()
+//        ctx.rbmlManager.addMapping(role, data)
+//
+//        CueRole cueRole = new CueRole()
+//        cueRole.disregard = true
+//        cueRole.content = "Testing"
+//
+//        Cue cue = new Cue()
+//        cue.name = "Test"
+//        cue.roles = ["test": cueRole]
+//        ctx.cue = cue
+//
+//        ctx.typeGen.init(type: data, parent: file)
+//        String observed = ctx.typeGen.generate()
+//        String expected = ""
+//
+//        assertEquals(expected, observed)
+//    }
+//
+//    @Test
+//    void "test generate with pgcl and content"() {
+//        edu.isu.isuese.datamodel.File file = edu.isu.isuese.datamodel.File.builder()
+//                .name("file")
+//                .fileKey("file")
+//                .create()
+//        data = Class.builder()
+//                .name("Test")
+//                .compKey("test")
+//                .accessibility(Accessibility.PUBLIC)
+//                .create()
+//        file.addType(data)
+//
+//        edu.montana.gsoc.msusel.rbml.model.Role role = ClassRole.builder()
+//                .name("test")
+//                .create()
+//        ctx.rbmlManager.addMapping(role, data)
+//
+//        CueRole cueRole = new CueRole()
+//        cueRole.disregard = false
+//        cueRole.content = "Testing"
+//
+//        Cue cue = new Cue()
+//        cue.name = "Test"
+//        cue.roles = ["test": cueRole]
+//        ctx.cue = cue
+//
+//        ctx.typeGen.init(type: data, parent: file)
+//        String observed = ctx.typeGen.generate().stripIndent(8)
+//        String expected = """\
+///**
+// * Generated Class
+// *
+// * @author Isaac Griffith
+// * @version 1.0
+// */
+//public class Test {
+//    Testing
+//}
+//"""
+//
+//        assertEquals(expected, observed)
+//    }
+//
+//    @Test
+//    void "test generate with pgcl and definition"() {
+//        edu.isu.isuese.datamodel.File file = edu.isu.isuese.datamodel.File.builder()
+//                .name("file")
+//                .fileKey("file")
+//                .create()
+//        data = Class.builder()
+//                .name("Test")
+//                .compKey("test")
+//                .accessibility(Accessibility.PUBLIC)
+//                .create()
+//        file.addType(data)
+//
+//        edu.montana.gsoc.msusel.rbml.model.Role role = ClassRole.builder()
+//                .name("test")
+//                .create()
+//        ctx.rbmlManager.addMapping(role, data)
+//
+//        CueRole cueRole = new CueRole()
+//        cueRole.disregard = false
+//        cueRole.definition = "Testing"
+//
+//        Cue cue = new Cue()
+//        cue.name = "Test"
+//        cue.roles = ["test": cueRole]
+//        ctx.cue = cue
+//
+//        ctx.typeGen.init(type: data, parent: file)
+//        String observed = ctx.typeGen.generate()
+//        String expected = "Testing"
+//
+//        assertEquals(expected, observed)
+//    }
 }

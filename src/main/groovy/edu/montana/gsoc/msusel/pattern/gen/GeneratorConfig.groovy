@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
-import edu.montana.gsoc.msusel.pattern.cue.CuePattern
+
 import edu.montana.gsoc.msusel.pattern.gen.plugin.LanguagePlugin
 import edu.montana.gsoc.msusel.rbml.model.Pattern
 import groovy.transform.builder.Builder
@@ -41,7 +41,6 @@ class GeneratorConfig {
     String base
     String output
     LanguagePlugin plugin
-    CuePattern cue
     Pattern rbml
     int numInstances
     int maxBreadth

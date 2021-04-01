@@ -36,8 +36,9 @@ class RampedHalfHalf extends AbstractTreeGenerator {
 
     @Override
     Tree generate() {
-        Node inter = createInterfaceRoot()
-        Node root = grow(0, maxDepth, inter, Type.GROW)
+        //Node inter = createInterfaceRoot()
+        //Node root = grow(0, maxDepth, inter, Type.GROW)
+        Node root = grow(0, maxDepth, null, Type.GROW)
         new Tree(root: root)
     }
 

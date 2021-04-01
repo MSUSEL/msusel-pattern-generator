@@ -36,8 +36,6 @@ import edu.isu.isuese.datamodel.Modifier
 import edu.isu.isuese.datamodel.Parameter
 import edu.isu.isuese.datamodel.Type
 import edu.isu.isuese.datamodel.TypeRef
-import edu.montana.gsoc.msusel.pattern.cue.Cue
-import edu.montana.gsoc.msusel.pattern.cue.CueRole
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import edu.montana.gsoc.msusel.rbml.model.BehavioralFeature
 import edu.montana.gsoc.msusel.rbml.model.Role
@@ -655,108 +653,108 @@ class JavaMethodGeneratorTest extends DBSpec {
         assertEquals(expected, observed)
     }
 
-    @Test
-    void "test generate with pgcl with disregard flag"() {
-        Type t1 = Class.builder().name("class1").compKey("class1").create()
-
-        Method data = Method.builder()
-                .name("test")
-                .compKey("test")
-                .accessibility(Accessibility.PUBLIC)
-                .type(TypeRef.createPrimitiveTypeRef("void"))
-                .create()
-        t1.addMember(data)
-
-        Role role = BehavioralFeature.builder()
-                .name("test")
-                .create()
-        ctx.rbmlManager.addMapping(role, data)
-
-        CueRole cueRole = new CueRole()
-        cueRole.disregard = true
-        cueRole.definition = "Testing"
-
-        Cue cue = new Cue()
-        cue.name = "Test"
-        cue.roles = ["test": cueRole]
-        ctx.cue = cue
-
-        ctx.methodGen.init(method: data)
-        String observed = ctx.methodGen.generate().stripIndent(8)
-        String expected = ""
-
-        assertEquals(expected, observed)
-    }
-
-    @Test
-    void "test generate with pgcl with definition"() {
-        Type t1 = Class.builder().name("class1").compKey("class1").create()
-
-        Method data = Method.builder()
-                .name("test")
-                .compKey("test")
-                .accessibility(Accessibility.PUBLIC)
-                .type(TypeRef.createPrimitiveTypeRef("void"))
-                .create()
-        t1.addMember(data)
-
-        Role role = BehavioralFeature.builder()
-                .name("test")
-                .create()
-        ctx.rbmlManager.addMapping(role, data)
-
-        CueRole cueRole = new CueRole()
-        cueRole.disregard = false
-        cueRole.definition = "Testing"
-
-        Cue cue = new Cue()
-        cue.name = "Test"
-        cue.roles = ["test": cueRole]
-        ctx.cue = cue
-
-        ctx.methodGen.init(method: data, parent: t1)
-        String observed = ctx.methodGen.generate()
-        String expected = "Testing"
-
-        assertEquals(expected, observed)
-    }
-
-    @Test
-    void "test generate with pgcl with content"() {
-        Type t1 = Class.builder().name("class1").compKey("class1").create()
-
-        Method data = Method.builder()
-                .name("test")
-                .compKey("test")
-                .accessibility(Accessibility.PUBLIC)
-                .type(TypeRef.createPrimitiveTypeRef("void"))
-                .create()
-        t1.addMember(data)
-
-        Role role = BehavioralFeature.builder()
-                .name("test")
-                .create()
-        ctx.rbmlManager.addMapping(role, data)
-
-        CueRole cueRole = new CueRole()
-        cueRole.disregard = false
-        cueRole.content = "Testing"
-
-        Cue cue = new Cue()
-        cue.name = "Test"
-        cue.roles = ["test": cueRole]
-        ctx.cue = cue
-
-        ctx.methodGen.init(method: data)
-        String observed = ctx.methodGen.generate().stripIndent(8)
-        String expected = """
-    /**
-     * 
-     */
-    public void test() {
-        Testing
-    }"""
-
-        assertEquals(expected, observed)
-    }
+//    @Test
+//    void "test generate with pgcl with disregard flag"() {
+//        Type t1 = Class.builder().name("class1").compKey("class1").create()
+//
+//        Method data = Method.builder()
+//                .name("test")
+//                .compKey("test")
+//                .accessibility(Accessibility.PUBLIC)
+//                .type(TypeRef.createPrimitiveTypeRef("void"))
+//                .create()
+//        t1.addMember(data)
+//
+//        Role role = BehavioralFeature.builder()
+//                .name("test")
+//                .create()
+//        ctx.rbmlManager.addMapping(role, data)
+//
+//        CueRole cueRole = new CueRole()
+//        cueRole.disregard = true
+//        cueRole.definition = "Testing"
+//
+//        Cue cue = new Cue()
+//        cue.name = "Test"
+//        cue.roles = ["test": cueRole]
+//        ctx.cue = cue
+//
+//        ctx.methodGen.init(method: data)
+//        String observed = ctx.methodGen.generate().stripIndent(8)
+//        String expected = ""
+//
+//        assertEquals(expected, observed)
+//    }
+//
+//    @Test
+//    void "test generate with pgcl with definition"() {
+//        Type t1 = Class.builder().name("class1").compKey("class1").create()
+//
+//        Method data = Method.builder()
+//                .name("test")
+//                .compKey("test")
+//                .accessibility(Accessibility.PUBLIC)
+//                .type(TypeRef.createPrimitiveTypeRef("void"))
+//                .create()
+//        t1.addMember(data)
+//
+//        Role role = BehavioralFeature.builder()
+//                .name("test")
+//                .create()
+//        ctx.rbmlManager.addMapping(role, data)
+//
+//        CueRole cueRole = new CueRole()
+//        cueRole.disregard = false
+//        cueRole.definition = "Testing"
+//
+//        Cue cue = new Cue()
+//        cue.name = "Test"
+//        cue.roles = ["test": cueRole]
+//        ctx.cue = cue
+//
+//        ctx.methodGen.init(method: data, parent: t1)
+//        String observed = ctx.methodGen.generate()
+//        String expected = "Testing"
+//
+//        assertEquals(expected, observed)
+//    }
+//
+//    @Test
+//    void "test generate with pgcl with content"() {
+//        Type t1 = Class.builder().name("class1").compKey("class1").create()
+//
+//        Method data = Method.builder()
+//                .name("test")
+//                .compKey("test")
+//                .accessibility(Accessibility.PUBLIC)
+//                .type(TypeRef.createPrimitiveTypeRef("void"))
+//                .create()
+//        t1.addMember(data)
+//
+//        Role role = BehavioralFeature.builder()
+//                .name("test")
+//                .create()
+//        ctx.rbmlManager.addMapping(role, data)
+//
+//        CueRole cueRole = new CueRole()
+//        cueRole.disregard = false
+//        cueRole.content = "Testing"
+//
+//        Cue cue = new Cue()
+//        cue.name = "Test"
+//        cue.roles = ["test": cueRole]
+//        ctx.cue = cue
+//
+//        ctx.methodGen.init(method: data)
+//        String observed = ctx.methodGen.generate().stripIndent(8)
+//        String expected = """
+//    /**
+//     *
+//     */
+//    public void test() {
+//        Testing
+//    }"""
+//
+//        assertEquals(expected, observed)
+//    }
 }

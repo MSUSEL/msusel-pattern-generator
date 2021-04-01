@@ -26,10 +26,16 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
+import edu.isu.isuese.datamodel.Component
 import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Method
 import edu.isu.isuese.datamodel.Type
+import edu.montana.gsoc.msusel.rbml.model.BehavioralFeature
+import edu.montana.gsoc.msusel.rbml.model.ClassRole
+import edu.montana.gsoc.msusel.rbml.model.Classifier
+import edu.montana.gsoc.msusel.rbml.model.InterfaceRole
 import edu.montana.gsoc.msusel.rbml.model.Role
+import edu.montana.gsoc.msusel.rbml.model.StructuralFeature
 
 /**
  * @author Isaac Griffith
@@ -41,6 +47,8 @@ class RBML2DataModelManager {
     Map<Type, Role> roleMapping = [:]
     Map<Method, Role> roleMethodMapping = [:]
     Map<Field, Role> roleFieldMapping = [:]
+    Map<String, Set<String>> methodNames = [:]
+    Map<String, Set<String>> fieldNames = [:]
 
     Type getType(Role role) {
         if (!role)
@@ -174,5 +182,22 @@ class RBML2DataModelManager {
 
     Set<Method> getMethods() {
         roleMethodMapping.keySet().asImmutable()
+    }
+
+    Role findRoleByName(String name) {
+        Role r = roleMapping.values().find {it.name == name }
+        if (!r) r = roleFieldMapping.values().find { it.name == name }
+        if (!r) r = roleMethodMapping.values().find {it.name == name + "()"}
+        r
+    }
+
+    def getComponentsByRole(Role role) {
+        if (role instanceof Classifier || role instanceof ClassRole || role instanceof InterfaceRole)
+            typeMapping[role]
+        else if (role instanceof StructuralFeature)
+            roleFieldMapping.keySet().findAll {roleFieldMapping[it] == role }
+        else if (role instanceof BehavioralFeature)
+            roleMethodMapping.keySet().findAll {roleMethodMapping[it] == role }
+        else return [] as List<Component>
     }
 }

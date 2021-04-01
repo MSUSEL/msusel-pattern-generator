@@ -28,11 +28,10 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Interface
-import edu.isu.isuese.datamodel.Type
-import edu.montana.gsoc.msusel.pattern.cue.CueRole
+import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
+import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.pattern.gen.generators.FieldGenerator
 import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
-import edu.montana.gsoc.msusel.rbml.model.Role
 import groovy.util.logging.Log
 
 /**
@@ -52,35 +51,27 @@ class JavaFieldGenerator extends FieldGenerator {
             throw new IllegalArgumentException("Field cannot be null")
 
         Field field = (Field) params.field
-        Type parent = (Type) params.type
 
-        Role role = findRole(field)
-        CueRole cueRole = null
-
-        if (role)
-            cueRole = (CueRole) ctx.cue?.roles[role.name]
+//        String roleName = findRole(field)?.name
+//        Cue cue = CueManager.getInstance().getCurrent()
+//        if (roleName && cue.hasCueForRole(roleName, field))
+//            return ""
 
         String retVal = ""
 
-        if (!cueRole || !cueRole?.disregard) {
-            if (cueRole?.definition) {
-                retVal = cueRole.definition(parent.compKey)
-            } else {
-                if (!defaultAccessiblity(field)) {
-                    if (parentIsNotNullOrInterface(field))
-                        retVal = field.getAccessibility().toString().toLowerCase() + " "
-                }
+        if (!defaultAccessiblity(field)) {
+            if (parentIsNotNullOrInterface(field))
+                retVal = field.getAccessibility().toString().toLowerCase() + " "
+        }
 
-                if (parentIsNotNullOrInterface(field)) {
-                    field.getModifiers().each {
-                        retVal += it.getName().toLowerCase()
-                        retVal += " "
-                    }
-                }
-
-                retVal += "${field.getType().typeName} ${field.name};"
+        if (parentIsNotNullOrInterface(field)) {
+            field.getModifiers().each {
+                retVal += it.getName().toLowerCase()
+                retVal += " "
             }
         }
+
+        retVal += "${field.getType().typeName} ${field.name};"
 
         retVal
     }

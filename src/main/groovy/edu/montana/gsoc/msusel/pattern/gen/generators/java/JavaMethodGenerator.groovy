@@ -31,11 +31,10 @@ import edu.isu.isuese.datamodel.Destructor
 import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Interface
 import edu.isu.isuese.datamodel.Method
-import edu.isu.isuese.datamodel.Type
-import edu.montana.gsoc.msusel.pattern.cue.CueRole
+import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
+import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.pattern.gen.generators.MethodGenerator
 import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
-import edu.montana.gsoc.msusel.rbml.model.Role
 import groovy.util.logging.Log
 
 /**
@@ -44,8 +43,6 @@ import groovy.util.logging.Log
  */
 @Log
 class JavaMethodGenerator extends MethodGenerator {
-
-    CueRole cueRole
 
     JavaMethodGenerator() {
         LoggerInit.init(log)
@@ -59,16 +56,16 @@ class JavaMethodGenerator extends MethodGenerator {
 
         Method method = (Method) params.method
         Field field = (Field) params.field
-        Type parent = (Type) params.parent
 
-        Role role = findRole(method)
-        if (role)
-            cueRole = (CueRole) ctx.cue.roles[role.name]
+//        String roleName = findRole(method)?.name
+//        Cue cue = CueManager.getInstance().getCurrent()
+//        if (roleName && cue.hasCueForRole(roleName, method))
+//            return ""
 
         String output = ""
 
         if (method)
-            output += generate(method, parent)
+            output += generate(method)
         else if (field)
             output += generate(field)
 
@@ -76,25 +73,19 @@ class JavaMethodGenerator extends MethodGenerator {
         output
     }
 
-    String generate(Method method, Type parent) {
+    String generate(Method method) {
         String output
 
-        if (!cueRole || !cueRole?.disregard) {
-            if (cueRole?.definition) {
-                output = cueRole.definition(parent.compKey)
-            } else {
-                switch (method) {
-                    case Constructor:
-                        output = createConstructor(method, cueRole)
-                        break
-                    case Destructor:
-                        output = createDestructor(method, cueRole)
-                        break
-                    default:
-                        output = createMethod(method, cueRole)
-                        break
-                }
-            }
+        switch (method) {
+            case Constructor:
+                output = createConstructor(method)
+                break
+            case Destructor:
+                output = createDestructor()
+                break
+            default:
+                output = createMethod(method)
+                break
         }
 
         output
@@ -114,9 +105,9 @@ class JavaMethodGenerator extends MethodGenerator {
         line
     }
 
-    private String createMethod(Method method, CueRole cueRole) {
+    private String createMethod(Method method) {
         String name = method.name
-        String body = method.isAbstract() ? ";" : getMethodBody(cueRole)
+        String body = method.isAbstract() ? ";" : getMethodBody()
         String paramList = getParamList(method)
         String modifiers = getModifiers(method)
         modifiers = modifiers ? modifiers + " " : ""
@@ -213,10 +204,10 @@ class JavaMethodGenerator extends MethodGenerator {
         }
     }
 
-    private String createConstructor(Method method, CueRole cueRole) {
+    private String createConstructor(Method method) {
         String name = method.name
 
-        String body = getMethodBody(cueRole)
+        String body = getMethodBody()
         String paramList = ""
         String comment = """/**
              * Construct a new $name instance
@@ -228,14 +219,12 @@ class JavaMethodGenerator extends MethodGenerator {
             $access $name($paramList) $body"""
     }
 
-    private String getMethodBody(CueRole cueRole) {
-        cueRole?.content ? """{
-                ${cueRole.content(((Type) params.parent)?.compKey)}
-            }""" : """{
+    private String getMethodBody() {
+        """{
             }"""
     }
 
-    private String createDestructor(Method method, CueRole cueRole) {
+    private String createDestructor() {
         """
             /**
              *

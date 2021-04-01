@@ -46,23 +46,16 @@ class JavaFileGenerator extends FileGenerator {
     def generate() {
         File file = (File) params.file
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
-        Project project = (Project) params.project
-
-        // fire UnitCreationStarted event
-//        events.fireUnitCreationStarted(file.fileKey, null, this, project.projectKey)
 
         builder."${file.getName()}"(
         """\
-        ${createFileComment(file)}
+        ${createFileComment()}
         ${createPackageStatement(file)}${createImportStatements(file)}
         ${createTypes(file)}""".stripIndent()
         )
-
-        // fire UnitCreationComplete event
-//        events.fireUnitCreationComplete(file.fileKey, null, this, project.projectKey)
     }
 
-    private def createFileComment(File file) {
+    private def createFileComment() {
         """/**
          * MIT License
          *
@@ -135,20 +128,12 @@ class JavaFileGenerator extends FileGenerator {
     }
 
     private def createTypes(File file) {
-        Project project = (Project) params.project
-
-        // fire TypesStarted event
-//        events.fireTypesStarted(file.fileKey, null, this, project.projectKey)
-
         def output = ""
 
         file.getAllTypes().each {
             ctx.typeGen.init(type: it, parent: file)
             output += "\n" + ctx.typeGen.generate()
         }
-
-        // fire TypesComplete event
-//        events.fireTypesComplete(file.fileKey, null, this, project.projectKey)
 
         output
     }

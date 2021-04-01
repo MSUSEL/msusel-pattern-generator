@@ -28,9 +28,10 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import com.google.common.collect.Sets
 import edu.isu.isuese.datamodel.*
-import edu.montana.gsoc.msusel.pattern.cue.CueRole
+import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
+import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
+import edu.montana.gsoc.msusel.pattern.gen.cue.CueParams
 import edu.montana.gsoc.msusel.pattern.gen.generators.TypeGenerator
-import edu.montana.gsoc.msusel.pattern.gen.event.EventType
 import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
 import groovy.util.logging.Log
 
@@ -41,55 +42,50 @@ import groovy.util.logging.Log
 @Log
 class JavaTypeGenerator extends TypeGenerator {
 
-    CueRole cueRole
-
     JavaTypeGenerator() {
         LoggerInit.init(log)
     }
 
     @Override
     String generate() {
-        File parent = (File) params.parent
         Type type = (Type) params.type
 
-        log.info("""\
-        Generating type:
-            Name: ${type.name}
-            Number of Fields: ${type.getFields().size()}
-            Number of Methods: ${type.getAllMethods().size()}
-        """)
-
-        edu.montana.gsoc.msusel.rbml.model.Role role = findRole(type)
-//        if (role)
-//            cueRole = (CueRole) ctx.cue.roles[role.name]
-
-        // fire TypeCreationStarted event
-//        events.fireTypeCreationStarted(type.compKey, null, this, parent.fileKey)
+//        String roleName = findRole(type)?.name
+//        Cue cue = CueManager.getInstance().getCurrent()
 
         String output = ""
-        if (!cueRole || !cueRole?.disregard) {
-            if (cueRole?.definition) {
-                output = cueRole.definition(type.compKey)
-            } else {
-                switch (type) {
-                    case Class:
-                        output = createTemplate("class", type)
-                        break
-                    case Enum:
-                        output = createTemplate("enum", type)
-                        break
-                    case Interface:
-                        output = createTemplate("interface", type)
-                        break
-                }
+//        if (roleName && cue.hasCueForRole(roleName, type)) {
+//            output = fromCue(cue, type)
+//        } else {
+            switch (type) {
+                case Class:
+                    output = createTemplate("class", type)
+                    break
+                case Enum:
+                    output = createTemplate("enum", type)
+                    break
+                case Interface:
+                    output = createTemplate("interface", type)
+                    break
             }
-        }
-
-        // fire TypeCreationCompleted event
-//        events.fireTypeCreationComplete(type.compKey, null, this, parent.fileKey)
+//        }
 
         log.info("Done generating type")
         output
+    }
+
+    private String fromCue(Cue cue, Type type) {
+        String kind = type.getClass().getSimpleName().toLowerCase();
+
+        CueParams params = new CueParams()
+        params.setParam("literals", genLiterals(type))
+        params.setParam("typedef", createTypeDef(kind, type, type.name))
+        params.setParam("fields", genFields(type))
+        params.setParam("methods", genMethods(type))
+        params.setParam("InstName", type.name)
+        params.setParam("ClassComment", typeComment())
+
+        cue.compile(params, ctx.rbmlManager)
     }
 
     private String createTemplate(String kind, Type type) {
@@ -97,25 +93,24 @@ class JavaTypeGenerator extends TypeGenerator {
 
         """\
         /**
-        ${typeComment(type)}
+        ${typeComment()}
          */
-        ${access(type)}${modifiers(type)}$kind ${name}${extendsList(type)}${implementsList(type)} {${getContent(type)}
+        ${createTypeDef(kind, type, name)} {${getContent(type)}
         }
         """
     }
 
-    private String getContent(Type type) {
-        if (cueRole?.content) {
-            return """
-            ${cueRole.content(type.name)}"""
-        } else {
-            return """${
-                genLiterals(type)
-            }${genFields(type)}${genMethods(type)}"""
-        }
+    private String createTypeDef(String kind, Type type, String name) {
+        "${access(type)}${modifiers(type)}$kind ${name}${extendsList(type)}${implementsList(type)}"
     }
 
-    private String typeComment(Type type) {
+    private String getContent(Type type) {
+        return """${
+            genLiterals(type)
+        }${genFields(type)}${genMethods(type)}"""
+    }
+
+    private String typeComment() {
         """ * Generated Class
          *
          * @author Isaac Griffith
@@ -161,7 +156,7 @@ class JavaTypeGenerator extends TypeGenerator {
         String content = ""
         if (type instanceof Interface)
             return content
-        if (type.getRealizes()) {
+        if (type.realizes) {
             content += " implements "
             Set<String> set = Sets.newTreeSet()
             set.addAll(type.getRealizes().collect { it.name })
@@ -173,10 +168,6 @@ class JavaTypeGenerator extends TypeGenerator {
 
     private String genLiterals(Type type) {
         String content = ""
-
-        if (cueRole?.content && cueRole.event == EventType.LiteralsStarted) {
-            content += cueRole.content(type.compKey)
-        }
 
         if (type instanceof Enum) {
             if (type.literals)
@@ -193,19 +184,11 @@ class JavaTypeGenerator extends TypeGenerator {
         if (index >= 0)
             content = content.substring(0, index) + ";"
 
-        if (cueRole?.content && cueRole.event == EventType.LiteralsComplete) {
-            content += cueRole.content(type.compKey)
-        }
-
         content
     }
 
     private String genFields(Type type) {
         String content = ""
-
-        if (cueRole?.content && cueRole.event == EventType.FieldsStarted) {
-            content += cueRole.content(type.compKey)
-        }
 
         if (type.fields) {
             content += "\n"
@@ -216,20 +199,12 @@ class JavaTypeGenerator extends TypeGenerator {
             }
         }
 
-        if (cueRole?.content && cueRole.event == EventType.FieldsComplete) {
-            content += cueRole.content(type.compKey)
-        }
-
         content
     }
 
     private String genMethods(Type type) {
 
         String content = ""
-
-        if (cueRole?.content && cueRole.event == EventType.MethodsStarted) {
-            content += cueRole.content(type.compKey)
-        }
 
         if (!(type instanceof Interface)) {
             type.fields.each { Field f ->
@@ -238,14 +213,11 @@ class JavaTypeGenerator extends TypeGenerator {
                 content += ctx.methodGen.generate()
             }
         }
+        println("Number of Methods to generate: ${type.methods.size()}")
         type.methods.each { Method m ->
             ctx.methodGen.init(method: m, parent: type)
             content += "\n    "
             content += ctx.methodGen.generate()
-        }
-
-        if (cueRole?.content && cueRole.event == EventType.MethodsComplete) {
-            content += cueRole.content(type.compKey)
         }
 
         content

@@ -26,6 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
+import com.google.common.collect.Sets
 import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
 import edu.montana.gsoc.msusel.rbml.model.Classifier
@@ -48,7 +49,7 @@ class ClassifierBuilder extends AbstractBuilder {
             throw new IllegalArgumentException("classifier cannot be null")
 
         Type t
-        String name = getClassName()
+        String name = getClassName() + ((Classifier) params.classifier).name
         String compKey = ((Namespace) params.ns).getNsKey() + ":" + name
         if (Class.findFirst("compKey = ?", compKey)) {
             return Class.findFirst("compKey = ?", compKey)
@@ -89,17 +90,86 @@ class ClassifierBuilder extends AbstractBuilder {
         ctx.rbmlManager.getTypes(classifier).each { Type t ->
             log.info("Number of structural features: ${classifier.structFeats.size()}")
             log.info("Number of behavioral features: ${classifier.behFeats.size()}")
-            classifier.structFeats.each {
-                ctx.fldBuilder.init(feature: it)
-                t.addMember((Field) ctx.fldBuilder.create())
+
+            createFieldNames(classifier)
+            createMethodNames(classifier)
+
+            classifier.structFeats.each {structFeat ->
+                println("Owner: $t")
+                println(ctx.rbmlManager.fieldNames[structFeat])
+                ctx.rbmlManager.fieldNames[structFeat.name].each {name ->
+                    ctx.fldBuilder.init(owner: t, feature: structFeat, fieldName: name)
+                    t.addMember((Field) ctx.fldBuilder.create())
+                    t.updateKey()
+                }
             }
 
-            classifier.behFeats.each {
-                ctx.methBuilder.init(feature: it)
-                t.addMember((Method) ctx.methBuilder.create())
+            classifier.behFeats.each {behFeat ->
+                ctx.rbmlManager.methodNames[behFeat.name].each {name ->
+                    ctx.methBuilder.init(owner: t, feature: behFeat, methodName: name)
+                    t.addMember((Method) ctx.methBuilder.create())
+                    t.updateKey()
+                }
             }
         }
         log.info("Done creating features for ${classifier.name}")
+    }
+
+    private List createFieldNames(Classifier classifier) {
+        classifier.structFeats.each {
+            if (!ctx.rbmlManager.fieldNames[it.name]) {
+                int min = it.getMult().lower
+                int max = it.getMult().upper
+                if (min < 0) {
+                    max = ctx.maxFields
+                    min = max
+                }
+                else if (max < 0) {
+                    max = ctx.maxMethods
+                }
+
+                Set<String> set = Sets.newHashSet()
+                Random rand = new Random()
+                println("Max: $max Min: $min")
+                int num
+                if (min == max)
+                    num = min
+                else
+                    num = rand.nextInt(max - min) + min
+                for (int i = 0; i < num; i++)
+                    set << ctx.fldBuilder.getFieldName()
+                ctx.rbmlManager.fieldNames[it.name] = set
+            }
+        }
+    }
+
+    private List createMethodNames(Classifier classifier) {
+        classifier.behFeats.each {
+            if (!ctx.rbmlManager.methodNames[it.name]) {
+                println("Role Name for Method Creation: " + it.name)
+                int min = it.getMult().lower
+                int max = it.getMult().upper
+                if (min < 0) {
+                    max = ctx.maxMethods
+                    min = max
+                }
+                else if (max < 0) {
+                    max = ctx.maxMethods
+                }
+
+                Set<String> set = Sets.newHashSet()
+                Random rand = new Random()
+                int num
+                println("Max: $max Min: $min")
+                if (min == max)
+                    num = min
+                else
+                    num = rand.nextInt(max - min) + min
+                for (int i = 0; i < num; i++)
+                    set << ctx.methBuilder.getMethodName()
+                ctx.rbmlManager.methodNames[it.name] = set
+            }
+        }
     }
 
     private String getClassName() {

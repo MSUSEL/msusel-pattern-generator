@@ -46,10 +46,14 @@ class FieldBuilder extends AbstractComponentBuilder {
     Field create() {
         if (!params.feature)
             throw new IllegalArgumentException("createField: feature cannot be null")
+        if (!params.fieldName)
+            throw new IllegalArgumentException("createField: fieldName cannot be null")
+        if (!params.owner)
+            throw new IllegalArgumentException("createField: owner cannot be null")
 
         StructuralFeature feature = (StructuralFeature) params.feature
 
-        String name = getFieldName()
+        String name = params.fieldName
         Type type = ctx.rbmlManager.getType(feature.type)
         TypeRef tr = createTypeRef(type)
         Field field = Field.builder()
@@ -69,12 +73,12 @@ class FieldBuilder extends AbstractComponentBuilder {
     /**
      * @return A random field name
      */
-    private String getFieldName() {
+    String getFieldName() {
         String name = ""
         Random rand = new Random()
         String[] lines = FieldBuilder.class.getResourceAsStream("/edu/montana/gsoc/msusel/pattern/gen/fieldnames.txt").readLines()
         int ndx = rand.nextInt(lines.length)
-        name += lines[ndx]
+        name += lines[ndx].toLowerCase()
 
         name
     }

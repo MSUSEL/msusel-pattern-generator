@@ -34,8 +34,9 @@ class RandomBranch extends AbstractTreeGenerator {
 
     @Override
     Tree generate() {
-        Node inter = createInterfaceRoot()
-        Node root = branch(0, this.size, inter)
+        //Node inter = createInterfaceRoot()
+        //Node root = branch(0, this.size, inter)
+        Node root = branch(0, this.size, null)
         new Tree(root: root)
     }
 

@@ -26,14 +26,11 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
-import edu.montana.gsoc.msusel.pattern.gen.logging.ConsoleFormatter
+
 import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
 import groovy.cli.picocli.CliBuilder
 import groovy.cli.picocli.OptionAccessor
 import groovy.util.logging.Log
-
-import java.util.logging.ConsoleHandler
-import java.util.logging.LogManager
 
 /**
  * @author Isaac Griffith

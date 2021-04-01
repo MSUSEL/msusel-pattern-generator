@@ -27,9 +27,7 @@
 package edu.montana.gsoc.msusel.pattern.gen
 
 import edu.isu.isuese.datamodel.Pattern
-import edu.montana.gsoc.msusel.pattern.cue.Cue
-import edu.montana.gsoc.msusel.pattern.cue.CuePattern
-import edu.montana.gsoc.msusel.pattern.cue.CueScriptLoader
+import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.rbml.PatternLoader
 import edu.montana.gsoc.msusel.rbml.model.SPS
 
@@ -41,29 +39,13 @@ import edu.montana.gsoc.msusel.rbml.model.SPS
 class PatternManager {
 
     PatternLoader patternLoader = PatternLoader.getInstance()
-    CueScriptLoader cueLoader = new CueScriptLoader()
 
-
-    CuePattern loadPatternCues(String pattern) {
-        cueLoader.loadPatternCues(getPatternName(pattern))
+    void loadPatternCues(String pattern, language) {
+        CueManager.instance.loadCues(pattern, language)
     }
 
-    Cue loadAndSelectCue(String pattern) {
-        CuePattern cues = this.loadPatternCues(getPatternName(pattern.toLowerCase()))
-        if (cues) {
-            def list = cues.cues.keySet().asList()
-
-            if (list) {
-                if (list.size() > 1) {
-                    Random rand = new Random()
-                    return (Cue) cues.cues[list[rand.nextInt(list.size())]]
-                } else {
-                    return (Cue) cues.cues[list[0]]
-                }
-            }
-        }
-
-        null
+    void selectCue() {
+        CueManager.instance.selectCue()
     }
 
     SPS loadPattern(String pattern) {

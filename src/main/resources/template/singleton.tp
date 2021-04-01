@@ -1,0 +1,76 @@
+cue: EagerInit
+[[begin: AbstractSingleton]]
+[[copyright]]
+
+[[package]]
+
+[[imports]]
+
+[[classComment]]
+[[typedef]]
+
+    [[fields]]
+
+    protected [[InstName]]() {}
+
+    [[methods]]
+}
+[[end: AbstractSingleton]]
+
+[[begin: ConcreteSingleton]]
+[[copyright]]
+
+[[package]]
+
+[[imports]]
+
+[[classComment]]
+[[typedef]]
+
+    private [[InstName]]() {
+        super();
+    }
+
+    [[begin: Instance]]private static final [[RootName]] instance = [[InstName]]();[[end: Instance]]
+    [[fields except: Instance]]
+
+    [[begin: GetInstance]]
+    public [[RootName]] instance() {
+        return instance;
+    }
+
+    [[methods except: GetInstance]]
+}
+[end: ConcreteSingleton]
+
+# BillPugh
+name: BillPugh
+role: ConcreteSingleton::Instance
+definition:
+private static class [InstName]Holder {
+    private static final [InstName] INSTANCE = new [InstName]();
+}
+role ConcreteSingleton::GetInstance()
+body: return [TypeName]Holder.INSTANCE;
+role ConcreteSingleton
+constructor:
+private [instName]() {
+}
+role: AbstractSingleton
+constructor:
+protected [instName]() {}
+
+# StaticBlock
+name: StaticBlock
+
+# LazyInit
+name: LazyInit
+
+# ThreadSafe
+name: threadSafe
+
+# DoubleCheckLock
+name: doubleCheckLock
+
+# EnumSingleton
+name: enumSingleton
