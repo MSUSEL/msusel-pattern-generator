@@ -34,29 +34,12 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class NonblockingConcreteState extends VirtualAbstractState {
+public class TaskConcreteState extends StableState {
 
     /**
      * 
      */
-    public void filter() {
-    }
-
-    /**
-     * 
-     */
-    public void add() {
-    }
-
-    /**
-     * 
-     */
-    public void builder() {
-    }
-
-    /**
-     * 
-     */
-    public void remove() {
+    @Override
+    public void parse() {
     }
 }

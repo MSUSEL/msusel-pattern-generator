@@ -26,6 +26,9 @@
  */
 
 package patterngen.State;
+
+import patterngen.State.RequestState;
+import patterngen.State.RequestState;
 import java.util.*;
 
 /**
@@ -34,29 +37,54 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class NonblockingConcreteState extends VirtualAbstractState {
+public class StatefulContext {
+
+    private RequestState st;
+    private RequestState cryptographic;
 
     /**
-     * 
+     * @return the value of st
      */
-    public void filter() {
+    public RequestState getSt() {
+        return st;
+    }
+
+    /**
+     * @param st the new value for st
+     */
+    public void setSt(RequestState st) {
+        this.st = st;
+    }
+
+    /**
+     * @return the value of cryptographic
+     */
+    public RequestState getCryptographic() {
+        return cryptographic;
+    }
+
+    /**
+     * @param cryptographic the new value for cryptographic
+     */
+    public void setCryptographic(RequestState cryptographic) {
+        this.cryptographic = cryptographic;
     }
 
     /**
      * 
      */
-    public void add() {
+    public void resource() {
     }
 
     /**
      * 
      */
-    public void builder() {
+    public void subtract() {
     }
 
     /**
      * 
      */
-    public void remove() {
+    public void pixel() {
     }
 }

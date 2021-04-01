@@ -26,6 +26,9 @@
  */
 
 package patterngen.State;
+
+import patterngen.State.ResourceState;
+import patterngen.State.ResourceState;
 import java.util.*;
 
 /**
@@ -34,29 +37,48 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class NonblockingConcreteState extends VirtualAbstractState {
+public class InternalContext {
+
+    private ResourceState st;
+    private ResourceState iterator;
 
     /**
-     * 
+     * @return the value of st
      */
-    public void filter() {
+    public ResourceState getSt() {
+        return st;
+    }
+
+    /**
+     * @param st the new value for st
+     */
+    public void setSt(ResourceState st) {
+        this.st = st;
+    }
+
+    /**
+     * @return the value of iterator
+     */
+    public ResourceState getIterator() {
+        return iterator;
+    }
+
+    /**
+     * @param iterator the new value for iterator
+     */
+    public void setIterator(ResourceState iterator) {
+        this.iterator = iterator;
     }
 
     /**
      * 
      */
-    public void add() {
+    public void mutex() {
     }
 
     /**
      * 
      */
-    public void builder() {
-    }
-
-    /**
-     * 
-     */
-    public void remove() {
+    public void decoder() {
     }
 }

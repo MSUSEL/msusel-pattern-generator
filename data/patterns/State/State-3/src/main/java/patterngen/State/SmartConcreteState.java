@@ -34,18 +34,24 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class SmartConcreteState extends VisitorAbstractState {
+public class SmartConcreteState extends VectorAbstractState {
 
     /**
      * 
      */
-    public void of() {
+    public void filter() {
     }
 
     /**
      * 
      */
-    public void check() {
+    public void add() {
+    }
+
+    /**
+     * 
+     */
+    public void builder() {
     }
 
     /**

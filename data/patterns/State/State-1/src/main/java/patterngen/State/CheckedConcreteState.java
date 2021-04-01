@@ -34,29 +34,29 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class NonblockingConcreteState extends VirtualAbstractState {
+public class CheckedConcreteState extends UploadAbstractState {
 
     /**
      * 
      */
-    public void filter() {
+    public void minus() {
     }
 
     /**
      * 
      */
-    public void add() {
+    public void as() {
     }
 
     /**
      * 
      */
-    public void builder() {
+    public void is() {
     }
 
     /**
      * 
      */
-    public void remove() {
+    public void writer() {
     }
 }

@@ -34,29 +34,5 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class NonblockingConcreteState extends VirtualAbstractState {
-
-    /**
-     * 
-     */
-    public void filter() {
-    }
-
-    /**
-     * 
-     */
-    public void add() {
-    }
-
-    /**
-     * 
-     */
-    public void builder() {
-    }
-
-    /**
-     * 
-     */
-    public void remove() {
-    }
+public abstract class UploadAbstractState extends ThreadedState {
 }

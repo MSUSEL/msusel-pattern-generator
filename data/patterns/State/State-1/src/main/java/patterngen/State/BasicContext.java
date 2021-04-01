@@ -26,6 +26,9 @@
  */
 
 package patterngen.State;
+
+import patterngen.State.SimpleState;
+import patterngen.State.SimpleState;
 import java.util.*;
 
 /**
@@ -34,29 +37,48 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class NonblockingConcreteState extends VirtualAbstractState {
+public class BasicContext {
+
+    private SimpleState st;
+    private SimpleState raster;
 
     /**
-     * 
+     * @return the value of st
      */
-    public void filter() {
+    public SimpleState getSt() {
+        return st;
+    }
+
+    /**
+     * @param st the new value for st
+     */
+    public void setSt(SimpleState st) {
+        this.st = st;
+    }
+
+    /**
+     * @return the value of raster
+     */
+    public SimpleState getRaster() {
+        return raster;
+    }
+
+    /**
+     * @param raster the new value for raster
+     */
+    public void setRaster(SimpleState raster) {
+        this.raster = raster;
     }
 
     /**
      * 
      */
-    public void add() {
+    public void migrator() {
     }
 
     /**
      * 
      */
-    public void builder() {
-    }
-
-    /**
-     * 
-     */
-    public void remove() {
+    public void concatenator() {
     }
 }

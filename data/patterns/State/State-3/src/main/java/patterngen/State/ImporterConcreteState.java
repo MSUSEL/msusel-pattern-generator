@@ -34,7 +34,7 @@ import java.util.*;
  * @author Isaac Griffith
  * @version 1.0
  */
-public class NonblockingConcreteState extends VirtualAbstractState {
+public class ImporterConcreteState extends FactoryAbstractState {
 
     /**
      * 
