@@ -32,6 +32,8 @@ import edu.isu.isuese.datamodel.Namespace
 import edu.isu.isuese.datamodel.RelationType
 import edu.isu.isuese.datamodel.Type
 import edu.isu.isuese.datamodel.TypeRef
+import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
+import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.rbml.model.*
 
 /**
@@ -40,8 +42,8 @@ import edu.montana.gsoc.msusel.rbml.model.*
  */
 class RelationshipBuilder extends AbstractComponentBuilder {
 
-    Map<Role, List<Type>> map = [:]
-    Map<String, Map<String, List<Type>>> ghmap = [:]
+    Map<Role, Set<Type>> map = [:]
+    Map<String, Map<String, Set<Type>>> ghmap = [:]
 
     def create() {
         if (!params.rbml)
@@ -81,7 +83,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         }
     }
 
-    List<Type> generateClassifier(Namespace ns, Classifier role, boolean ghRoot = false) {
+    Set<Type> generateClassifier(Namespace ns, Classifier role, boolean ghRoot = false) {
         if (!role)
             throw new IllegalArgumentException("generateClassifier: role cannot be null")
         ctx.logger.atInfo().log("Generating Classifier: $role")
@@ -89,23 +91,28 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         Random rand = new Random()
         int num
 
-        if (role.mult.lower == role.mult.upper) {
-            num = (Integer) (role.mult.upper < ctx.maxBreadth ? role.mult.upper : ctx.maxBreadth)
-
-        } else if (role.mult.upper == -1) {
-            num = rand.nextInt(ctx.maxBreadth) + role.mult.lower
+        if (ghRoot) {
+            num = 1
         } else {
-            if (role.mult.upper < ctx.maxBreadth) {
-                num = rand.nextInt(role.mult.upper) + role.mult.lower
-            } else {
+            if (role.mult.lower == role.mult.upper) {
+                num = (Integer) (role.mult.upper < ctx.maxBreadth ? role.mult.upper : ctx.maxBreadth)
+
+            } else if (role.mult.upper == -1) {
                 num = rand.nextInt(ctx.maxBreadth) + role.mult.lower
+            } else {
+                if (role.mult.upper < ctx.maxBreadth) {
+                    num = rand.nextInt(role.mult.upper) + role.mult.lower
+                } else {
+                    num = rand.nextInt(ctx.maxBreadth) + role.mult.lower
+                }
             }
         }
 
-        boolean makeInterface = rand.nextBoolean()
+//        boolean makeInterface = rand.nextBoolean()
+        boolean makeInterface = false
         Role newRole = role
-        if (ghRoot && makeInterface)
-            newRole = copyToInterface((Classifier) role)
+//        if (ghRoot)
+//            newRole = copyToInterface((Classifier) role)
 
         num.times {
             if (newRole)
@@ -117,15 +124,15 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                 if (map[role])
                     map[role] << clazz
                 else
-                    map[role] = [clazz]
+                    map[role] = [clazz].toSet()
             }
         }
 
         return map[role]
     }
 
-    InterfaceRole copyToInterface(Classifier role) {
-        InterfaceRole ir = InterfaceRole.builder()
+    ClassRole copyToInterface(Classifier role) {
+        ClassRole ir = ClassRole.builder()
             .name(role.name)
             .mult(role.mult)
             .create()
@@ -164,9 +171,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                     nonterm = true
                 }
             }
-            List<Type> generated = generateClassifier(ns, toGen, isRoot)
+            Set<Type> generated = generateClassifier(ns, toGen, isRoot)
             if (!ghmap[name]) {
-                ghmap[name] = new HashMap<String, List<Type>>()
+                ghmap[name] = new HashMap<String, Set<Type>>()
                 ghmap[name]["roots"] = []
                 ghmap[name]["leaves"] = []
                 ghmap[name]["nonterms"] = []
@@ -255,7 +262,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                 sources += map[it]
             }
         } else {
-            sources = map[src]
+            sources = map[src].asList()
         }
         if (dest instanceof GeneralizationHierarchy) {
             findGenHierarchyComponents((GeneralizationHierarchy) dest, destPort).each {
@@ -264,7 +271,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             }
         } else {
             if (map[dest] != null)
-                dests = map[dest]
+                dests = map[dest].asList()
         }
 
         if (sources.size() == dests.size()) {
@@ -322,28 +329,33 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         }
     }
 
-    private createFields(Type src, Type dest, String srcName, String destName, int srcUpper, int destUpper) {
-        if (!src.hasFieldWithName(destName)) {
-            TypeRef destRef = createTypeRef(dest)
-            Field srcField = Field.builder()
-                    .name(destName)
-                    .accessibility(Accessibility.PRIVATE)
-                    .compKey(src.getCompKey() + "." + destName)
-                    .type(destRef)
-                    .create()
-            src.addMember(srcField)
+    private void createFields(Type src, Type dest, String srcName, String destName, int srcUpper, int destUpper) {
+        Cue cue = CueManager.instance.getCurrent()
+        if (!cue.hasCueForRole(destName, src)) {
+            if (!src.hasFieldWithName(destName)) {
+                TypeRef destRef = createTypeRef(dest)
+                Field srcField = Field.builder()
+                        .name(destName)
+                        .accessibility(Accessibility.PRIVATE)
+                        .compKey(src.getCompKey() + "." + destName)
+                        .type(destRef)
+                        .create()
+                src.addMember(srcField)
+            }
         }
 
         if (srcUpper == -1 && destUpper == -1) {
-            if (!dest.hasFieldWithName(srcName)) {
-                TypeRef srcRef = createTypeRef(src)
-                Field destField = Field.builder()
-                        .name(srcName)
-                        .accessibility(Accessibility.PRIVATE)
-                        .compKey(dest.getCompKey() + "." + srcName)
-                        .type(srcRef)
-                        .create()
-                dest.addMember(destField)
+            if (!cue.hasCueForRole(srcName, dest)) {
+                if (!dest.hasFieldWithName(srcName)) {
+                    TypeRef srcRef = createTypeRef(src)
+                    Field destField = Field.builder()
+                            .name(srcName)
+                            .accessibility(Accessibility.PRIVATE)
+                            .compKey(dest.getCompKey() + "." + srcName)
+                            .type(srcRef)
+                            .create()
+                    dest.addMember(destField)
+                }
             }
         }
     }

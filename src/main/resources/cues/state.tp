@@ -3,7 +3,7 @@ start_type: Context
 [[ClassComment]]
 [[typedef]] {
 
-    start_field: currentState 
+    start_field: currentState
     private [[AbstractState.root]] currentState;
     end_field: currentState
 [[fields]]

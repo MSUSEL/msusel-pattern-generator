@@ -57,9 +57,14 @@ class JavaMethodGenerator extends MethodGenerator {
         Method method = (Method) params.method
         Field field = (Field) params.field
 
-        String roleName = findRole(method)?.name
+        String roleName
+        if (method)
+            roleName = ctx.rbmlManager.getRole(method)?.name
+        else
+            roleName = ctx.rbmlManager.getRole(field)?.name
+
         Cue cue = CueManager.getInstance().getCurrent()
-        if (roleName && cue.hasCueForRole(roleName, method))
+        if (roleName && cue.hasCueForRole(roleName, method) && params.parentCue)
             return ""
 
         String output = ""

@@ -1,4 +1,3 @@
-Byte
 Task
 Object
 Resource

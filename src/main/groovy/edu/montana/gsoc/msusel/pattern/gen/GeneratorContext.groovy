@@ -27,6 +27,7 @@
 package edu.montana.gsoc.msusel.pattern.gen
 
 import com.google.common.flogger.FluentLogger
+import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.generators.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.RampedHalfHalf
@@ -61,6 +62,7 @@ class GeneratorContext {
     static final FluentLogger logger = FluentLogger.forEnclosingClass()
     List<String> projectKeys = []
     List<String> patternKeys = []
+    Map<Project, RBML2DataModelManager> projRbmlMap = [:]
 
     // director flags
     boolean generateOnly = false

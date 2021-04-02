@@ -65,6 +65,9 @@ class FieldBuilder extends AbstractComponentBuilder {
         if (((StructuralFeature) params.feature).isStatic)
             field.addModifier(Modifier.forName("STATIC"))
 
+        params.owner.addMember(field)
+        field.updateKey()
+        field.save()
         ctx.rbmlManager.addMapping(feature, field)
 
         field

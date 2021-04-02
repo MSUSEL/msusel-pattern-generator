@@ -1,38 +1,44 @@
 start_pattern: adjacencyList
 start_type: Context
+/**
 [[ClassComment]]
+ */
 [[typedef]] {
 
-    start_field: currentState 
-    private [[AbstractState.root]] currentState;
+    start_field: currentState
+    private [[State.root]] currentState;
     end_field: currentState
-[[fields]]
+    start_field: st
+    end_field: st
+    [[fields]]
 
     public [[InstName]]() {
-    	currentState = [[ConcreteState.random]].instance(this)
+    	currentState = [[ConcreteState.random]].instance(this);
     }
 
-    public void changeCurrentState([[AbstractState.root]] state) {
+    public void changeCurrentState([[State.root]] state) {
         currentState = state;
-        currentState.run()
+        currentState.run();
     }
 
     start_method: Request
     public void [[name]]() {
-        currentState.[[Handle.name]]()
+        currentState.[[Handle.name]]();
     }
     end_method: Request
-[[methods]]
+    [[methods]]
 }
 end_type: Context
 
 start_type: ConcreteState
+/**
 [[ClassComment]]
-public class [InstName] {
+ */
+[[typedef]] {
 
     private static [[InstName]] instance;
-    private [[Context.name]] context
-[[fields]]
+    private [[Context.name]] context;
+    [[fields]]
 
     private [[InstName]]([[Context.name]] ctx) {
         this.context = ctx;
@@ -40,22 +46,40 @@ public class [InstName] {
 
     public static [[InstName]] instance([[Context.name]] ctx) {
         if (instance == null) {
-            instance = new [[InstName]]();
+            instance = new [[InstName]](ctx);
         }
         return instance;
     }
 
-    public run() {}
+    public void run() {}
 
     start_method: Handle
+    /**
+     *
+     */
+    @Override
     public void [[name]]() {
-	ctx.changeCurrentState([[ConcreteState.random]].instance(context))
+	context.changeCurrentState([[ConcreteState.random]].instance(context));
     }
     end_method: Handle
 
-[[methods]]
+    [[methods]]
 }
 end_type: ConcreteState
+
+start_type: State
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    public abstract void run();
+
+    [[methods]]
+}
+end_type: State
 end_pattern: adjacencyList
 
 # cue: adjacencyMatrix

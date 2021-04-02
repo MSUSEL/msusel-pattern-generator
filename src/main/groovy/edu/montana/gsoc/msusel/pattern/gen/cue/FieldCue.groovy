@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
-import edu.isu.isuese.datamodel.Classifier
+
 import edu.isu.isuese.datamodel.Component
 import groovy.transform.TupleConstructor
 
@@ -40,11 +40,13 @@ class FieldCue extends Cue  {
 
     @Override
     def getReplacement() {
-        return "[[field: ${name}]]"
+        return (/\[\[field: ${name}\]\]/)
     }
 
     @Override
-    def getCueForRole(String roleName, Classifier c) {
+    def getCueForRole(String roleName, Component c) {
+        if (name == roleName)
+            return this
         return null
     }
 

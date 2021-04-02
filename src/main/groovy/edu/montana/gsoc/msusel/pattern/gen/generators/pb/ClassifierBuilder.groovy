@@ -72,13 +72,15 @@ class ClassifierBuilder extends AbstractBuilder {
                 t.addModifier(Modifier.forName("ABSTRACT"))
         }
 
-        ctx.rbmlManager.addMapping((Classifier) params.classifier, t)
-
         ctx.fileBuilder.init(parent: params.ns, typeName: t.getName())
         File f = ctx.fileBuilder.create()
 
         ((Namespace) params.ns).addType(t)
         f.addType(t)
+
+        ((Namespace) params.ns).updateKey()
+        t.save()
+        ctx.rbmlManager.addMapping((Classifier) params.classifier, t)
 
         t
     }
@@ -87,26 +89,24 @@ class ClassifierBuilder extends AbstractBuilder {
         ctx.logger.atInfo().log("Creating features for ${classifier.name}")
         if (!classifier)
             throw new IllegalArgumentException("createFeatures: classifier cannot be null")
+
+        ctx.logger.atInfo().log("Number of structural features: ${classifier.structFeats.size()}")
+        ctx.logger.atInfo().log("Number of behavioral features: ${classifier.behFeats.size()}")
+        createFieldNames(classifier)
+        createMethodNames(classifier)
+
         ctx.rbmlManager.getTypes(classifier).each { Type t ->
-            ctx.logger.atInfo().log("Number of structural features: ${classifier.structFeats.size()}")
-            ctx.logger.atInfo().log("Number of behavioral features: ${classifier.behFeats.size()}")
-
-            createFieldNames(classifier)
-            createMethodNames(classifier)
-
             classifier.structFeats.each {structFeat ->
                 ctx.rbmlManager.fieldNames[structFeat.name].each {name ->
                     ctx.fldBuilder.init(owner: t, feature: structFeat, fieldName: name)
-                    t.addMember((Field) ctx.fldBuilder.create())
-                    t.updateKey()
+                    ctx.fldBuilder.create()
                 }
             }
 
             classifier.behFeats.each {behFeat ->
                 ctx.rbmlManager.methodNames[behFeat.name].each {name ->
                     ctx.methBuilder.init(owner: t, feature: behFeat, methodName: name)
-                    t.addMember((Method) ctx.methBuilder.create())
-                    t.updateKey()
+                    ctx.methBuilder.create()
                 }
             }
         }
@@ -161,7 +161,7 @@ class ClassifierBuilder extends AbstractBuilder {
                     num = min
                 else
                     num = rand.nextInt(max - min) + min
-                for (int i = 0; i < num; i++)
+                for (int i = 0; set.size() < num; i++)
                     set << ctx.methBuilder.getMethodName()
                 ctx.rbmlManager.methodNames[it.name] = set
             }

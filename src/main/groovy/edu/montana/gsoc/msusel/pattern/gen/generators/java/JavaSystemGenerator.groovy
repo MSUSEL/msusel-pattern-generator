@@ -52,6 +52,7 @@ class JavaSystemGenerator extends SystemGenerator {
         builder {
             "${sys.name}" {
                 sys.getProjects().each { proj ->
+                    ctx.rbmlManager = ctx.projRbmlMap[proj]
                     "${proj.name}" {
 //                        if (pattern)
 //                            ctx.cue = ctx.loader.loadAndSelectCue(pattern)
@@ -62,9 +63,5 @@ class JavaSystemGenerator extends SystemGenerator {
             }
         }
         ctx.logger.atInfo().log("Done generating system")
-    }
-
-    JavaSystemGenerator() {
-//        LoggerInit.init(log)
     }
 }

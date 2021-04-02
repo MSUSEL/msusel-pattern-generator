@@ -68,17 +68,15 @@ class Director {
 
             if (!context.generateOnly) {
                 context.patterns.each {
+                    context.loader.loadPatternCues(it, "java")
                     context.sysBuilder.init(pattern: it, num: context.numInstances)
-                    systems += context.sysBuilder.create()
-                }
-            }
+                    System sys = context.sysBuilder.create()
+                    systems += sys
 
-            if (!context.dataOnly) {
-                systems.each {
-                    context.loader.loadPatternCues(it.name, "java")
-                    println("Current Cue: ${CueManager.instance.getCurrent()}")
-                    context.sysGen.init(sys: it, builder: new FileTreeBuilder(new File(context.getOutput())), num: context.getNumInstances(), pattern: it.getName())
-                    context.sysGen.generate()
+                    if (!context.dataOnly) {
+                        context.sysGen.init(sys: sys, builder: new FileTreeBuilder(new File(context.getOutput())), num: context.getNumInstances(), pattern: it)
+                        context.sysGen.generate()
+                    }
                 }
             }
 

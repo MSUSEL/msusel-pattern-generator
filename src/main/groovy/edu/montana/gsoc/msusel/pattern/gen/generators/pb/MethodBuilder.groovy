@@ -70,9 +70,10 @@ class MethodBuilder extends AbstractComponentBuilder {
             ctx.paramBuilder.init(param: it)
             method.addParameter((Parameter) ctx.paramBuilder.create())
         }
-
+        ((Type) params.owner).addMember(method)
+        method.updateKey()
+        method.save()
         ctx.rbmlManager.addMapping(feature, method)
-
         method
     }
 

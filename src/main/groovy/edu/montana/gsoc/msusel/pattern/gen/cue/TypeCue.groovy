@@ -26,8 +26,12 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
-import edu.isu.isuese.datamodel.Classifier
+
 import edu.isu.isuese.datamodel.Component
+import edu.isu.isuese.datamodel.Method
+import edu.isu.isuese.datamodel.Type
+import edu.montana.gsoc.msusel.pattern.gen.generators.pb.RBML2DataModelManager
+import edu.montana.gsoc.msusel.rbml.model.Classifier
 import groovy.transform.TupleConstructor
 
 @TupleConstructor(includeSuperProperties = true, includeSuperFields = true, excludes = ["fieldCues", "methodCues"])
@@ -47,23 +51,72 @@ class TypeCue extends CueContainer {
     }
 
     @Override
-    def getCueForRole(String roleName, Classifier c) {
-        return null
+    def getCueForRole(String roleName, Component c) {
+        Cue retVal = null
+        if (c instanceof Type) {
+            if (name == roleName)
+                retVal = this
+        }
+        if (!retVal) {
+            children.each { key, value ->
+                if (key == roleName)
+                    retVal = value
+                else if (value.hasCueForRole(roleName, c))
+                    retVal = value.getCueForRole(roleName, c)
+            }
+        }
+
+        return retVal
     }
 
     @Override
     def hasCueForRole(String roleName, Component t) {
-        if (t instanceof Classifier) {
-            return name == roleName
+        boolean retVal = false
+        if (t instanceof Type) {
+            retVal = name == roleName
         }
-        else {
+        if (!retVal) {
             children.each { key, value ->
                 if (key == roleName)
-                    return true
+                    retVal = true
                 else if (value.hasCueForRole(roleName, t))
-                    return true
+                    retVal = true
             }
-            return false
         }
+        return retVal
+    }
+
+    @Override
+    String content(String text, Component comp, CueParams params, RBML2DataModelManager manager) {
+        Type type = (Type) comp
+        Classifier compRole = (Classifier) manager.getRole((Type) comp)
+        compRole.behFeats.each { role ->
+            String combined = ""
+            Cue cue = null
+            manager.getComponentsByRole(role).findAll{((Method) it).parentType == type}.each { meth ->
+                cue = getCueForRole(role.name, meth)
+                if (cue)
+                    combined += cue.compile(meth, params, manager) + "\n    "
+            }
+            if (cue) {
+                combined = combined.trim()
+                text = text.replaceAll(cue.replacement, combined)
+            }
+        }
+
+        compRole.structFeats.each { role ->
+            String combined = ""
+            Cue cue = null
+            manager.getComponentsByRole(role).each { fld ->
+                cue = getCueForRole(role.name, fld)
+                if (cue)
+                    combined += cue.compile(fld, params, manager) + "\n    "
+            }
+            if (cue) {
+                combined = combined.trim()
+                text = text.replaceAll(cue.replacement, combined)
+            }
+        }
+        text
     }
 }

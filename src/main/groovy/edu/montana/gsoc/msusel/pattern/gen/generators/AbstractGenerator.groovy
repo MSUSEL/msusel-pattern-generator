@@ -49,16 +49,12 @@ abstract class AbstractGenerator {
     abstract def generate()
 
     def findRole(Component comp) {
-        println("Instanceof: ${comp.getClass().getSimpleName()}")
         switch (comp) {
             case Type:
-                println("type")
                 return ctx.rbmlManager.getRole((Type) comp)
             case Method:
-                println("method")
                 return ctx.rbmlManager.getRole((Method) comp)
             case Field:
-                println("field")
                 return ctx.rbmlManager.getRole((Field) comp)
             default:
                 return null

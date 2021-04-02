@@ -45,18 +45,26 @@ class PatternCue extends CueContainer {
     }
 
     @Override
-    def getCueForRole(String roleName, Classifier c) {
-        return null
+    def getCueForRole(String roleName, Component c) {
+        Cue retVal = null
+        children.each { key, value ->
+            if (key == roleName)
+                retVal = value
+            else if (value.hasCueForRole(roleName, c))
+                retVal = value.getCueForRole(roleName, c)
+        }
+        return retVal
     }
 
     @Override
     def hasCueForRole(String roleName, Component t) {
+        boolean retVal = false
         children.each { key, value ->
             if (key == roleName)
-                return true
+                retVal = true
             else if (value.hasCueForRole(roleName, t))
-                return true
+                retVal = true
         }
-        return false
+        return retVal
     }
 }

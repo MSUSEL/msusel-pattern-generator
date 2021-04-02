@@ -35,6 +35,7 @@ import edu.montana.gsoc.msusel.rbml.model.ClassRole
 import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.InterfaceRole
 import edu.montana.gsoc.msusel.rbml.model.Role
+import edu.montana.gsoc.msusel.rbml.model.SPS
 import edu.montana.gsoc.msusel.rbml.model.StructuralFeature
 
 /**
@@ -66,26 +67,30 @@ class RBML2DataModelManager {
             throw new IllegalArgumentException("role must not be null")
 
         List<Type> types = typeMapping[role] ?: []
-        types.asImmutable()
+//        types.asImmutable()
+        types
     }
 
     Role getRole(Type type) {
         if (!type)
-            throw new IllegalArgumentException("type must not be null")
+            return null
+            //throw new IllegalArgumentException("type must not be null")
 
         roleMapping[type]
     }
 
     Role getRole(Method method) {
         if (!method)
-            throw new IllegalArgumentException("getRole: method must not be null")
+            return null
+            //throw new IllegalArgumentException("getRole: method must not be null")
 
         roleMethodMapping[method]
     }
 
     Role getRole(Field field) {
         if (!field)
-            throw new IllegalArgumentException("getRole: field must not be null")
+            return null
+//            throw new IllegalArgumentException("getRole: field must not be null")
 
         roleFieldMapping[field]
     }
@@ -105,23 +110,18 @@ class RBML2DataModelManager {
             typeMapping[r].remove(type)
         }
         roleMapping[type] = role
-        println("Added Type Mapped to Role $role")
     }
 
     def addMapping(Role role, Method method) {
         if (!role || !method)
             return
-
         roleMethodMapping[method] = role
-        println("Added Method Mapped to role $role")
     }
 
     def addMapping(Role role, Field field) {
         if (!role || !field)
             return
-
         roleFieldMapping[field] = role
-        println("Added Field Mapped to Role $role")
     }
 
     def removeMapping(Role role, Type type) {
@@ -190,17 +190,17 @@ class RBML2DataModelManager {
     Role findRoleByName(String name) {
         Role r = roleMapping.values().find {it.name == name }
         if (!r) r = roleFieldMapping.values().find { it.name == name }
-        if (!r) r = roleMethodMapping.values().find {it.name == name + "()"}
+        if (!r) r = roleMethodMapping.values().find {it.name == name }
         r
     }
 
     def getComponentsByRole(Role role) {
         if (role instanceof Classifier || role instanceof ClassRole || role instanceof InterfaceRole)
-            typeMapping[role]
+            return typeMapping[role]
         else if (role instanceof StructuralFeature)
-            roleFieldMapping.keySet().findAll {roleFieldMapping[it] == role }
+            return roleFieldMapping.keySet().findAll {roleFieldMapping[it] == role }
         else if (role instanceof BehavioralFeature)
-            roleMethodMapping.keySet().findAll {roleMethodMapping[it] == role }
-        else return [] as List<Component>
+            return roleMethodMapping.keySet().findAll {roleMethodMapping[it] == role }
+        else return [].asList()
     }
 }

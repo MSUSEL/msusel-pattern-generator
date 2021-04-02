@@ -26,17 +26,13 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
-import edu.isu.isuese.datamodel.Component
-import edu.isu.isuese.datamodel.Member
-import edu.isu.isuese.datamodel.Type
-import edu.montana.gsoc.msusel.pattern.gen.generators.pb.RBML2DataModelManager
-import edu.montana.gsoc.msusel.rbml.model.Role
+
 import groovy.transform.TupleConstructor
 
-@TupleConstructor(excludes = ["children"], includeSuperProperties = true, includeSuperFields = true)
+@TupleConstructor(includeSuperProperties = true, includeSuperFields = true)
 abstract class CueContainer extends Cue {
 
-    Map<String, Cue> children = [:]
+    protected Map<String, Cue> children = [:]
 
     void addChildCue(Cue child) {
         if (!children)
@@ -48,28 +44,6 @@ abstract class CueContainer extends Cue {
     void removeChildCue(Cue child) {
         if (child && children.containsKey(child.name))
             children.remove(child.name, child)
-    }
-
-    @Override
-    String content(String text, Component comp, CueParams params, RBML2DataModelManager manager) {
-        children.values().each {cue ->
-            Role role = manager.findRoleByName(cue.name)
-            List<Component> comps = manager.getComponentsByRole(role).findAll {
-                if (it instanceof Member)
-                    it.getParentType() == comp
-                if (it instanceof Type)
-                    true
-            }
-
-            String compText = ""
-
-            comps.each {
-                compText = compText + cue.compile(it, params, manager) + "\n"
-            }
-
-            text.replaceAll(cue.getReplacement(), compText)
-        }
-        text
     }
 
     static void main(String[] args) {
