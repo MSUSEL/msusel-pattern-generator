@@ -37,6 +37,14 @@ class Tree {
     Node root
 
     boolean isEmpty() { !root }
+
+    String toString() {
+        StringBuilder builder = new StringBuilder()
+        int indent = 1
+        builder.append(root.value)
+        builder.append("\n")
+        builder.append(root.childrenToString(builder, indent))
+    }
 }
 
 /**
@@ -68,5 +76,15 @@ class Node {
         }
         if (n)
             children.remove(n)
+    }
+
+    String childrenToString(StringBuilder builder, int indent) {
+        children.each {
+            for (int i = 0; i < indent; i++)
+                builder.append("    ")
+            builder.append(it.value)
+            builder.append("\n")
+            builder.append(it.childrenToString(builder, indent + 1))
+        }
     }
 }

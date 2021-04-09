@@ -43,11 +43,13 @@ class RampedHalfHalf extends AbstractTreeGenerator {
     }
 
     private Node grow(int depth, int maxDepth, Node parent, Type type) {
-        Node node = new Node(parent: parent)
+        Node node
         if (depth == maxDepth) {
-            node.value = randomSelect(terms)
+            node = parent.addChild(randomSelect(terms))
         } else if (depth == 0) {
-            node.value = parent ? randomSelect(nonterms) : root
+//            node.value = parent ? randomSelect(nonterms) : root
+            node = new Node(parent: parent)
+            node.value = root
             generateChildren(node, depth, maxDepth)
         }
         else {
@@ -55,9 +57,9 @@ class RampedHalfHalf extends AbstractTreeGenerator {
                 List<String> combo = []
                 combo += terms
                 combo += nonterms
-                node.value = randomSelect(combo)
+                node = parent.addChild(randomSelect(combo))
             } else {
-                node.value = randomSelect(nonterms)
+                node = parent.addChild(randomSelect(nonterms))
             }
             if (node.value in nonterms) {
                 generateChildren(node, depth, maxDepth)

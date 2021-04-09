@@ -43,7 +43,8 @@ class RandomBranch extends AbstractTreeGenerator {
     private Node branch(int depth, int size, Node parent) {
         Node node = new Node(parent: parent)
         if (depth == 0) {
-            node.value = parent ? randomSelect(nonterms) : root
+//            node.value = parent ? randomSelect(nonterms) : root
+            node.value = root
             generateChildren(size, node, depth)
         } else if (selectArityLessThan(size) <= 0) {
             node.value = randomSelect(terms)
@@ -59,7 +60,8 @@ class RandomBranch extends AbstractTreeGenerator {
         int children = arity
 
         if (children > 0) {
-            node.value = randomSelect(nonterms)
+            if (node.value != root)
+                node.value = randomSelect(nonterms)
             for (int i = 0; i < children; i++) {
                 node.children << branch(depth + 1, (int) Math.floor((double) size / arity), node)
             }

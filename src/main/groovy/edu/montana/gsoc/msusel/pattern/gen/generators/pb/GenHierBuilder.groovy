@@ -26,6 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
+
 import edu.isu.isuese.datamodel.Class
 import edu.isu.isuese.datamodel.Interface
 import edu.isu.isuese.datamodel.Namespace
@@ -43,7 +44,7 @@ import edu.montana.gsoc.msusel.rbml.model.Role
  */
 class GenHierBuilder extends AbstractBuilder {
 
-    Map<String, Map<String, List<Type>>> ghmap
+    Map<String, Map<String, Set<Type>>> ghmap
     List<Type> terms = []
     List<Type> nonterms = []
     List<Type> roots = []
@@ -63,9 +64,16 @@ class GenHierBuilder extends AbstractBuilder {
         Namespace ns = (Namespace) params.ns
 
         updateLists(gh)
+        println("GHB Roots: $roots")
         ctx.treeGenerator.init(gh.root.name, getNonTermNames(gh), getTermNames(gh), ctx.arities, ctx.maxDepth, ctx.maxBreadth*ctx.maxDepth)
         Tree tree = ctx.treeGenerator.generate()
+        println(tree)
+        if (!roots.isEmpty()) {
+            tree.root.type = roots[0]
+            roots.remove(0)
+        }
         populateTree(gh, ns, tree)
+        println("Number of roots: ${roots.size()}")
     }
 
     private List<String> getNonTermNames(GeneralizationHierarchy gh) {
@@ -96,6 +104,10 @@ class GenHierBuilder extends AbstractBuilder {
             nonterms = []
             terms = []
         }
+
+        if (!terms) terms = []
+        if (!nonterms) nonterms = []
+        if (!roots) roots = []
     }
 
     protected void populateTree(GeneralizationHierarchy gh, Namespace ns, Tree tree) {
@@ -116,7 +128,7 @@ class GenHierBuilder extends AbstractBuilder {
             if (n.getValue()) {
                 createClassifier(ns, getClassifier(gh, n.getValue()), n)
                 if (n.parent && n.parent.getType()) {
-                    generalizes(n.parent.getType(), n.getType())
+                    generalizes(n .parent.getType(), n.getType())
                 }
 
                 q.addAll(n.children)
@@ -163,11 +175,10 @@ class GenHierBuilder extends AbstractBuilder {
     }
 
     private void assignOrCreate(Node n, List<Type> types, Role role, Namespace ns) {
-        int ndx = types ? types.findIndexOf {
-            it.name == role.name
-        } : -1
-        if (ndx >= 0) {
-            n.type = types.remove(ndx)
+        if (n.type)
+            return
+        else if (!types.isEmpty()) {
+            n.type = types.remove(0)
         } else {
             ctx.clsBuilder.init(classifier: role, ns: ns)
             n.type = ctx.clsBuilder.create()

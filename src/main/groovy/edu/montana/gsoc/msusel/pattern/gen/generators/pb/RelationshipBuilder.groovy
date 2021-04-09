@@ -63,10 +63,11 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         }
 
         sps.genHierarchies.each {
-            if (it instanceof GeneralizationHierarchy)
+            if (it instanceof GeneralizationHierarchy) {
                 ctx.ghBuilder.init(ns: ns, gh: (GeneralizationHierarchy) it)
-            ctx.ghBuilder.ghmap = ghmap
-            ctx.ghBuilder.create()
+                ctx.ghBuilder.ghmap = ghmap
+                ctx.ghBuilder.create()
+            }
         }
     }
 

@@ -18,7 +18,7 @@ start_type: Context
 
     public void changeCurrentState([[State.root]] state) {
         currentState = state;
-        currentState.run();
+        // currentState.run();
     }
 
     start_method: Request
@@ -67,19 +67,19 @@ start_type: ConcreteState
 }
 end_type: ConcreteState
 
-start_type: State
-/**
-[[ClassComment]]
- */
-[[typedef]] {
-
-    [[fields]]
-
-    public abstract void run();
-
-    [[methods]]
-}
-end_type: State
+# start_type: State
+# /**
+# [[ClassComment]]
+#  */
+# [[typedef]] {
+#
+#     [[fields]]
+#
+#     public abstract void run();
+#
+#     [[methods]]
+# }
+# end_type: State
 end_pattern: adjacencyList
 
 # cue: adjacencyMatrix
@@ -108,7 +108,7 @@ end_pattern: adjacencyList
 # 
 #     [[methods]]
 # }
-# [[end: Context]]
+# [[end: Context]]a
 # 
 # [[begin: ConcreteState]]
 # [[copyright]]
