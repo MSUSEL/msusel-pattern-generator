@@ -26,6 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
+import com.google.common.collect.Table
 import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.System
 import edu.isu.isuese.datamodel.util.DBCredentials
@@ -77,11 +78,29 @@ class Director {
                         context.sysGen.init(sys: sys, builder: new FileTreeBuilder(new File(context.getOutput())), num: context.getNumInstances(), pattern: it)
                         context.sysGen.generate()
                     }
+
+                    updateResults(sys, it)
                 }
             }
 
             // Close DB Connection
             manager.close()
+        }
+    }
+
+    void updateResults(System sys, String pattern) {
+        List<Table.Cell<String, String, String>> cells = context.results.cellSet().findAll {
+            it.columnKey == "PatternType" && it.value == pattern
+        }
+        List<String> ids = cells.collect {it.rowKey}
+
+        List<Project> projects = sys.getProjects()
+
+        assert ids.size() == projects.size()
+
+        for (int i = 0; i < ids.size(); i++) {
+            context.results.put(ids.get(i), "Key1", projects.get(i).getProjectKey())
+            context.results.put(ids.get(i), "Path1", projects.get(i).getFullPath())
         }
     }
 }

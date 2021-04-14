@@ -26,6 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
+import com.google.common.collect.Table
 import com.google.common.flogger.FluentLogger
 import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.generators.*
@@ -63,6 +64,7 @@ class GeneratorContext {
     List<String> projectKeys = []
     List<String> patternKeys = []
     Map<Project, RBML2DataModelManager> projRbmlMap = [:]
+    Table<String, String, String> results
 
     // director flags
     boolean generateOnly = false
