@@ -67,27 +67,27 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>prepare-package</phase>
-                        <configuration>
-                            <target>
-                                <echo message="Deleting file" level="info" />
-                                <delete file="${project.basedir}/target/classes/activejdbc_models.properties" />
-                                <copy file="${project.basedir}/src/main/resources/activejdbc_models.properties" tofile="${project.basedir}/target/classes/activejdbc_models.properties" overwrite="true"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-antrun-plugin</artifactId>-->
+<!--                <version>3.0.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>copy</id>-->
+<!--                        <phase>prepare-package</phase>-->
+<!--                        <configuration>-->
+<!--                            <target>-->
+<!--                                <echo message="Deleting file" level="info" />-->
+<!--                                <delete file="${project.basedir}/target/classes/activejdbc_models.properties" />-->
+<!--                                <copy file="${project.basedir}/src/main/resources/activejdbc_models.properties" tofile="${project.basedir}/target/classes/activejdbc_models.properties" overwrite="true"/>-->
+<!--                            </target>-->
+<!--                        </configuration>-->
+<!--                        <goals>-->
+<!--                            <goal>run</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
 <!--            <plugin>-->
 <!--                <groupId>org.apache.maven.plugins</groupId>-->
 <!--                <artifactId>maven-shade-plugin</artifactId>-->
