@@ -27,21 +27,19 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.Project
-import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
-import groovy.util.logging.Log
+import groovy.util.logging.Log4j2
 import groovy.xml.StreamingMarkupBuilder
 import groovy.xml.XmlUtil
+import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
+@Log4j2
 class JavaMavenBuildFileGenerator extends JavaBuildFileGenerator {
 
     JavaMavenBuildFileGenerator() {
-        LoggerInit.init(log)
-
     }
 
     @Override
@@ -61,7 +59,7 @@ class JavaMavenBuildFileGenerator extends JavaBuildFileGenerator {
 
     @Override
     void generateBuild(FileTreeBuilder tree) {
-        ctx.logger.atInfo().log("Generating maven build")
+        log.log(Level.INFO,"Generating maven build")
         if (!tree)
             throw new IllegalArgumentException("File Tree Builder cannot be null")
 

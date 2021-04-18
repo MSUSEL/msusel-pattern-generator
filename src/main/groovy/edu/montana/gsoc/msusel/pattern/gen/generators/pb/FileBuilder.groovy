@@ -47,8 +47,6 @@ class FileBuilder extends AbstractBuilder {
         String srcExt = ctx.srcExt
         String path = "${srcPath}${java.io.File.separator}${((Namespace) params.parent).getFullName().replaceAll(/\./, java.io.File.separator)}${java.io.File.separator}${params.typeName}${srcExt}"
 
-        ctx.logger.atInfo().log("Creating file: ${path}")
-
         File file = File.builder()
                 .name(path)
                 .fileKey(((Namespace) params.parent).getParentProject().projectKey + ":" + path)

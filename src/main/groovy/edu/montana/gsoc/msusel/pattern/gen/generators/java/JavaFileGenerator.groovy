@@ -28,18 +28,16 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.FileGenerator
-import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
-import groovy.util.logging.Log
+import groovy.util.logging.Log4j2
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
+@Log4j2
 class JavaFileGenerator extends FileGenerator {
 
     JavaFileGenerator() {
-        LoggerInit.init(log)
     }
 
     @Override

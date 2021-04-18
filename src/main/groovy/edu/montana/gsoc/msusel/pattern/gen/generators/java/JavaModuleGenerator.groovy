@@ -29,23 +29,22 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 import edu.isu.isuese.datamodel.Module
 import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.generators.ModuleGenerator
-import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
-import groovy.util.logging.Log
+import groovy.util.logging.Log4j2
+import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
+@Log4j2
 class JavaModuleGenerator extends ModuleGenerator {
 
     JavaModuleGenerator() {
-        LoggerInit.init(log)
     }
 
     @Override
     File generate() {
-        ctx.logger.atInfo().log("Generating Module")
+        log.log(Level.INFO,"Generating Module")
         Project project = (Project) params.project
         Module module = (Module) params.mod
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
@@ -55,6 +54,6 @@ class JavaModuleGenerator extends ModuleGenerator {
             ctx.dirGen.init(project: project, module: module, tree: builder, subproject: subproject, num: params.num, pattern: params.pattern)
             ctx.dirGen.generate()
         }
-        ctx.logger.atInfo().log("Done generating module")
+        log.log(Level.INFO,"Done generating module")
     }
 }

@@ -32,15 +32,19 @@ import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueParams
 import edu.montana.gsoc.msusel.pattern.gen.generators.TypeGenerator
+import groovy.util.logging.Log4j2
+import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log4j2
 class JavaTypeGenerator extends TypeGenerator {
 
     @Override
     String generate() {
+        log.log(Level.INFO, "Generating Type")
         Type type = (Type) params.type
 
         String roleName = findRole(type)?.name
@@ -64,7 +68,7 @@ class JavaTypeGenerator extends TypeGenerator {
             }
         }
 
-        ctx.logger.atInfo().log("Done generating type")
+        log.log(Level.INFO,"Done generating type")
         output
     }
 

@@ -26,31 +26,26 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
-import edu.isu.isuese.datamodel.Constructor
-import edu.isu.isuese.datamodel.Destructor
-import edu.isu.isuese.datamodel.Field
-import edu.isu.isuese.datamodel.Interface
-import edu.isu.isuese.datamodel.Method
+import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.pattern.gen.generators.MethodGenerator
-import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
-import groovy.util.logging.Log
+import groovy.util.logging.Log4j2
+import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
+@Log4j2
 class JavaMethodGenerator extends MethodGenerator {
 
     JavaMethodGenerator() {
-        LoggerInit.init(log)
     }
 
     @Override
     String generate() {
-        ctx.logger.atInfo().log("Generating Method")
+        log.log(Level.INFO,"Generating Method")
         if (!params.method && !params.field)
             throw new IllegalArgumentException("Method and Field cannot be null")
 
@@ -74,7 +69,7 @@ class JavaMethodGenerator extends MethodGenerator {
         else if (field)
             output += generate(field)
 
-        ctx.logger.atInfo().log("Done generating method")
+        log.log(Level.INFO,"Done generating method")
         output
     }
 

@@ -27,23 +27,20 @@
 package edu.montana.gsoc.msusel.pattern.gen
 
 
-import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
 import groovy.cli.picocli.CliBuilder
 import groovy.cli.picocli.OptionAccessor
-import groovy.util.logging.Log
+import groovy.util.logging.Log4j2
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
+@Log4j2
 class App {
 
     public static final String VERSION = "1.3.0"
 
     static void main(String[] args) {
-        LoggerInit.init(log)
-
         // Setup CLI
         CommandLineInterface cli = CommandLineInterface.INSTANCE
         ConfigLoader loader = new ConfigLoader()

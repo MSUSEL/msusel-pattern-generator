@@ -37,11 +37,14 @@ import edu.montana.gsoc.msusel.rbml.model.ClassRole
 import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.GeneralizationHierarchy
 import edu.montana.gsoc.msusel.rbml.model.Role
+import groovy.util.logging.Log4j2
+import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log4j2
 class GenHierBuilder extends AbstractBuilder {
 
     Map<String, Map<String, Set<Type>>> ghmap
@@ -58,7 +61,7 @@ class GenHierBuilder extends AbstractBuilder {
         if (ghmap == null)
             throw new IllegalArgumentException("createGenHierarchy: ghmap cannot be empty or null")
 
-        ctx.logger.atInfo().log("Generating Hierarchy")
+        log.log(Level.INFO,"Generating Hierarchy")
 
         GeneralizationHierarchy gh = (GeneralizationHierarchy) params.gh
         Namespace ns = (Namespace) params.ns

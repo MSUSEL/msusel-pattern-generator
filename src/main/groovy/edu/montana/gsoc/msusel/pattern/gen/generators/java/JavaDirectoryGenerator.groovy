@@ -29,18 +29,17 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 import edu.isu.isuese.datamodel.Module
 import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.generators.DirectoryGenerator
-import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
-import groovy.util.logging.Log
+import groovy.util.logging.Log4j2
+import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
+@Log4j2
 class JavaDirectoryGenerator extends DirectoryGenerator {
 
     JavaDirectoryGenerator() {
-        LoggerInit.init(log)
     }
 
     /**
@@ -61,7 +60,7 @@ class JavaDirectoryGenerator extends DirectoryGenerator {
      */
     @Override
     def generate() {
-        ctx.logger.atInfo().log("generating the source directory")
+        log.log(Level.INFO,"generating the source directory")
         FileTreeBuilder builder = (FileTreeBuilder) params.tree
         Module mod = (Module) params.module
         Project proj = (Project) params.project
@@ -105,6 +104,6 @@ class JavaDirectoryGenerator extends DirectoryGenerator {
             }
         }
 
-        ctx.logger.atInfo().log("Done generating the source directory")
+        log.log(Level.INFO,"Done generating the source directory")
     }
 }

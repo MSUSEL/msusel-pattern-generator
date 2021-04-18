@@ -28,20 +28,19 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import com.google.common.collect.Sets
 import edu.isu.isuese.datamodel.*
-import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
 import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.InterfaceRole
-import groovy.util.logging.Log
+import groovy.util.logging.Log4j2
+import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
+@Log4j2
 class ClassifierBuilder extends AbstractBuilder {
 
     ClassifierBuilder() {
-        LoggerInit.init(log)
     }
 
     Type create() {
@@ -86,12 +85,10 @@ class ClassifierBuilder extends AbstractBuilder {
     }
 
     void createFeatures(Classifier classifier) {
-        ctx.logger.atInfo().log("Creating features for ${classifier.name}")
+        log.log(Level.INFO,"Creating features for ${classifier.name}")
         if (!classifier)
             throw new IllegalArgumentException("createFeatures: classifier cannot be null")
 
-        ctx.logger.atInfo().log("Number of structural features: ${classifier.structFeats.size()}")
-        ctx.logger.atInfo().log("Number of behavioral features: ${classifier.behFeats.size()}")
         createFieldNames(classifier)
         createMethodNames(classifier)
 
@@ -110,7 +107,7 @@ class ClassifierBuilder extends AbstractBuilder {
                 }
             }
         }
-        ctx.logger.atInfo().log("Done creating features for ${classifier.name}")
+        log.log(Level.INFO,"Done creating features for ${classifier.name}")
     }
 
     private List createFieldNames(Classifier classifier) {

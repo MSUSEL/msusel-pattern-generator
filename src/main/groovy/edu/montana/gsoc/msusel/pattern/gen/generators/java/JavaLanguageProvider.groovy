@@ -30,12 +30,13 @@ import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import edu.montana.gsoc.msusel.pattern.gen.generators.*
 import edu.montana.gsoc.msusel.pattern.gen.plugin.LanguageDescriptor
 import groovy.util.logging.Log
+import groovy.util.logging.Log4j2
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
+@Log4j2
 class JavaLanguageProvider extends LanguageProvider {
 
     /**

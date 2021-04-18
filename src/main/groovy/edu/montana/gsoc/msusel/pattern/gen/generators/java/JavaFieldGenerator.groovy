@@ -31,18 +31,16 @@ import edu.isu.isuese.datamodel.Interface
 import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.pattern.gen.generators.FieldGenerator
-import edu.montana.gsoc.msusel.pattern.gen.logging.LoggerInit
-import groovy.util.logging.Log
+import groovy.util.logging.Log4j2
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
+@Log4j2
 class JavaFieldGenerator extends FieldGenerator {
 
     JavaFieldGenerator() {
-        LoggerInit.init(log)
     }
 
     @Override

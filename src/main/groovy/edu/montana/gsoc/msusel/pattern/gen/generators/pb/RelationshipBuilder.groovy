@@ -35,6 +35,7 @@ import edu.isu.isuese.datamodel.TypeRef
 import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.rbml.model.*
+import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -87,7 +88,6 @@ class RelationshipBuilder extends AbstractComponentBuilder {
     Set<Type> generateClassifier(Namespace ns, Classifier role, boolean ghRoot = false) {
         if (!role)
             throw new IllegalArgumentException("generateClassifier: role cannot be null")
-        ctx.logger.atInfo().log("Generating Classifier: $role")
 
         Random rand = new Random()
         int num
@@ -175,9 +175,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             Set<Type> generated = generateClassifier(ns, toGen, isRoot)
             if (!ghmap[name]) {
                 ghmap[name] = new HashMap<String, Set<Type>>()
-                ghmap[name]["roots"] = []
-                ghmap[name]["leaves"] = []
-                ghmap[name]["nonterms"] = []
+                ghmap[name]["roots"] = [] as Set<Type>
+                ghmap[name]["leaves"] = [] as Set<Type>
+                ghmap[name]["nonterms"] = [] as Set<Type>
             }
 
             if (isRoot) {

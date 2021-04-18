@@ -60,7 +60,6 @@ class GeneratorContext {
     List<Integer> arities = [1]
     String srcPath
     String srcExt
-    static final FluentLogger logger = FluentLogger.forEnclosingClass()
     List<String> projectKeys = []
     List<String> patternKeys = []
     Map<Project, RBML2DataModelManager> projRbmlMap = [:]

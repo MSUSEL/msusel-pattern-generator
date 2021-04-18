@@ -26,35 +26,25 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
-import edu.isu.isuese.datamodel.Component
-import edu.isu.isuese.datamodel.Field
-import edu.isu.isuese.datamodel.Method
-import edu.isu.isuese.datamodel.Namespace
-import edu.isu.isuese.datamodel.Pattern
-import edu.isu.isuese.datamodel.PatternInstance
-import edu.isu.isuese.datamodel.Project
-import edu.isu.isuese.datamodel.RefType
-import edu.isu.isuese.datamodel.Reference
-import edu.isu.isuese.datamodel.RoleBinding
-import edu.isu.isuese.datamodel.RoleType
-import edu.isu.isuese.datamodel.Type
+import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.GeneralizationHierarchy
 import edu.montana.gsoc.msusel.rbml.model.Role
 import edu.montana.gsoc.msusel.rbml.model.SPS
-import groovy.util.logging.Log
+import groovy.util.logging.Log4j2
+import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
-@Log
+@Log4j2
 class PatternBuilder extends AbstractBuilder {
 
     Map<String, Integer> patternCounts = [:]
 
     def create() {
-        ctx.logger.atInfo().log("Generating pattern")
+        log.log(Level.INFO,"Generating pattern")
         if (!params.pattern)
             throw new IllegalArgumentException("create: pattern cannot be null or empty")
         if (!params.parent)
@@ -67,7 +57,6 @@ class PatternBuilder extends AbstractBuilder {
         if (!projects.isEmpty())
             parentProj = projects.first()
 
-        ctx.logger.atInfo().log("Loading pattern: ${pattern}")
         SPS rbml = ctx.loader.loadPattern(pattern)
         if (rbml) {
             ctx.relationBuilder.init(ns: ns, rbml: rbml)
