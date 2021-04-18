@@ -96,7 +96,7 @@ class GenHierBuilder extends AbstractBuilder {
             if (ghmap[gh.name]) {
                 roots = ghmap[gh.name]['roots'].toList()
                 nonterms = ghmap[gh.name]['nonterms'].toList()
-                terms = ghmap[gh.name]['terms'].toList()
+                terms = ghmap[gh.name]['leaves'].toList()
             } else {
                 roots = []
                 nonterms = []
