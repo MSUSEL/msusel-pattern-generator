@@ -94,9 +94,9 @@ class GenHierBuilder extends AbstractBuilder {
     protected void updateLists(GeneralizationHierarchy gh) {
         if (ghmap) {
             if (ghmap[gh.name]) {
-                roots = ghmap[gh.name]['roots']
-                nonterms = ghmap[gh.name]['nonterms']
-                terms = ghmap[gh.name]['terms']
+                roots = ghmap[gh.name]['roots'].toList()
+                nonterms = ghmap[gh.name]['nonterms'].toList()
+                terms = ghmap[gh.name]['terms'].toList()
             } else {
                 roots = []
                 nonterms = []
