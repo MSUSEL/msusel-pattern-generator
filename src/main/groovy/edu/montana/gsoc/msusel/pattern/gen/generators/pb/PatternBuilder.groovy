@@ -27,6 +27,7 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import edu.isu.isuese.datamodel.*
+import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.GeneralizationHierarchy
 import edu.montana.gsoc.msusel.rbml.model.Role
@@ -43,7 +44,7 @@ class PatternBuilder extends AbstractBuilder {
     Map<String, Integer> patternCounts = [:]
 
     def create() {
-        log.info("Generating pattern")
+        log.info("Generating pattern ${++ctx.num}/${ctx.numInstances * ctx.patterns.size()}")
         if (!params.pattern)
             throw new IllegalArgumentException("create: pattern cannot be null or empty")
         if (!params.parent)
