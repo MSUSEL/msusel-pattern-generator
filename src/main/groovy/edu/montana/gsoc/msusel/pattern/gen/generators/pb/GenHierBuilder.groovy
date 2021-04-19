@@ -61,22 +61,19 @@ class GenHierBuilder extends AbstractBuilder {
         if (ghmap == null)
             throw new IllegalArgumentException("createGenHierarchy: ghmap cannot be empty or null")
 
-        log.log(Level.INFO,"Generating Hierarchy")
+        log.log(Level.INFO, "Generating Hierarchy")
 
         GeneralizationHierarchy gh = (GeneralizationHierarchy) params.gh
         Namespace ns = (Namespace) params.ns
 
         updateLists(gh)
-        println("GHB Roots: $roots")
-        ctx.treeGenerator.init(gh.root.name, getNonTermNames(gh), getTermNames(gh), ctx.arities, ctx.maxDepth, ctx.maxBreadth*ctx.maxDepth)
+        ctx.treeGenerator.init(gh.root.name, getNonTermNames(gh), getTermNames(gh), ctx.arities, ctx.maxDepth, ctx.maxBreadth * ctx.maxDepth)
         Tree tree = ctx.treeGenerator.generate()
-        println(tree)
         if (!roots.isEmpty()) {
             tree.root.type = roots[0]
             roots.remove(0)
         }
         populateTree(gh, ns, tree)
-        println("Number of roots: ${roots.size()}")
     }
 
     private List<String> getNonTermNames(GeneralizationHierarchy gh) {
@@ -131,7 +128,7 @@ class GenHierBuilder extends AbstractBuilder {
             if (n.getValue()) {
                 createClassifier(ns, getClassifier(gh, n.getValue()), n)
                 if (n.parent && n.parent.getType()) {
-                    generalizes(n .parent.getType(), n.getType())
+                    generalizes(n.parent.getType(), n.getType())
                 }
 
                 q.addAll(n.children)

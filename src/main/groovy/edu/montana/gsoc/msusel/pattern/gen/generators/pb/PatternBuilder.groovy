@@ -79,6 +79,7 @@ class PatternBuilder extends AbstractBuilder {
                 .instKey("${parentProj.projectKey}:${pattern}-${getCount(pattern)}")
                 .create()
 
+        println("Pattern: ${pattern.capitalize()}")
         Pattern pat = (Pattern) Pattern.find("name = ?", pattern.capitalize()).first()
         if (pat) {
             updateRoles(pat, rbml)
