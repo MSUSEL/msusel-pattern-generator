@@ -27,13 +27,11 @@
 package edu.montana.gsoc.msusel.pattern.gen
 
 import com.google.common.collect.Table
-import com.google.common.flogger.FluentLogger
 import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.generators.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.RampedHalfHalf
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.TreeGenerator
-import edu.montana.gsoc.msusel.rbml.model.Role
 
 /**
  * @author Isaac Griffith
@@ -59,6 +57,8 @@ class GeneratorContext {
     Map<String, String> build
     List<Integer> arities = [1]
     String srcPath
+    String testPath
+    String binPath
     String srcExt
     List<String> projectKeys = []
     List<String> patternKeys = []
@@ -156,6 +156,8 @@ class GeneratorContext {
         version         => ${version}
         arities         => ${arities}
         srcPath         => ${srcPath}
+        binPath         => ${binPath}
+        testPath        => ${testPath}
         srcExt          => ${srcExt}
         license: 
             name        => ${license.name}

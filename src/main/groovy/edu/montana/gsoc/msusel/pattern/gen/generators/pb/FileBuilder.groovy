@@ -50,6 +50,7 @@ class FileBuilder extends AbstractBuilder {
         File file = File.builder()
                 .name(path)
                 .fileKey(((Namespace) params.parent).getParentProject().projectKey + ":" + path)
+                .relPath("${params.typeName}${srcExt}")
                 .type(FileType.SOURCE)
                 .create()
         file.save()

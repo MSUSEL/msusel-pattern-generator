@@ -50,8 +50,13 @@ class ProjectBuilder extends AbstractBuilder {
         Project proj = Project.builder()
                 .name((String) params.name)
                 .projKey(key)
+                .relPath((String) params.name)
                 .version((String) params.version)
                 .create()
+
+        proj.setSrcPath(ctx.srcPath)
+        proj.setTestPath(ctx.testPath)
+        proj.setBinPath(ctx.binPath)
 
         ((System) params.parent).addProject(proj)
 

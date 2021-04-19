@@ -62,5 +62,7 @@ class ConfigLoader {
         context.build        = config.build        ?: [:]
         context.arities      = config.arities      ?: [3]
         context.srcPath      = config.srcPath      ?: "."
+        context.testPath     = config.testPath     ?: "."
+        context.binPath      = config.binPath      ?: "."
     }
 }

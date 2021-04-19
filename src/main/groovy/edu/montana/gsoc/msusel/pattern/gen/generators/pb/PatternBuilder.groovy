@@ -27,7 +27,6 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import edu.isu.isuese.datamodel.*
-import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.GeneralizationHierarchy
 import edu.montana.gsoc.msusel.rbml.model.Role
@@ -78,10 +77,11 @@ class PatternBuilder extends AbstractBuilder {
         PatternInstance inst = PatternInstance.builder()
                 .instKey("${parentProj.projectKey}:${pattern}-${getCount(pattern)}")
                 .create()
+        parentProj.addPatternInstance(inst)
 
-        println("Pattern: ${pattern.capitalize()}")
         Pattern pat = (Pattern) Pattern.find("name = ?", pattern.capitalize()).first()
         if (pat) {
+            pat.addInstance(inst)
             updateRoles(pat, rbml)
 
             ctx.rbmlManager.getRoles().each { Role role ->
@@ -157,6 +157,7 @@ class PatternBuilder extends AbstractBuilder {
                         .type(RoleType.RELATION)
                         .create()
                 pat.addRole(role)
+                pat.save()
             }
         }
     }
@@ -170,6 +171,7 @@ class PatternBuilder extends AbstractBuilder {
                     .type(RoleType.CLASSIFIER)
                     .create()
             pat.addRole(role)
+            pat.save()
 
             c.structFeats.each {
                 edu.isu.isuese.datamodel.Role struct = edu.isu.isuese.datamodel.Role.builder()
@@ -178,6 +180,7 @@ class PatternBuilder extends AbstractBuilder {
                         .type(RoleType.STRUCT_FEAT)
                         .create()
                 pat.addRole(struct)
+                pat.save()
             }
 
             c.behFeats.each {
@@ -187,6 +190,7 @@ class PatternBuilder extends AbstractBuilder {
                         .type(RoleType.BEHAVE_FEAT)
                         .create()
                 pat.addRole(behav)
+                pat.save()
             }
         }
     }
