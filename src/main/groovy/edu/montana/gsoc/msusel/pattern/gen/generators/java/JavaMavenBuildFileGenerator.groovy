@@ -30,7 +30,6 @@ import edu.isu.isuese.datamodel.Project
 import groovy.util.logging.Log4j2
 import groovy.xml.StreamingMarkupBuilder
 import groovy.xml.XmlUtil
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -59,7 +58,7 @@ class JavaMavenBuildFileGenerator extends JavaBuildFileGenerator {
 
     @Override
     void generateBuild(FileTreeBuilder tree) {
-        log.log(Level.INFO,"Generating maven build")
+        log.info("Generating maven build")
         if (!tree)
             throw new IllegalArgumentException("File Tree Builder cannot be null")
 

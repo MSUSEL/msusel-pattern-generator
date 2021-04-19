@@ -31,7 +31,6 @@ import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.InterfaceRole
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -85,7 +84,7 @@ class ClassifierBuilder extends AbstractBuilder {
     }
 
     void createFeatures(Classifier classifier) {
-        log.log(Level.INFO,"Creating features for ${classifier.name}")
+        log.info("Creating features for ${classifier.name}")
         if (!classifier)
             throw new IllegalArgumentException("createFeatures: classifier cannot be null")
 
@@ -107,7 +106,7 @@ class ClassifierBuilder extends AbstractBuilder {
                 }
             }
         }
-        log.log(Level.INFO,"Done creating features for ${classifier.name}")
+        log.info("Done creating features for ${classifier.name}")
     }
 
     private List createFieldNames(Classifier classifier) {

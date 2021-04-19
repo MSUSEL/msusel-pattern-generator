@@ -26,7 +26,6 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
-
 import edu.isu.isuese.datamodel.Class
 import edu.isu.isuese.datamodel.Interface
 import edu.isu.isuese.datamodel.Namespace
@@ -38,7 +37,6 @@ import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.GeneralizationHierarchy
 import edu.montana.gsoc.msusel.rbml.model.Role
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -61,7 +59,7 @@ class GenHierBuilder extends AbstractBuilder {
         if (ghmap == null)
             throw new IllegalArgumentException("createGenHierarchy: ghmap cannot be empty or null")
 
-        log.log(Level.INFO, "Generating Hierarchy")
+        log.info( "Generating Hierarchy")
 
         GeneralizationHierarchy gh = (GeneralizationHierarchy) params.gh
         Namespace ns = (Namespace) params.ns

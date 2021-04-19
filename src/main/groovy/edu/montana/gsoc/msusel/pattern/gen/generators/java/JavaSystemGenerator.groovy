@@ -29,7 +29,6 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 import edu.isu.isuese.datamodel.System
 import edu.montana.gsoc.msusel.pattern.gen.generators.SystemGenerator
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -45,7 +44,7 @@ class JavaSystemGenerator extends SystemGenerator {
         if (!params.builder)
             throw new IllegalArgumentException("FileTreeBuilder cannot be null")
 
-        log.log(Level.INFO,"Generating system")
+        log.info("Generating system")
         System sys = (System) params.sys
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
 //        String pattern = params.pattern
@@ -63,6 +62,6 @@ class JavaSystemGenerator extends SystemGenerator {
                 }
             }
         }
-        log.log(Level.INFO,"Done generating system")
+        log.info("Done generating system")
     }
 }

@@ -30,7 +30,6 @@ import edu.isu.isuese.datamodel.Module
 import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.generators.DirectoryGenerator
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -60,7 +59,7 @@ class JavaDirectoryGenerator extends DirectoryGenerator {
      */
     @Override
     def generate() {
-        log.log(Level.INFO,"generating the source directory")
+        log.info("generating the source directory")
         FileTreeBuilder builder = (FileTreeBuilder) params.tree
         Module mod = (Module) params.module
         Project proj = (Project) params.project
@@ -104,6 +103,6 @@ class JavaDirectoryGenerator extends DirectoryGenerator {
             }
         }
 
-        log.log(Level.INFO,"Done generating the source directory")
+        log.info("Done generating the source directory")
     }
 }

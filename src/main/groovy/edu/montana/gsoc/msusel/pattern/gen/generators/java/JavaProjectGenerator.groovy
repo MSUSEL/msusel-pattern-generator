@@ -30,7 +30,6 @@ import edu.isu.isuese.datamodel.Module
 import edu.isu.isuese.datamodel.Project
 import edu.montana.gsoc.msusel.pattern.gen.generators.ProjectGenerator
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -44,7 +43,7 @@ class JavaProjectGenerator extends ProjectGenerator {
 
     @Override
     def generate() {
-        log.log(Level.INFO,"Generating Project")
+        log.info("Generating Project")
         Project proj = (Project) params.proj
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
 
@@ -61,6 +60,6 @@ class JavaProjectGenerator extends ProjectGenerator {
             ctx.modGen.init(project: proj, mod: proj.getModules().first(), builder: builder, subproject: false, num: params.num, pattern: params.pattern)
             ctx.modGen.generate()
         }
-        log.log(Level.INFO,"Done generating project")
+        log.info("Done generating project")
     }
 }

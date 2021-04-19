@@ -28,7 +28,6 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.Project
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -122,7 +121,7 @@ class JavaGradleBuildFileGenerator extends JavaBuildFileGenerator {
 
     @Override
     void generateBuild(FileTreeBuilder tree) {
-        log.log(Level.INFO,"generating build")
+        log.info("generating build")
         if (!tree)
             throw new IllegalArgumentException("File Tree Builder cannot be null")
 

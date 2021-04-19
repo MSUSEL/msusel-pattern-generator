@@ -30,7 +30,6 @@ import edu.isu.isuese.datamodel.Literal
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.generators.LiteralGenerator
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -44,7 +43,7 @@ class JavaLiteralGenerator extends LiteralGenerator {
 
     @Override
     String generate() {
-        log.log(Level.INFO,"Generating Literal")
+        log.info("Generating Literal")
         Literal literal = (Literal) params.literal
         Type parent = (Type) params.parent
 
@@ -54,7 +53,7 @@ class JavaLiteralGenerator extends LiteralGenerator {
         if (!literal)
             throw new IllegalArgumentException("literal cannot be null")
 
-        log.log(Level.INFO,"Done generating literal")
+        log.info("Done generating literal")
         "    ${literal.name}"
 
         // fire LiteralCreationComplete event

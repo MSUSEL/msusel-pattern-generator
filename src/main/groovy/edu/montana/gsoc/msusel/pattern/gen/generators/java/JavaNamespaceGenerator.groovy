@@ -29,7 +29,6 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 import edu.isu.isuese.datamodel.Namespace
 import edu.montana.gsoc.msusel.pattern.gen.generators.NamespaceGenerator
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -43,12 +42,12 @@ class JavaNamespaceGenerator extends NamespaceGenerator {
 
     @Override
     def generate() {
-        log.log(Level.INFO,"Generating namespace")
+        log.info("Generating namespace")
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
         Namespace ns = (Namespace) params.ns
 
         generateRec(ns, builder)
-        log.log(Level.INFO,"Done generating namespace")
+        log.info("Done generating namespace")
     }
 
     private def generateRec(Namespace ns, FileTreeBuilder builder) {

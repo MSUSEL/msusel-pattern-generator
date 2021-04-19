@@ -31,7 +31,6 @@ import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.pattern.gen.generators.MethodGenerator
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -45,7 +44,7 @@ class JavaMethodGenerator extends MethodGenerator {
 
     @Override
     String generate() {
-        log.log(Level.INFO,"Generating Method")
+        log.info("Generating Method")
         if (!params.method && !params.field)
             throw new IllegalArgumentException("Method and Field cannot be null")
 
@@ -69,7 +68,7 @@ class JavaMethodGenerator extends MethodGenerator {
         else if (field)
             output += generate(field)
 
-        log.log(Level.INFO,"Done generating method")
+        log.info("Done generating method")
         output
     }
 

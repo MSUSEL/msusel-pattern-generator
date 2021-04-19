@@ -28,7 +28,6 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.montana.gsoc.msusel.pattern.gen.generators.GitIgnoreGenerator
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -42,7 +41,7 @@ class JavaGitIgnoreGenerator extends GitIgnoreGenerator {
 
     @Override
     def generate() {
-        log.log(Level.INFO,"Generating GitIgnore File")
+        log.info("Generating GitIgnore File")
         if (!params.tree)
             throw new IllegalArgumentException("File Tree Builder cannot be null")
 

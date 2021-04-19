@@ -32,7 +32,6 @@ import edu.montana.gsoc.msusel.rbml.model.GeneralizationHierarchy
 import edu.montana.gsoc.msusel.rbml.model.Role
 import edu.montana.gsoc.msusel.rbml.model.SPS
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -44,7 +43,7 @@ class PatternBuilder extends AbstractBuilder {
     Map<String, Integer> patternCounts = [:]
 
     def create() {
-        log.log(Level.INFO,"Generating pattern")
+        log.info("Generating pattern")
         if (!params.pattern)
             throw new IllegalArgumentException("create: pattern cannot be null or empty")
         if (!params.parent)

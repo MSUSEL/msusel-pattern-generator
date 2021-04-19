@@ -29,7 +29,6 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 import edu.isu.isuese.datamodel.Namespace
 import edu.montana.gsoc.msusel.pattern.gen.generators.CodeGenerator
 import groovy.util.logging.Log4j2
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -42,7 +41,7 @@ class JavaCodeGenerator extends CodeGenerator {
     void generate(FileTreeBuilder tree) {
         if (!tree)
             throw new IllegalArgumentException("File Tree Builder cannot be null")
-        log.log(Level.INFO,"Generating file tree")
+        log.info("Generating file tree")
 
         tree {
             system.namespaces.each { Namespace ns ->
@@ -50,11 +49,11 @@ class JavaCodeGenerator extends CodeGenerator {
             }
         }
 
-        log.log(Level.INFO,"Done generating file tree")
+        log.info("Done generating file tree")
     }
 
     private void handleNamespace(Namespace ns, FileTreeBuilder tree) {
-        log.log(Level.INFO,"Handling the namespace")
+        log.info("Handling the namespace")
         tree.dir("${ns.name.replaceAll(/\./, "/")}") {
             ns.namespaces.each {
                 handleNamespace(it, tree)
@@ -64,6 +63,6 @@ class JavaCodeGenerator extends CodeGenerator {
                 typegen.generate()
             }
         }
-        log.log(Level.INFO,"Done with the namespace")
+        log.info("Done with the namespace")
     }
 }
