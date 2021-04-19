@@ -91,7 +91,7 @@ class Director {
     void updateResults(System sys, String pattern) {
         List<Table.Cell<String, String, String>> cells = context.results.cellSet().findAll {
             it.columnKey == "PatternType" && it.value == pattern
-        }
+        }.toList()
         List<String> ids = cells.collect {it.rowKey}
 
         List<Project> projects = sys.getProjects()
