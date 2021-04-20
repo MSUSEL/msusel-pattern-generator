@@ -31,6 +31,8 @@ import edu.isu.isuese.datamodel.FileType
 import edu.isu.isuese.datamodel.Namespace
 import edu.isu.isuese.datamodel.Project
 
+import java.nio.file.Paths
+
 /**
  * @author Isaac Griffith
  * @version 1.3.0
@@ -45,11 +47,11 @@ class FileBuilder extends AbstractBuilder {
 
         String srcPath = ctx.srcPath
         String srcExt = ctx.srcExt
-        String path = "${srcPath}${java.io.File.separator}${((Namespace) params.parent).getFullName().replaceAll(/\./, java.io.File.separator)}${java.io.File.separator}${params.typeName}${srcExt}"
+        String path = "${((Namespace) params.parent).getFullPath(FileType.SOURCE, 0)}${java.io.File.separator}${params.typeName}${srcExt}"
 
         File file = File.builder()
-                .name(path)
-                .fileKey(((Namespace) params.parent).getParentProject().projectKey + ":" + path)
+                .name(Paths.get(path).toAbsolutePath().toString())
+                .fileKey(((Namespace) params.parent).getParentProject().projectKey + ":" + Paths.get(path).toAbsolutePath().toString())
                 .relPath("${params.typeName}${srcExt}")
                 .type(FileType.SOURCE)
                 .create()

@@ -62,6 +62,13 @@ class JavaSystemGenerator extends SystemGenerator {
                 }
             }
         }
+
+        sys.getProjects().each {proj ->
+            proj.getFiles().each {
+                ctx.fileGen.init(file: it)
+                ctx.fileGen?.generate()
+            }
+        }
         log.info("Done generating system")
     }
 }

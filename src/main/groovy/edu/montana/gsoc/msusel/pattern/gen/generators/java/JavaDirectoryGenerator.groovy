@@ -83,10 +83,6 @@ class JavaDirectoryGenerator extends DirectoryGenerator {
                     resources {}
                 }
             }
-            proj.getFiles().each {
-                ctx.fileGen.init(file: it, builder: builder)
-                ctx.fileGen?.generate()
-            }
             ctx.licGen?.init(tree: builder)
             ctx.readmeGen?.init(tree: builder, number: params.num, pattern: params.pattern)
             ctx.ignoreGen?.init(tree: builder)

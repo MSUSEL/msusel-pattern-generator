@@ -43,14 +43,14 @@ class JavaFileGenerator extends FileGenerator {
     @Override
     def generate() {
         File file = (File) params.file
-        FileTreeBuilder builder = (FileTreeBuilder) params.builder
+        //FileTreeBuilder builder = (FileTreeBuilder) params.builder
 
-        builder."${file.getName()}"(
-        """\
+        java.io.File f = new java.io.File(file.getName())
+        f.text = """\
         ${createFileComment()}
         ${createPackageStatement(file)}${createImportStatements(file)}
-        ${createTypes(file)}""".stripIndent()
-        )
+        ${createTypes(file)}
+        """.stripIndent()
     }
 
     private def createFileComment() {
