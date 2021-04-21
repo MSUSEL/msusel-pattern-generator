@@ -80,6 +80,7 @@ class ParamBuilder extends AbstractComponentBuilder {
         TypeRef.builder()
                 .type(TypeRefType.Type)
                 .typeName(type.name)
+                .typeFullName(type.getFullName())
                 .ref(ref)
                 .create()
     }

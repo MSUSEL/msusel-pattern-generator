@@ -47,6 +47,7 @@ abstract class AbstractComponentBuilder extends AbstractBuilder {
         TypeRef.builder()
                 .type(TypeRefType.Type)
                 .typeName(type.name)
+                .typeFullName(type.getFullName())
                 .ref(Reference.builder()
                         .refType(RefType.TYPE)
                         .refKey(type.refKey)
