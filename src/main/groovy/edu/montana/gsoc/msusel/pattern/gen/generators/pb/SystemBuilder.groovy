@@ -44,10 +44,10 @@ class SystemBuilder extends AbstractBuilder {
         String name = params.pattern
         String key = params.pattern
         System sys
-        if (!params.sys)
+        if (!params.system)
             sys = System.builder().key(key).name(name).basePath(ctx.getOutput() + "/" + name).create()
         else
-            sys = (System) params.sys
+            sys = (System) params.system
 
         ctx.projBuilder.init(parent: sys, pattern: params.pattern, name: "${params.pattern}-${params.id}", version: "1.0.0")
         Project proj = ctx.projBuilder?.create()
