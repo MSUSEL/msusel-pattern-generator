@@ -64,6 +64,7 @@ class GeneratorContext {
     List<String> patternKeys = []
     Map<Project, RBML2DataModelManager> projRbmlMap = [:]
     Table<String, String, String> results
+
     int num = 0
 
     // director flags

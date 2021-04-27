@@ -47,15 +47,12 @@ class JavaSystemGenerator extends SystemGenerator {
         log.info("Generating system")
         System sys = (System) params.sys
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
-//        String pattern = params.pattern
 
         builder {
             "${sys.name}" {
                 sys.getProjects().each { proj ->
                     ctx.rbmlManager = ctx.projRbmlMap[proj]
                     "${proj.name}" {
-//                        if (pattern)
-//                            ctx.cue = ctx.loader.loadAndSelectCue(pattern)
                         ctx.projGen.init(proj: proj, builder: builder, num: params.num, pattern: params.pattern)
                         ctx.projGen.generate()
                     }

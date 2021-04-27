@@ -38,21 +38,25 @@ class SystemBuilder extends AbstractBuilder {
     def create() {
         if (!params.pattern)
             throw new IllegalArgumentException("createSystem: pattern cannot be null or empty")
-        if (params.num < 1)
-            throw new IllegalArgumentException("createSystem: num cannot be less than 1")
+        if (!params.id)
+            throw new IllegalArgumentException("createSystem: identifier cannot be null or empty")
 
         String name = params.pattern
         String key = params.pattern
-        int num = (Integer) params.num
-        System sys = System.builder().key(key).name(name).basePath(ctx.getOutput() + "/" + name).create()
+        System sys
+        if (!params.sys)
+            sys = System.builder().key(key).name(name).basePath(ctx.getOutput() + "/" + name).create()
+        else
+            sys = (System) params.sys
 
-        num.times {
-            ctx.projBuilder.init(parent: sys, pattern: params.pattern, name: "${params.pattern}-${it + 1}", version: "1.0.0")
-            Project proj = ctx.projBuilder?.create()
-            ctx.projectKeys << proj.getProjectKey()
-            ctx.projRbmlMap[proj] = ctx.rbmlManager
-            ctx.resetPatternBuilderComponents()
-        }
+        ctx.projBuilder.init(parent: sys, pattern: params.pattern, name: "${params.pattern}-${params.id}", version: "1.0.0")
+        Project proj = ctx.projBuilder?.create()
+        ctx.projectKeys << proj.getProjectKey()
+        ctx.projRbmlMap[proj] = ctx.rbmlManager
+        ctx.resetPatternBuilderComponents()
+
+        ctx.results.put((String) params.id, "Key1", proj.getProjectKey())
+        ctx.results.put((String) params.id, "Path1", proj.getFullPath())
 
         sys
     }

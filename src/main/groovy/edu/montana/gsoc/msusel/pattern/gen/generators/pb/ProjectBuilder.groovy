@@ -45,7 +45,7 @@ class ProjectBuilder extends AbstractBuilder {
         if (!params.pattern)
             throw new IllegalArgumentException("createProject: pattern cannot be empty or null")
 
-        String key = "${params.parent.getKey()}:${params.name}:${params.version}"
+        String key = "${((System) params.parent).getKey()}:${params.name}:${params.version}"
 
         Project proj = Project.builder()
                 .name((String) params.name)

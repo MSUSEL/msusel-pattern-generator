@@ -26,8 +26,6 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
-import com.google.common.collect.Table
-import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.System
 import edu.isu.isuese.datamodel.util.DBCredentials
 import edu.isu.isuese.datamodel.util.DBManager
@@ -67,39 +65,31 @@ class Director {
             manager.open(creds)
 
             if (!context.generateOnly) {
-                context.patterns.each {
-                    context.loader.loadPatternCues(it, "java")
-                    context.sysBuilder.init(pattern: it, num: context.numInstances)
-                    System sys = context.sysBuilder.create()
-                    systems += sys
+                context.results.rowKeySet().each {id ->
+                    String pattern = context.results.get(id, "PatternType")
+                    context.loader.loadPatternCues(pattern, "java")
 
-                    if (!context.dataOnly) {
-                        context.sysGen.init(sys: sys, builder: new FileTreeBuilder(new File(context.getOutput())), num: context.getNumInstances(), pattern: it)
-                        context.sysGen.generate()
+                    System sys = System.findFirst("name = ?", pattern)
+                    if (!sys) {
+                        context.sysBuilder.init(pattern: pattern, id: id)
+                        sys = context.sysBuilder.create()
+                        systems << sys
+                    } else {
+                        context.sysBuilder.init(pattern: pattern, system: sys, id: id)
+                        context.sysBuilder.create()
                     }
+                }
+            }
 
-                    updateResults(sys, it)
+            systems.each { sys ->
+                if (!context.dataOnly) {
+                    context.sysGen.init(sys: sys, builder: new FileTreeBuilder(new File(context.getOutput())), pattern: sys.getName())
+                    context.sysGen.generate()
                 }
             }
 
             // Close DB Connection
             manager.close()
-        }
-    }
-
-    void updateResults(System sys, String pattern) {
-        List<Table.Cell<String, String, String>> cells = context.results.cellSet().findAll {
-            it.columnKey == "PatternType" && it.value == pattern
-        }.toList()
-        List<String> ids = cells.collect {it.rowKey}
-
-        List<Project> projects = sys.getProjects()
-
-        assert ids.size() == projects.size()
-
-        for (int i = 0; i < ids.size(); i++) {
-            context.results.put(ids.get(i), "Key1", projects.get(i).getProjectKey())
-            context.results.put(ids.get(i), "Path1", projects.get(i).getFullPath())
         }
     }
 }
