@@ -35,14 +35,14 @@ class ReadmeGenerator extends AbstractGenerator {
     def generate() {
         if (!params.tree)
             throw new IllegalArgumentException("generate: File Builder cannot be null")
-        if (!params.number || params.number < 0)
+        if (!params.number)
             throw new IllegalArgumentException("generate: number must be available and greater than 0")
         if (!params.pattern)
             throw new IllegalArgumentException("generate: pattern cannot be null or empty")
 
         FileTreeBuilder tree = (FileTreeBuilder) params.tree
-        String pattern = params.pattern
-        int number = params.number
+//        String pattern = params.pattern
+//        int number = params.number
 
         tree.'README.md'("""\
         # Pattern ${params.pattern} ${params.number}
