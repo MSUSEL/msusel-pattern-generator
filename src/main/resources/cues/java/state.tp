@@ -18,7 +18,6 @@ start_type: Context
 
     public void changeCurrentState([[State.root]] state) {
         currentState = state;
-        // currentState.run();
     }
 
     start_method: Request
