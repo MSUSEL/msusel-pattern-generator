@@ -32,7 +32,9 @@ import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.RBML2DataModelManager
 import edu.montana.gsoc.msusel.rbml.model.Role
 import groovy.transform.TupleConstructor
+import groovy.util.logging.Log4j2
 
+@Log4j2
 @TupleConstructor(includeFields = true, includeProperties = true)
 abstract class Cue {
     protected String name
@@ -65,6 +67,7 @@ abstract class Cue {
                 String roleName = key.split(/\./)[0]
                 String property = key.split(/\./)[1]
                 Role role = manager.findRoleByName(roleName)
+                log.info "Looking for role with name: $roleName"
                 List<Type> types = manager.getTypes(role)
 
                 switch (property) {
