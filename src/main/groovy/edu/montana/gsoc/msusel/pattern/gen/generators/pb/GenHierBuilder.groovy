@@ -161,7 +161,7 @@ class GenHierBuilder extends AbstractBuilder {
     }
 
     private def handleKnownTypes(Node n, Role role, Namespace ns) {
-        if (n.children.size == 1 && n.parent == null) {
+        if (n.children.size() == 1 && n.parent == null) {
             assignOrCreate(n, roots, role, ns)
         } else if (n.parent == null) {
             assignOrCreate(n, roots, role, ns)
