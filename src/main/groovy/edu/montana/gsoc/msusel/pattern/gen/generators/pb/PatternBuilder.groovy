@@ -92,7 +92,10 @@ class PatternBuilder extends AbstractBuilder {
 
                     roles.each { edu.isu.isuese.datamodel.Role r ->
                         types.each { Type t ->
-                            inst.addRoleBinding(createRoleBinding(r, t))
+                            RoleBinding binding = createRoleBinding(r, t)
+                            if (binding != null)
+                                inst.addRoleBinding(binding)
+                            inst.save()
                         }
                     }
                 }
@@ -126,7 +129,10 @@ class PatternBuilder extends AbstractBuilder {
         def roles = pat.getRoles().find { it.name == name }
         if (roles) {
             roles.each { edu.isu.isuese.datamodel.Role r ->
-                inst.addRoleBinding(createRoleBinding(r, comp))
+                RoleBinding binding = createRoleBinding(r, comp)
+                if (binding != null)
+                    inst.addRoleBinding(binding)
+                inst.save()
             }
         }
     }
@@ -200,10 +206,9 @@ class PatternBuilder extends AbstractBuilder {
     }
 
     private RoleBinding createRoleBinding(edu.isu.isuese.datamodel.Role role, Component comp) {
-        RoleBinding binding = new RoleBinding()
+        if (role == null || comp == null)
+            return null
         Reference ref = Reference.to(comp)
-        binding.setRoleRefPair(role, ref)
-
-        binding
+        return RoleBinding.of(role, ref)
     }
 }
