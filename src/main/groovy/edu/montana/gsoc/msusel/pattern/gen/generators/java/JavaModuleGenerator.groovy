@@ -43,9 +43,9 @@ class JavaModuleGenerator extends ModuleGenerator {
 
     @Override
     File generate() {
-        log.info("Generating Module")
         Project project = (Project) params.project
         Module module = (Module) params.mod
+        log.info("Generating Module ${module.getName()}")
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
         boolean subproject = (boolean) params.subproject
 

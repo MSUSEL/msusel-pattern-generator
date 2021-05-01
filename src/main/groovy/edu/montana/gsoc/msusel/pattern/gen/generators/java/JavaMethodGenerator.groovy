@@ -53,9 +53,9 @@ class JavaMethodGenerator extends MethodGenerator {
 
         String roleName
         if (method)
-            roleName = ctx.rbmlManager.getRole(method)?.name
+            roleName = ctx.projRbmlMap[method.getParentProject().getProjectKey()].getRole(method)?.name
         else
-            roleName = ctx.rbmlManager.getRole(field)?.name
+            roleName = ctx.projRbmlMap[field.getParentProject().getProjectKey()].getRole(field)?.name
 
         Cue cue = CueManager.getInstance().getCurrent()
         if (roleName && cue.hasCueForRole(roleName, method) && params.parentCue)

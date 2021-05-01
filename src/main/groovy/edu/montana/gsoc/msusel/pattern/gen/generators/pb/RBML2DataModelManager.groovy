@@ -188,10 +188,15 @@ class RBML2DataModelManager {
     }
 
     Role findRoleByName(String name) {
-        Role r = roleMapping.values().find {it.name == name }
-        if (!r) r = roleFieldMapping.values().find { it.name == name }
-        if (!r) r = roleMethodMapping.values().find {it.name == name }
-        r
+
+        Role r = roleMapping.values().find {println "${it.name} == ${name} ${it.name == name}"; it.name == name }
+        if (r == null) {
+            r = roleFieldMapping.values().find { it.name == name }
+        }
+        if (r == null) {
+            r = roleMethodMapping.values().find {it.name == name }
+        }
+        return r
     }
 
     def getComponentsByRole(Role role) {

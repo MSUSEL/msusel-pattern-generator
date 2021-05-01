@@ -50,10 +50,7 @@ class SystemBuilder extends AbstractBuilder {
             sys = (System) params.system
 
         ctx.projBuilder.init(parent: sys, pattern: params.pattern, name: "${params.pattern}-${params.id}", version: "1.0.0")
-        Project proj = ctx.projBuilder?.create()
-        ctx.projectKeys << proj.getProjectKey()
-        ctx.projRbmlMap[proj] = ctx.rbmlManager
-        ctx.resetPatternBuilderComponents()
+        Project proj = ctx.projBuilder.create()
 
         ctx.results.put((String) params.id, "Key1", proj.getProjectKey())
         ctx.results.put((String) params.id, "Path1", proj.getFullPath())

@@ -60,9 +60,7 @@ class GeneratorContext {
     String testPath
     String binPath
     String srcExt
-    List<String> projectKeys = []
-    List<String> patternKeys = []
-    Map<Project, RBML2DataModelManager> projRbmlMap = [:]
+    Map<String, RBML2DataModelManager> projRbmlMap = [:]
     Table<String, String, String> results
 
     int num = 0
@@ -109,10 +107,10 @@ class GeneratorContext {
     TreeGenerator treeGenerator
 
     void resetPatternBuilderComponents() {
-        rbmlManager     = new RBML2DataModelManager()
         treeGenerator   = new RampedHalfHalf()
         loader          = PatternManager.instance
 
+        rbmlManager     = new RBML2DataModelManager()
         sysBuilder      = new SystemBuilder(ctx: this)
         projBuilder     = new ProjectBuilder(ctx: this)
         patternBuilder  = new PatternBuilder(ctx: this)

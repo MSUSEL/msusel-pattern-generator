@@ -43,8 +43,8 @@ class JavaProjectGenerator extends ProjectGenerator {
 
     @Override
     def generate() {
-        log.info("Generating Project")
         Project proj = (Project) params.proj
+        log.info("Generating Project ${proj.getName()}")
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
 
         if (proj.getModules().size() > 1) {

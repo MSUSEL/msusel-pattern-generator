@@ -51,11 +51,11 @@ abstract class AbstractGenerator {
     def findRole(Component comp) {
         switch (comp) {
             case Type:
-                return ctx.rbmlManager.getRole((Type) comp)
+                return ctx.projRbmlMap[comp.getParentProject().getProjectKey()].getRole((Type) comp)
             case Method:
-                return ctx.rbmlManager.getRole((Method) comp)
+                return ctx.projRbmlMap[comp.getParentProject().getProjectKey()].getRole((Method) comp)
             case Field:
-                return ctx.rbmlManager.getRole((Field) comp)
+                return ctx.projRbmlMap[comp.getParentProject().getProjectKey()].getRole((Field) comp)
             default:
                 return null
         }

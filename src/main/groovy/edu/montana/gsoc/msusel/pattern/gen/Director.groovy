@@ -26,6 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
+import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.System
 import edu.isu.isuese.datamodel.util.DBCredentials
 import edu.isu.isuese.datamodel.util.DBManager
@@ -65,24 +66,29 @@ class Director {
             manager.open(creds)
 
             if (!context.generateOnly) {
-                context.results.rowKeySet().each {id ->
-                    String pattern = context.results.get(id, "PatternType")
+                context.patterns.each {pattern ->
+                    Map<String, String> map = context.results.column("PatternType").findAll { String id, String value -> value == pattern }
+
                     context.loader.loadPatternCues(pattern, "java")
 
-                    System sys = System.findFirst("name = ?", pattern)
-                    if (!sys) {
-                        context.sysBuilder.init(pattern: pattern, id: id)
-                        sys = context.sysBuilder.create()
-                        systems << sys
-                    } else {
-                        context.sysBuilder.init(pattern: pattern, system: sys, id: id)
-                        context.sysBuilder.create()
+                    map.each { id, val ->
+                        System sys = System.findFirst("name = ?", pattern)
+                        if (!sys) {
+                            context.sysBuilder.init(pattern: pattern, id: id)
+                            sys = context.sysBuilder.create()
+                            systems << sys
+                        } else {
+                            context.sysBuilder.init(pattern: pattern, system: sys, id: id)
+                            context.sysBuilder.create()
+                        }
+                        context.resetPatternBuilderComponents()
                     }
                 }
             }
 
-            systems.each { sys ->
-                if (!context.dataOnly) {
+            if (!context.dataOnly) {
+                systems.each {sys ->
+                    println("System: ${sys.getKey()} with name: ${sys.name}")
                     context.sysGen.init(sys: sys, builder: new FileTreeBuilder(new File(context.getOutput())), pattern: sys.getName())
                     context.sysGen.generate()
                 }

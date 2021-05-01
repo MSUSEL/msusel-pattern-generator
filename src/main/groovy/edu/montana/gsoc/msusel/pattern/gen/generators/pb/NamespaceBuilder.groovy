@@ -70,8 +70,7 @@ class NamespaceBuilder extends AbstractBuilder {
             ((Module) params.parent).getParentProject().addNamespace(first)
             ((Module) params.parent).addNamespace(first)
             ctx.patternBuilder.init(parent: first, pattern: params.pattern)
-            PatternInstance inst = ctx.patternBuilder?.create()
-            ctx.patternKeys << inst.getInstKey()
+            ctx.patternBuilder.create()
 
             first
         }
@@ -84,8 +83,7 @@ class NamespaceBuilder extends AbstractBuilder {
             parent.addNamespace(holder)
 
             ctx.patternBuilder.init(parent: holder, pattern: pattern)
-            PatternInstance inst = ctx.patternBuilder?.create()
-            ctx.patternKeys << inst.getInstKey()
+            ctx.patternBuilder.create()
 
             holder
         }

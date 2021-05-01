@@ -44,16 +44,16 @@ class JavaSystemGenerator extends SystemGenerator {
         if (!params.builder)
             throw new IllegalArgumentException("FileTreeBuilder cannot be null")
 
-        log.info("Generating system")
         System sys = (System) params.sys
+        log.info("Generating system ${sys.getName()}")
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
 
         builder {
             "${sys.name}" {
                 sys.getProjects().each { proj ->
-                    ctx.rbmlManager = ctx.projRbmlMap[proj]
+                    ctx.rbmlManager = ctx.projRbmlMap[proj.getProjectKey()]
                     "${proj.name}" {
-                        ctx.projGen.init(proj: proj, builder: builder, num: proj.getName().split("-")[1], pattern: params.pattern)
+                        ctx.projGen.init(proj: proj, builder: builder, num: proj.getName().split("-")[1], pattern: sys.getName())
                         ctx.projGen.generate()
                     }
                 }
@@ -63,7 +63,7 @@ class JavaSystemGenerator extends SystemGenerator {
         sys.getProjects().each {proj ->
             proj.getFiles().each {
                 ctx.fileGen.init(file: it)
-                ctx.fileGen?.generate()
+                ctx.fileGen.generate()
             }
         }
         log.info("Done generating system")

@@ -142,15 +142,15 @@ class PatternBuilder extends AbstractBuilder {
             if (it instanceof GeneralizationHierarchy) {
                 GeneralizationHierarchy gh = (GeneralizationHierarchy) it
 
-//                buildClassifierRole(gh.root, pat)
-//                gh.children.each { Role r ->
-//                    buildClassifierRole((Classifier) r, pat)
-//                }
+                buildClassifierRole(gh.root, pat)
+                gh.children.each { Role r ->
+                    buildClassifierRole((Classifier) r, pat)
+                }
             }
         }
 
         rbml.relations.each {
-            if (!pat.getRoles().find { r -> r.name == it.name }) {
+            if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", "${pat.patternKey}:${it.name}") == null) {
                 edu.isu.isuese.datamodel.Role role = edu.isu.isuese.datamodel.Role.builder()
                         .name(it.name)
                         .roleKey("${pat.patternKey}:${it.name}")
@@ -164,7 +164,7 @@ class PatternBuilder extends AbstractBuilder {
 
     private void buildClassifierRole(Classifier c, Pattern pat) {
 
-        if (!pat.getRoles().find { r -> r.name == c.name }) {
+        if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", "${pat.patternKey}:${c.name}") == null) {
             edu.isu.isuese.datamodel.Role role = edu.isu.isuese.datamodel.Role.builder()
                     .name(c.name)
                     .roleKey("${pat.patternKey}:${c.name}")
@@ -174,52 +174,36 @@ class PatternBuilder extends AbstractBuilder {
             pat.save()
 
             c.structFeats.each {
-                edu.isu.isuese.datamodel.Role struct = edu.isu.isuese.datamodel.Role.builder()
-                        .name(c.name)
-                        .roleKey("${pat.patternKey}:${it.name}")
-                        .type(RoleType.STRUCT_FEAT)
-                        .create()
-                pat.addRole(struct)
-                pat.save()
+                if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", "${pat.patternKey}:${it.name}") == null) {
+                    edu.isu.isuese.datamodel.Role struct = edu.isu.isuese.datamodel.Role.builder()
+                            .name(it.name)
+                            .roleKey("${pat.patternKey}:${it.name}")
+                            .type(RoleType.STRUCT_FEAT)
+                            .create()
+                    pat.addRole(struct)
+                    pat.save()
+                }
             }
 
             c.behFeats.each {
-                edu.isu.isuese.datamodel.Role behav = edu.isu.isuese.datamodel.Role.builder()
-                        .name(c.name)
-                        .roleKey("${pat.patternKey}:${it.name}")
-                        .type(RoleType.BEHAVE_FEAT)
-                        .create()
-                pat.addRole(behav)
-                pat.save()
+                if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", "${pat.patternKey}:${it.name}") == null) {
+                    edu.isu.isuese.datamodel.Role behav = edu.isu.isuese.datamodel.Role.builder()
+                            .name(it.name)
+                            .roleKey("${pat.patternKey}:${it.name}")
+                            .type(RoleType.BEHAVE_FEAT)
+                            .create()
+                    pat.addRole(behav)
+                    pat.save()
+                }
             }
         }
     }
 
     private RoleBinding createRoleBinding(edu.isu.isuese.datamodel.Role role, Component comp) {
         RoleBinding binding = new RoleBinding()
-        Reference ref = createReference(comp)
+        Reference ref = Reference.to(comp)
         binding.setRoleRefPair(role, ref)
 
         binding
-    }
-
-    private def createReference(Component comp) {
-        RefType type
-        switch (comp) {
-            case Method:
-                type = RefType.METHOD
-                break
-            case Field:
-                type = RefType.FIELD
-                break
-            default:
-                type = RefType.TYPE
-                break
-        }
-
-        Reference.builder()
-                .refType(type)
-                .refKey(comp.getRefKey())
-                .create()
     }
 }

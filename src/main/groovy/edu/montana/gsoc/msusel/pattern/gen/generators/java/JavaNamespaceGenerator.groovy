@@ -42,9 +42,9 @@ class JavaNamespaceGenerator extends NamespaceGenerator {
 
     @Override
     def generate() {
-        log.info("Generating namespace")
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
         Namespace ns = (Namespace) params.ns
+        log.info("Generating namespace ${ns.getName()}")
 
         generateRec(ns, builder)
         log.info("Done generating namespace")
