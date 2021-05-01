@@ -71,6 +71,16 @@ class RBML2DataModelManager {
         types
     }
 
+    Role getRoleForComponent(Component comp) {
+        if (comp instanceof Type)
+            return getRole((Type) comp)
+        else if (comp instanceof Field)
+            return getRole((Field) comp)
+        else if (comp instanceof Method)
+            return getRole((Method) comp)
+        return null
+    }
+
     Role getRole(Type type) {
         if (!type)
             return null

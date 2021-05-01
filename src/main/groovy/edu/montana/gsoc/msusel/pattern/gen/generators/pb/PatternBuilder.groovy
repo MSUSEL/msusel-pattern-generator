@@ -126,14 +126,12 @@ class PatternBuilder extends AbstractBuilder {
 
     private void processComponent(Component comp, Role role, Pattern pat, PatternInstance inst) {
         String name = role.getName()
-        def roles = pat.getRoles().find { it.name == name }
-        if (roles) {
-            roles.each { edu.isu.isuese.datamodel.Role r ->
-                RoleBinding binding = createRoleBinding(r, comp)
-                if (binding != null)
-                    inst.addRoleBinding(binding)
-                inst.save()
-            }
+        edu.isu.isuese.datamodel.Role r = edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", "${pat.getPatternKey()}:${name}")
+        if (r != null && comp != null) {
+            RoleBinding binding = createRoleBinding(r, comp)
+            if (binding != null)
+                inst.addRoleBinding(binding)
+            inst.save()
         }
     }
 
@@ -209,6 +207,10 @@ class PatternBuilder extends AbstractBuilder {
         if (role == null || comp == null)
             return null
         Reference ref = Reference.to(comp)
-        return RoleBinding.of(role, ref)
+        ref.saveIt()
+        RoleBinding binding = RoleBinding.of(role, ref)
+        binding.add(ref)
+        binding.save()
+        return binding
     }
 }
