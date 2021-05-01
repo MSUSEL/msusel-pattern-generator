@@ -206,11 +206,6 @@ class PatternBuilder extends AbstractBuilder {
     private RoleBinding createRoleBinding(edu.isu.isuese.datamodel.Role role, Component comp) {
         if (role == null || comp == null)
             return null
-        Reference ref = Reference.to(comp)
-        ref.saveIt()
-        RoleBinding binding = RoleBinding.of(role, ref)
-        binding.add(ref)
-        binding.save()
-        return binding
+        return RoleBinding.of(role, comp.createReference())
     }
 }
