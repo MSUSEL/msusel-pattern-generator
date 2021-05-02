@@ -43,7 +43,7 @@ class PatternBuilder extends AbstractBuilder {
     Map<String, Integer> patternCounts = [:]
 
     def create() {
-        log.info("Generating pattern ${++ctx.num}/${ctx.numInstances * ctx.patterns.size()}")
+        log.info "Generating pattern ${++ctx.num}/${ctx.numInstances * ctx.patterns.size()}"
         if (!params.pattern)
             throw new IllegalArgumentException("create: pattern cannot be null or empty")
         if (!params.parent)
@@ -103,8 +103,6 @@ class PatternBuilder extends AbstractBuilder {
 
             ctx.rbmlManager.getFields().each { Field f ->
                 Role role = ctx.rbmlManager.getRole(f)
-                log.info "Field: ${f.getName()} with ID: ${f.getId()}"
-                log.info "RBML Role: ${role.getName()}"
                 processComponent(f, role, pat, inst)
             }
 
@@ -129,16 +127,9 @@ class PatternBuilder extends AbstractBuilder {
     private void processComponent(Component comp, Role role, Pattern pat, PatternInstance inst) {
         String name = role.getName()
         edu.isu.isuese.datamodel.Role r = edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", "${pat.getPatternKey()}:${name}")
-        if (comp instanceof Field)
-            log.info "DM Role: ${name}"
         if (r != null && comp != null) {
             RoleBinding binding = createRoleBinding(r, comp)
             if (binding != null) {
-                if (comp instanceof Field) {
-                    log.info "RoleBinding: $binding"
-                    log.info "RoleBinding: Ref: ${binding.getReference()}"
-                    log.info "RoleBinding: Role: ${binding.getRole()}"
-                }
                 inst.addRoleBinding(binding)
             }
             inst.save()
