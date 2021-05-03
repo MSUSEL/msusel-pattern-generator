@@ -93,6 +93,7 @@ class JavaTypeGenerator extends TypeGenerator {
         ${typeComment()}
          */
         ${createTypeDef(kind, type, name)} {${getContent(type)}
+
         }
         """
     }
