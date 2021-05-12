@@ -2,7 +2,6 @@ Threadsafe
 Optimized
 Stable
 Automatic
-Abstract
 Serializable
 Writable
 Readable
@@ -35,9 +34,7 @@ Dynamic
 Shared
 Runnable
 Modal
-Byte
 Task
-Object
 Resource
 Mutex
 Memory
