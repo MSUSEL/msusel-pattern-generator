@@ -62,6 +62,7 @@ class GeneratorContext {
     String srcExt
     Map<String, RBML2DataModelManager> projRbmlMap = [:]
     Table<String, String, String> results
+    String javaBinary
 
     int num = 0
 

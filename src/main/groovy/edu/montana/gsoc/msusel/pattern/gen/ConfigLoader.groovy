@@ -57,12 +57,13 @@ class ConfigLoader {
         context.maxBreadth   = config.maxBreadth   ?: 3
         context.maxDepth     = config.maxDepth     ?: 3
         context.version      = config.version      ?: "1.0.0"
-        context.license      = config.license      ?: "MIT"
-        context.db           = config.db           ?: [:]
-        context.build        = config.build        ?: [:]
+        context.license      = config.license      ?: [:] as Map<String, String>
+        context.db           = config.db           ?: [:] as Map<String, String>
+        context.build        = config.build        ?: [:] as Map<String, String>
         context.arities      = config.arities      ?: [3]
         context.srcPath      = config.srcPath      ?: "."
         context.testPath     = config.testPath     ?: "."
         context.binPath      = config.binPath      ?: "."
+        context.javaBinary   = config.java_binary ?: ""
     }
 }

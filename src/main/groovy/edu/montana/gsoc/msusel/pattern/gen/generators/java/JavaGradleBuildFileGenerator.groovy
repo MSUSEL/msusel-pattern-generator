@@ -74,7 +74,7 @@ class JavaGradleBuildFileGenerator extends JavaBuildFileGenerator {
             sourceCompatibility = 1.8
             targetCompatibility = 1.8
             compileJava.options.fork = true
-            compileJava.options.forkOptions.executable = '${this.ctx.getProperty('arc.generator.java.binary')}'
+            compileJava.options.forkOptions.executable = '${this.ctx.getProperty('java_binary')}'
             
             // In this section you declare the dependencies for your production and test code
             dependencies {
@@ -138,7 +138,7 @@ class JavaGradleBuildFileGenerator extends JavaBuildFileGenerator {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
         compileJava.options.fork = true
-        compileJava.options.forkOptions.executable = '${this.ctx.getProperty('arc.generator.java.binary')}'
+        compileJava.options.forkOptions.executable = '${this.ctx.getProperty('java_binary')}'
         
         // In this section you declare where to find the dependencies of your project
         repositories {
