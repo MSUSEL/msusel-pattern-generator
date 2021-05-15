@@ -51,6 +51,7 @@ class JavaSystemGenerator extends SystemGenerator {
         builder {
             "${sys.name}" {
                 sys.getProjects().each { proj ->
+                    proj.refresh()
                     ctx.rbmlManager = ctx.projRbmlMap[proj.getProjectKey()]
                     "${proj.name}" {
                         ctx.projGen.init(proj: proj, builder: builder, num: proj.getName().split("-")[1], pattern: sys.getName())

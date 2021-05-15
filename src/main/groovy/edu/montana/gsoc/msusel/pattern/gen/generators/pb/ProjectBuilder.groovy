@@ -63,6 +63,7 @@ class ProjectBuilder extends AbstractBuilder {
         ctx.modBuilder.init(parent: proj, name: "default", pattern: params.pattern)
         ctx.modBuilder?.create()
 
+        proj.refresh()
         ctx.projRbmlMap[proj.getProjectKey()] = ctx.rbmlManager
         ctx.rbmlManager = null
 

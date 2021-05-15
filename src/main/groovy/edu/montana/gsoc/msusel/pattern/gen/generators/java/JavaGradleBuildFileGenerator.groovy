@@ -69,8 +69,12 @@ class JavaGradleBuildFileGenerator extends JavaBuildFileGenerator {
             
             plugins {
                 id 'java'
-                id 'groovy'
             }
+            
+            sourceCompatibility = 1.8
+            targetCompatibility = 1.8
+            compileJava.options.fork = true
+            compileJava.options.forkOptions.executable = '${this.ctx.getProperty('arc.generator.java.binary')}'
             
             // In this section you declare the dependencies for your production and test code
             dependencies {
@@ -125,11 +129,16 @@ class JavaGradleBuildFileGenerator extends JavaBuildFileGenerator {
         if (!tree)
             throw new IllegalArgumentException("File Tree Builder cannot be null")
 
-        tree.'build.gradle'('''\
+        tree.'build.gradle'("""\
         // Apply the java plugin to add support for Java
         plugins {
             id 'java'
         }
+        
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+        compileJava.options.fork = true
+        compileJava.options.forkOptions.executable = '${this.ctx.getProperty('arc.generator.java.binary')}'
         
         // In this section you declare where to find the dependencies of your project
         repositories {
@@ -151,7 +160,7 @@ class JavaGradleBuildFileGenerator extends JavaBuildFileGenerator {
             testImplementation 'junit:junit:4.12'
             testImplementation 'org.mockito:mockito-all:1.10.19'
         }
-        '''.stripIndent())
+        """.stripIndent())
     }
 
     @Override
