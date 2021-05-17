@@ -85,6 +85,7 @@ class JavaTypeGenerator extends TypeGenerator {
         type.refresh()
         Project proj = type.getParentProject()
         proj.refresh()
+        ctx.projRbmlMap.keySet().each {println "Key: $it"}
         cue.compile(type, params, ctx.projRbmlMap[proj.getProjectKey()])
     }
 
