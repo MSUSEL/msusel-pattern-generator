@@ -29,6 +29,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators
 import edu.isu.isuese.datamodel.Component
 import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Method
+import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 
@@ -49,13 +50,16 @@ abstract class AbstractGenerator {
     abstract def generate()
 
     def findRole(Component comp) {
+        Project proj = comp.getParentProject()
+        proj.refresh()
+
         switch (comp) {
             case Type:
-                return ctx.projRbmlMap[comp.getParentProject().getProjectKey()].getRole((Type) comp)
+                return ctx.projRbmlMap[proj.getProjectKey()].getRole((Type) comp)
             case Method:
-                return ctx.projRbmlMap[comp.getParentProject().getProjectKey()].getRole((Method) comp)
+                return ctx.projRbmlMap[proj.getProjectKey()].getRole((Method) comp)
             case Field:
-                return ctx.projRbmlMap[comp.getParentProject().getProjectKey()].getRole((Field) comp)
+                return ctx.projRbmlMap[proj.getProjectKey()].getRole((Field) comp)
             default:
                 return null
         }

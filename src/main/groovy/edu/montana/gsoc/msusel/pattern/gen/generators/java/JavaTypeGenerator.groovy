@@ -82,7 +82,10 @@ class JavaTypeGenerator extends TypeGenerator {
         params.setParam("InstName", type.name)
         params.setParam("ClassComment", typeComment())
 
-        cue.compile(type, params, ctx.projRbmlMap[type.getParentProject().getProjectKey()])
+        type.refresh()
+        Project proj = type.getParentProject()
+        proj.refresh()
+        cue.compile(type, params, ctx.projRbmlMap[proj.getProjectKey()])
     }
 
     private String createTemplate(String kind, Type type) {
