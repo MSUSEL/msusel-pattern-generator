@@ -37,12 +37,19 @@ import edu.montana.gsoc.msusel.rbml.model.InterfaceRole
 import edu.montana.gsoc.msusel.rbml.model.Role
 import edu.montana.gsoc.msusel.rbml.model.SPS
 import edu.montana.gsoc.msusel.rbml.model.StructuralFeature
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@EqualsAndHashCode(includes = ['id'])
+@ToString(includes = ['id'])
 class RBML2DataModelManager {
+
+    static int nextId = 1
+    int id = 0
 
     Map<Role, List<Type>> typeMapping = [:]
     Map<Type, Role> roleMapping = [:]
@@ -50,6 +57,10 @@ class RBML2DataModelManager {
     Map<Field, Role> roleFieldMapping = [:]
     Map<String, Set<String>> methodNames = [:]
     Map<String, Set<String>> fieldNames = [:]
+
+    RBML2DataModelManager() {
+        id = nextId++
+    }
 
     Type getType(Role role) {
         if (!role)
@@ -199,7 +210,7 @@ class RBML2DataModelManager {
 
     Role findRoleByName(String name) {
 
-        Role r = roleMapping.values().find {println "${it.name} == ${name} ${it.name == name}"; it.name == name }
+        Role r = roleMapping.values().find {it.name == name }
         if (r == null) {
             r = roleFieldMapping.values().find { it.name == name }
         }

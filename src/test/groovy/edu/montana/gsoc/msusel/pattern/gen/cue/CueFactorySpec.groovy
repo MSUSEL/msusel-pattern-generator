@@ -26,33 +26,70 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
+import spock.lang.Specification
 
-import edu.isu.isuese.datamodel.Component
-import edu.isu.isuese.datamodel.Method
-import groovy.transform.TupleConstructor
+class CueFactorySpec extends Specification {
 
-@TupleConstructor(includeSuperProperties = true, includeSuperFields = true)
-class MethodCue extends Cue {
+    def "CreateCue"(type, name, Class clazz) {
+        given:
+          type
+          name
+          clazz
 
-    @Override
-    def getDelimString() {
-        return (/(?ms)start_method: ${name}.*end_method: ${name}/)
+        when:
+          Cue actual = CueFactory.instance.createCue(type, name)
+
+        then:
+          actual != null
+          clazz.isInstance(actual)
+
+        where:
+          type            | name   | clazz
+          CueType.Pattern | "Test" | PatternCue.class
+          CueType.Type    | "Test" | TypeCue.class
+          CueType.Method  | "Test" | MethodCue.class
+          CueType.Field   | "Test" | FieldCue.class
+
     }
 
-    @Override
-    def getReplacement() {
-        return (/\[\[method: ${name}\]\]/)
+    def "CreateCue with null type"() {
+        given:
+          CueType type = null
+          String name = "Test"
+
+        when:
+          CueFactory.instance.createCue(type, name)
+
+        then:
+          thrown IllegalArgumentException
     }
 
-    @Override
-    def getCueForRole(String roleName, Component c) {
-        if (name == roleName && c instanceof Method)
-            return this
-        return null
+    def "CreateCue with empty name"() {
+        given:
+          CueType type = CueType.Pattern
+          String name = ""
+
+        when:
+          CueFactory.instance.createCue(type, name)
+
+        then:
+          thrown IllegalArgumentException
     }
 
-    @Override
-    def hasCueForRole(String roleName, Component t) {
-        return name == roleName && t instanceof Method
+    def "CreateCue with null name"() {
+        given:
+          CueType type = CueType.Pattern
+          String name = null
+
+        when:
+          CueFactory.instance.createCue(type, name)
+
+        then:
+          thrown IllegalArgumentException
+    }
+
+    def "GetInstance"() {
+        expect:
+            CueFactory.instance != null
     }
 }

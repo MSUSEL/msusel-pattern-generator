@@ -76,17 +76,18 @@ class JavaSystemGeneratorTest extends DBSpec {
     @Test
     void "generate system with one project"() {
         Project proj1 = Project.builder()
-                .name("Test")
+                .name("Test-1")
                 .version("1.0")
                 .projKey("Test")
                 .create()
         data.addProject(proj1)
+        data.updateKeys()
 
         ctx.sysGen.init(sys: data, builder: builder)
         ctx.sysGen.generate()
 
         File sysdir = new File(testDir, "Test")
-        File proj1dir = new File(sysdir, "Test")
+        File proj1dir = new File(sysdir, "Test-1")
 
         the(sysdir.exists()).shouldBeTrue()
         the(sysdir.isDirectory()).shouldBeTrue()
@@ -97,12 +98,12 @@ class JavaSystemGeneratorTest extends DBSpec {
     @Test
     void "generate system with multiple projects"() {
         Project proj1 = Project.builder()
-                .name("Test")
+                .name("Test-1")
                 .version("1.0")
                 .projKey("Test")
                 .create()
         Project proj2 = Project.builder()
-                .name("Test2")
+                .name("Test-2")
                 .version("1.0")
                 .projKey("Test2")
                 .create()
@@ -113,8 +114,8 @@ class JavaSystemGeneratorTest extends DBSpec {
         ctx.sysGen.generate()
 
         File sysdir = new File(testDir, "Test")
-        File proj1dir = new File(sysdir, "Test")
-        File proj2dir = new File(sysdir, "Test2")
+        File proj1dir = new File(sysdir, "Test-1")
+        File proj2dir = new File(sysdir, "Test-2")
 
         the(sysdir.exists()).shouldBeTrue()
         the(sysdir.isDirectory()).shouldBeTrue()

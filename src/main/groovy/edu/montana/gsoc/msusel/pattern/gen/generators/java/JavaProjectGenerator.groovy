@@ -28,6 +28,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.Module
 import edu.isu.isuese.datamodel.Project
+import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.pattern.gen.generators.ProjectGenerator
 import groovy.util.logging.Log4j2
 
@@ -45,6 +46,7 @@ class JavaProjectGenerator extends ProjectGenerator {
     def generate() {
         Project proj = (Project) params.proj
         log.info("Generating Project ${proj.getName()}")
+        CueManager.instance.setCurrent(ctx.projCueMap[proj.getProjectKey()])
         FileTreeBuilder builder = (FileTreeBuilder) params.builder
 
         if (proj.getModules().size() > 1) {

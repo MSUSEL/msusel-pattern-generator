@@ -35,7 +35,7 @@ class ReadmeGenerator extends AbstractGenerator {
     def generate() {
         if (!params.tree)
             throw new IllegalArgumentException("generate: File Builder cannot be null")
-        if (!params.number)
+        if (!params.number || new Integer(params.number).intValue() < 0)
             throw new IllegalArgumentException("generate: number must be available and greater than 0")
         if (!params.pattern)
             throw new IllegalArgumentException("generate: pattern cannot be null or empty")

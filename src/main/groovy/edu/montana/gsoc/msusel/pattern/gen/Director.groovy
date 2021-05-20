@@ -30,6 +30,7 @@ import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.System
 import edu.isu.isuese.datamodel.util.DBCredentials
 import edu.isu.isuese.datamodel.util.DBManager
+import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 
 /**
  * @author Isaac Griffith

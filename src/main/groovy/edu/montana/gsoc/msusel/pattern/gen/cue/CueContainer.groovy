@@ -36,7 +36,7 @@ abstract class CueContainer extends Cue {
 
     void addChildCue(Cue child) {
         if (!children)
-            children = [: ]
+            children = [:]
         if (child && !children.containsKey(child.name))
             children[child.name] = child
     }
@@ -44,37 +44,5 @@ abstract class CueContainer extends Cue {
     void removeChildCue(Cue child) {
         if (child && children.containsKey(child.name))
             children.remove(child.name, child)
-    }
-
-    static void main(String[] args) {
-        def string = """\
-            private int[][] transitions;
-            start_field: currentState
-            private [[State.root.name]] currentState = 0;
-            end_field: currentState
-        [[fields]]
-        
-            public [[InstName]]() {
-                transitions = new int[[[ConcreteState.count]]][[[ConcreteState.count]]];
-            }
-        
-            public void changeCurrentState([[State.root.name]] state) {
-                currentState = state;
-                currentState.run()
-            }
-        
-            start_method: Request
-            public void [[name]]() {
-                currentState.[[Handle]]()
-            }
-            end_method: Request
-        """
-
-        def pattern = ~/(?ms)\[\[(?<content>[\w\.\d\s]*?)\]\]/
-        def results = (string =~ pattern)
-        assert results.hasGroup()
-        assert results.size() == 8
-        for (int i = 0; i < results.size(); i++)
-            println(results[i][1])
     }
 }

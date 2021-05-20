@@ -33,7 +33,7 @@ class ReadmeGeneratorTest extends Specification {
 
     ReadmeGenerator fixture
     FileTreeBuilder builder
-    final File testDir = new File('testdir')
+    File testDir = new File('testdir')
 
     def setup() {
         testDir.mkdirs()
@@ -104,7 +104,7 @@ class ReadmeGeneratorTest extends Specification {
         fixture
 
         when:
-        fixture.init(tree: builder, pattern: "Singleton", number: -1)
+        fixture.init(tree: builder, pattern: "Singleton", number: "-1")
         fixture.generate()
 
         then:

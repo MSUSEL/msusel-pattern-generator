@@ -104,12 +104,12 @@ class FieldBuilderTest extends DBSpec {
                 .create()
 
         // when:
-        ctx.fldBuilder.init(feature: feature)
+        ctx.fldBuilder.init(feature: feature, fieldName: "test", owner: type)
         Field field = ctx.fldBuilder.create()
 
         // then:
         the(field.type.typeName).shouldEqual("Class")
-        the(field.name).shouldNotBeNull()
+        the(field.name).shouldBeEqual("test")
     }
 
     @Test
@@ -123,12 +123,12 @@ class FieldBuilderTest extends DBSpec {
                 .create()
 
         // when:
-        ctx.fldBuilder.init(feature: feature)
+        ctx.fldBuilder.init(feature: feature, fieldName: "test", owner: type)
         Field field = ctx.fldBuilder.create()
 
         // then:
         the(field.hasModifier("STATIC")).shouldBeTrue()
-        the(field.name).shouldNotBeNull()
+        the(field.name).shouldBeEqual("test")
     }
 
     @Test
@@ -142,12 +142,12 @@ class FieldBuilderTest extends DBSpec {
                 .create()
 
         // when:
-        ctx.fldBuilder.init(feature: feature)
+        ctx.fldBuilder.init(feature: feature, fieldName: "test", owner: type)
         Field field = ctx.fldBuilder.create()
 
         // then:
         the(field.type.typeName).shouldEqual("String")
-        the(field.name).shouldNotBeNull()
+        the(field.name).shouldBeEqual("test")
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -31,9 +31,14 @@ import edu.isu.isuese.datamodel.Class
 import edu.isu.isuese.datamodel.Constructor
 import edu.isu.isuese.datamodel.Destructor
 import edu.isu.isuese.datamodel.Field
+import edu.isu.isuese.datamodel.File
+import edu.isu.isuese.datamodel.FileType
 import edu.isu.isuese.datamodel.Method
 import edu.isu.isuese.datamodel.Modifier
+import edu.isu.isuese.datamodel.Namespace
 import edu.isu.isuese.datamodel.Parameter
+import edu.isu.isuese.datamodel.Project
+import edu.isu.isuese.datamodel.System
 import edu.isu.isuese.datamodel.Type
 import edu.isu.isuese.datamodel.TypeRef
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
@@ -49,6 +54,10 @@ class JavaMethodGeneratorTest extends DBSpec {
 
     Method data
     GeneratorContext ctx
+    Type type
+    Project project
+    Namespace ns
+    File file
 
     @Before
     void setup() {
@@ -56,6 +65,37 @@ class JavaMethodGeneratorTest extends DBSpec {
         ctx.resetPatternBuilderComponents()
         ctx.plugin = new JavaLanguageProvider()
         ctx.resetComponentGenerators()
+
+        type = Class.builder()
+                .name("Type")
+                .accessibility(Accessibility.PUBLIC)
+                .compKey("type")
+                .create()
+
+        project = Project.builder()
+                .name("Test")
+                .projKey("Test")
+                .version("1.0")
+                .create()
+        project.save()
+
+        System sys = System.builder().name("test").key("test").create()
+
+        ns = Namespace.builder().name("test").nsKey("test").relPath("test").create()
+
+        file = File.builder().type(FileType.SOURCE).name("Test.java").fileKey("Test.java").relPath("Test.java").create()
+
+        ns.save()
+        project.addNamespace(ns)
+        project.addFile(file)
+        type.save()
+        ns.addType(type)
+        file.addType(type)
+        sys.addProject(project)
+        sys.updateKeys()
+        type.refresh()
+        ns.refresh()
+        project.refresh()
     }
 
     @After
@@ -70,6 +110,8 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .compKey("test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
+
+        type.addMember(data)
 
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
@@ -90,6 +132,8 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .compKey("test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
+
+        type.addMember(data)
 
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
@@ -113,11 +157,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .type(TypeRef.createPrimitiveTypeRef("void"))
                 .create()
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
     public void test() {
     }"""
@@ -135,11 +181,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .create()
         data.addModifier(Modifier.forName("ABSTRACT"))
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
     public abstract void test();"""
 
@@ -155,11 +203,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .type(TypeRef.createPrimitiveTypeRef("void"))
                 .create()
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
     public void test() {
     }"""
@@ -176,11 +226,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .type(TypeRef.createPrimitiveTypeRef("void"))
                 .create()
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
     private void test() {
     }"""
@@ -197,11 +249,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .type(TypeRef.createPrimitiveTypeRef("void"))
                 .create()
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
     protected void test() {
     }"""
@@ -218,11 +272,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .type(TypeRef.createPrimitiveTypeRef("void"))
                 .create()
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
     void test() {
     }"""
@@ -240,11 +296,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .create()
         data.addModifier(Modifier.forName("FINAL"))
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
     public final void test() {
     }"""
@@ -262,11 +320,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .create()
         data.addModifier(Modifier.forName("STATIC"))
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
     public static void test() {
     }"""
@@ -284,11 +344,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .create()
         data.addModifier(Modifier.forName("NATIVE"))
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
     public native void test() {
     }"""
@@ -307,11 +369,13 @@ class JavaMethodGeneratorTest extends DBSpec {
         data.addModifier(Modifier.forName("STATIC"))
         data.addModifier(Modifier.forName("NATIVE"))
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
     public static native void test() {
     }"""
@@ -333,11 +397,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .create()
         data.addParameter(param)
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      * @param param
      */
     public void test(int param) {
@@ -365,11 +431,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .create()
         data.addParameter(param2)
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      * @param param
      * @param param2
      */
@@ -394,11 +462,13 @@ class JavaMethodGeneratorTest extends DBSpec {
         param.addModifier(Modifier.forName("FINAL"))
         data.addParameter(param)
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      * @param param
      */
     public void test(final int param) {
@@ -416,11 +486,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .type(TypeRef.createPrimitiveTypeRef("int"))
                 .create()
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      * @return
      */
     public int test() {
@@ -438,11 +510,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .type(TypeRef.createPrimitiveTypeRef("void"))
                 .create()
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
     public void test() {
     }"""
@@ -457,6 +531,8 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .compKey("field")
                 .create()
         field.setType(TypeRef.createPrimitiveTypeRef("int"))
+
+        type.addMember(field)
 
         ctx.methodGen.init(field: field)
         String observed = ctx.methodGen.generate().stripIndent(8)
@@ -485,6 +561,8 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .compKey("field")
                 .create()
         field.setType(TypeRef.createPrimitiveTypeRef("boolean"))
+
+        type.addMember(field)
 
         ctx.methodGen.init(field: field)
         String observed = ctx.methodGen.generate().stripIndent(8)
@@ -515,6 +593,8 @@ class JavaMethodGeneratorTest extends DBSpec {
         field.setType(TypeRef.createPrimitiveTypeRef("int"))
         field.addModifier(Modifier.forName("STATIC"))
 
+        type.addMember(field)
+
         ctx.methodGen.init(field: field)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
@@ -543,6 +623,8 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .create()
         field.setType(TypeRef.createPrimitiveTypeRef("int"))
         field.addModifier(Modifier.forName("FINAL"))
+
+        type.addMember(field)
 
         ctx.methodGen.init(field: field)
         String observed = ctx.methodGen.generate().stripIndent(8)
@@ -581,11 +663,13 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .create()
         data.addException(TypeRef.createPrimitiveTypeRef("IllegalArgumentException"))
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      * @throws IllegalArgumentException
      */
     public void test() throws IllegalArgumentException {
@@ -605,11 +689,13 @@ class JavaMethodGeneratorTest extends DBSpec {
         data.addException(TypeRef.createPrimitiveTypeRef("IllegalArgumentException"))
         data.addException(TypeRef.createPrimitiveTypeRef("NullPointerException"))
 
+        type.addMember(data)
+
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      * @throws IllegalArgumentException
      * @throws NullPointerException
      */
@@ -631,6 +717,8 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .type(TypeRef.createPrimitiveTypeRef("void"))
                 .create()
         t1.addMember(data2)
+        file.addType(t1)
+        ns.addType(t1)
 
         data = Method.builder()
                 .name("test")
@@ -639,14 +727,15 @@ class JavaMethodGeneratorTest extends DBSpec {
                 .type(TypeRef.createPrimitiveTypeRef("void"))
                 .create()
         t2.addMember(data)
+        file.addType(t2)
+        ns.addType(t2)
 
         ctx.methodGen.init(method: data)
         String observed = ctx.methodGen.generate().stripIndent(8)
         String expected = """
     /**
-     * 
+     *
      */
-    @Override
     public void test() {
     }"""
 

@@ -54,8 +54,8 @@ class JavaFileGeneratorTest extends DBSpec {
 
         data = File.builder()
                 .type(FileType.SOURCE)
-                .name("Test.java")
-                .fileKey("Test.java")
+                .name("testdir/Test.java")
+                .fileKey("testdir/Test.java")
                 .create()
         proj = Project.builder()
                 .version("1.0")
@@ -84,6 +84,7 @@ class JavaFileGeneratorTest extends DBSpec {
                 .create()
         ns1.addNamespace(ns2)
         ns2.addFile(data)
+        proj.addFile(data)
         proj.addNamespace(ns1)
         proj.addNamespace(ns2)
 
@@ -135,7 +136,9 @@ class JavaFileGeneratorTest extends DBSpec {
          * @version 1.0
          */
         public class Test {
+        
         }
+        
         """.stripIndent()
 
         ctx.fileGen.init(file: data, builder: builder)
@@ -255,7 +258,9 @@ class JavaFileGeneratorTest extends DBSpec {
              */
             public Reference method() {
             }
+        
         }
+        
         """.stripIndent()
 
         ctx.fileGen.init(file: data, builder: builder)
@@ -264,7 +269,7 @@ class JavaFileGeneratorTest extends DBSpec {
 
         a(testDir.exists()).shouldBeTrue()
         a(created.exists()).shouldBeTrue()
-        the(created.text).shouldEqual(expected)
+        Assert.assertEquals(created.text, expected)
     }
 
     @Test
@@ -305,6 +310,10 @@ class JavaFileGeneratorTest extends DBSpec {
         other.addType(ref)
         ns1.addFile(other)
         ns1.addType(ref)
+        proj.updateKeys()
+        proj.refresh()
+        ns1.refresh()
+        ref.refresh()
 
         Field method = Field.builder()
                 .name("ref")
@@ -314,10 +323,7 @@ class JavaFileGeneratorTest extends DBSpec {
                         .type(TypeRefType.Type)
                         .typeName(ref.name)
                         .typeFullName(ref.getFullName())
-                        .ref(Reference.builder()
-                                .refKey(ref.getRefKey())
-                                .refType(RefType.TYPE)
-                                .create())
+                        .ref(ref.createReference())
                         .create())
                 .create()
         clazz.addMember(method)
@@ -440,6 +446,7 @@ class JavaFileGeneratorTest extends DBSpec {
                 
         package ns1;
         import java.util.*;
+        
         """.stripIndent()
 
         a(testDir.exists()).shouldBeTrue()
@@ -496,6 +503,7 @@ class JavaFileGeneratorTest extends DBSpec {
                 
         package ns1.ns2;
         import java.util.*;
+        
         """.stripIndent()
 
         a(testDir.exists()).shouldBeTrue()
@@ -563,7 +571,9 @@ class JavaFileGeneratorTest extends DBSpec {
          * @version 1.0
          */
         public class Test {
+        
         }
+        
         """.stripIndent()
 
         ctx.fileGen.init(file: data, builder: builder)
@@ -641,6 +651,7 @@ class JavaFileGeneratorTest extends DBSpec {
          * @version 1.0
          */
         public class Test {
+        
         }
         
         /**
@@ -650,7 +661,9 @@ class JavaFileGeneratorTest extends DBSpec {
          * @version 1.0
          */
         class Test2 {
+        
         }
+        
         """.stripIndent()
 
         ctx.fileGen.init(file: data, builder: builder)

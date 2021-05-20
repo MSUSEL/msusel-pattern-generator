@@ -29,6 +29,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
+import edu.montana.gsoc.msusel.pattern.gen.cue.MethodCue
 import edu.montana.gsoc.msusel.pattern.gen.generators.MethodGenerator
 import groovy.util.logging.Log4j2
 
@@ -56,18 +57,19 @@ class JavaMethodGenerator extends MethodGenerator {
             method.refresh()
             Project proj = method.getParentProject()
             proj.refresh()
-            roleName = ctx.projRbmlMap[proj.getProjectKey()].getRole(method)?.name
+            roleName = ctx.projRbmlMap[proj.getProjectKey()]?.getRole(method)?.name
         }
         else {
             field.refresh()
             Project proj = field.getParentProject()
             proj.refresh()
-            roleName = ctx.projRbmlMap[proj.getProjectKey()].getRole(field)?.name
+            roleName = ctx.projRbmlMap[proj.getProjectKey()]?.getRole(field)?.name
         }
 
         Cue cue = CueManager.getInstance().getCurrent()
-        if (roleName && cue.hasCueForRole(roleName, method) && params.parentCue)
+        if (roleName && cue.hasCueForRole(roleName, method) && cue.getCueForRole(roleName, method) instanceof MethodCue && params.parentCue) {
             return ""
+        }
 
         String output = ""
 
@@ -171,7 +173,7 @@ class JavaMethodGenerator extends MethodGenerator {
              * @throws ${it.getTypeRef().typeName}"""
         }
         String comment = """/**
-             * $params${ret ?: ""}$excepts
+             *$params${ret ?: ""}$excepts
              */"""
 //        if (method.isOverriding()) {
 //            comment += """

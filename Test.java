@@ -24,35 +24,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package edu.montana.gsoc.msusel.pattern.gen.cue
+package ns1.ns2;
+import java.util.*;
 
+/**
+ * Generated Class
+ *
+ * @author Isaac Griffith
+ * @version 1.0
+ */
+public class Test {
 
-import edu.isu.isuese.datamodel.Component
-import edu.isu.isuese.datamodel.Method
-import groovy.transform.TupleConstructor
-
-@TupleConstructor(includeSuperProperties = true, includeSuperFields = true)
-class MethodCue extends Cue {
-
-    @Override
-    def getDelimString() {
-        return (/(?ms)start_method: ${name}.*end_method: ${name}/)
-    }
-
-    @Override
-    def getReplacement() {
-        return (/\[\[method: ${name}\]\]/)
-    }
-
-    @Override
-    def getCueForRole(String roleName, Component c) {
-        if (name == roleName && c instanceof Method)
-            return this
-        return null
-    }
-
-    @Override
-    def hasCueForRole(String roleName, Component t) {
-        return name == roleName && t instanceof Method
-    }
 }
+
+/**
+ * Generated Class
+ *
+ * @author Isaac Griffith
+ * @version 1.0
+ */
+class Test2 {
+
+}
+

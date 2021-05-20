@@ -26,8 +26,10 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
+import com.google.common.collect.HashBasedTable
 import com.google.common.collect.Table
 import edu.isu.isuese.datamodel.Project
+import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.generators.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.*
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.RampedHalfHalf
@@ -61,7 +63,8 @@ class GeneratorContext {
     String binPath
     String srcExt
     Map<String, RBML2DataModelManager> projRbmlMap = [:]
-    Table<String, String, String> results
+    Map<String, Cue> projCueMap = [:]
+    Table<String, String, String> results = HashBasedTable.create()
     String javaBinary
 
     int num = 0

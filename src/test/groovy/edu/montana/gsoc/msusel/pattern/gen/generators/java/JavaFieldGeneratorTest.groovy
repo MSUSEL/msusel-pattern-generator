@@ -52,6 +52,31 @@ class JavaFieldGeneratorTest extends DBSpec {
                 .compKey("type")
                 .create()
 
+        Project project = Project.builder()
+                .name("Test")
+                .projKey("Test")
+                .version("1.0")
+                .create()
+        project.save()
+
+        System sys = System.builder().name("test").key("test").create()
+
+        Namespace ns = Namespace.builder().name("test").nsKey("test").relPath("test").create()
+
+        File file = File.builder().type(FileType.SOURCE).name("Test.java").fileKey("Test.java").relPath("Test.java").create()
+
+        ns.save()
+        project.addNamespace(ns)
+        project.addFile(file)
+        type.save()
+        ns.addType(type)
+        file.addType(type)
+        sys.addProject(project)
+        sys.updateKeys()
+        type.refresh()
+        ns.refresh()
+        project.refresh()
+
         Reference ref = Reference.builder()
                 .refType(RefType.FIELD)
                 .refKey(type.getRefKey())
@@ -74,6 +99,8 @@ class JavaFieldGeneratorTest extends DBSpec {
         publicAccess.setType(typeRef)
         publicAccess.saveIt()
 
+        type.addMember(publicAccess)
+
         ctx.fieldGen.init(field: publicAccess)
         String obsData = ctx.fieldGen.generate()
         String expData = "public Type test;"
@@ -90,6 +117,8 @@ class JavaFieldGeneratorTest extends DBSpec {
                 .create()
         defaultAccess.setType(typeRef)
         defaultAccess.saveIt()
+
+        type.addMember(defaultAccess)
 
         ctx.fieldGen.init(field: defaultAccess)
         String obsData = ctx.fieldGen.generate()
@@ -108,6 +137,8 @@ class JavaFieldGeneratorTest extends DBSpec {
         protectedAccess.setType(typeRef)
         protectedAccess.saveIt()
 
+        type.addMember(protectedAccess)
+
         ctx.fieldGen.init(field: protectedAccess)
         String obsData = ctx.fieldGen.generate()
         String expData = "protected Type test;"
@@ -124,6 +155,8 @@ class JavaFieldGeneratorTest extends DBSpec {
                 .create()
         privateAccess.setType(typeRef)
         privateAccess.saveIt()
+
+        type.addMember(privateAccess)
 
         ctx.fieldGen.init(field: privateAccess)
         String obsData = ctx.fieldGen.generate()
@@ -143,6 +176,8 @@ class JavaFieldGeneratorTest extends DBSpec {
         volatileModifier.setType(typeRef)
         volatileModifier.saveIt()
 
+        type.addMember(volatileModifier)
+
         ctx.fieldGen.init(field: volatileModifier)
         String obsData = ctx.fieldGen.generate()
         String expData = "public volatile Type test;"
@@ -160,6 +195,8 @@ class JavaFieldGeneratorTest extends DBSpec {
         transientModifier.addModifier(Modifier.forName("transient"))
         transientModifier.setType(typeRef)
         transientModifier.saveIt()
+
+        type.addMember(transientModifier)
 
         ctx.fieldGen.init(field: transientModifier)
         String obsData = ctx.fieldGen.generate()
@@ -179,6 +216,8 @@ class JavaFieldGeneratorTest extends DBSpec {
         finalModifier.setType(typeRef)
         finalModifier.saveIt()
 
+        type.addMember(finalModifier)
+
         ctx.fieldGen.init(field: finalModifier)
         String obsData = ctx.fieldGen.generate()
         String expData = "public final Type test;"
@@ -196,6 +235,8 @@ class JavaFieldGeneratorTest extends DBSpec {
         staticModifier.addModifier(Modifier.forName("static"))
         staticModifier.setType(typeRef)
         staticModifier.saveIt()
+
+        type.addMember(staticModifier)
 
         ctx.fieldGen.init(field: staticModifier)
         String obsData = ctx.fieldGen.generate()
@@ -215,6 +256,8 @@ class JavaFieldGeneratorTest extends DBSpec {
         modifiers.addModifier(Modifier.forName("final"))
         modifiers.setType(typeRef)
         modifiers.saveIt()
+
+        type.addMember(modifiers)
 
         ctx.fieldGen.init(field: modifiers)
         String obsData = ctx.fieldGen.generate()

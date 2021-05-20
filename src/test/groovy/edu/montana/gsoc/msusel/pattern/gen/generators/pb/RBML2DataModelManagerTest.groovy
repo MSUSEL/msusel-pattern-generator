@@ -27,6 +27,7 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import edu.isu.isuese.datamodel.Class
+import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.Role
@@ -156,13 +157,11 @@ class RBML2DataModelManagerTest extends DBSpec {
         the(r).shouldBeA(Classifier)
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     void "getRole with null"() {
-        // given
-        type = null
-
         // when
-        fixture.getRole(type)
+        def result = fixture.getRole((Field) null)
+        the(result).shouldBeNull()
     }
 
     @Test

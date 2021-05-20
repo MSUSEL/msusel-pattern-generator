@@ -6,23 +6,23 @@ start_type: Context
 [[typedef]] {
 
     start_field: currentState
-    private [[State.root]] currentState;
+    private [[State.root]] [[name]];
     end_field: currentState
+    [[fields]]
     start_field: st
     end_field: st
-    [[fields]]
 
     public [[InstName]]() {
-    	currentState = [[ConcreteState.random]].instance(this);
+    	[[currentState.name]] = [[ConcreteState.random]].instance(this);
     }
 
     public void changeCurrentState([[State.root]] state) {
-        currentState = state;
+        [[currentState.name]] = state;
     }
 
     start_method: Request
     public void [[name]]() {
-        currentState.[[Handle.name]]();
+        [[currentState.name]].[[Handle.name]]();
     }
     end_method: Request
     [[methods]]
@@ -58,7 +58,7 @@ start_type: ConcreteState
      */
     @Override
     public void [[name]]() {
-	context.changeCurrentState([[ConcreteState.random]].instance(context));
+        context.changeCurrentState([[ConcreteState.random]].instance(context));
     }
     end_method: Handle
 

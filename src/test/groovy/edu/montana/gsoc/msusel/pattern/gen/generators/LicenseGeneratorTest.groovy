@@ -33,7 +33,7 @@ class LicenseGeneratorTest extends Specification {
 
     LicenseGenerator fixture
     FileTreeBuilder builder
-    final File testDir = new File('testdir')
+    File testDir = new File('testdir')
 
     void setup() {
         fixture = new LicenseGenerator()

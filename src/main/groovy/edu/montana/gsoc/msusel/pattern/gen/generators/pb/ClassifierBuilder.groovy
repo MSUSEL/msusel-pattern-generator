@@ -84,10 +84,10 @@ class ClassifierBuilder extends AbstractBuilder {
     }
 
     void createFeatures(Classifier classifier) {
-        log.info("Creating features for ${classifier.name}")
         if (!classifier)
             throw new IllegalArgumentException("createFeatures: classifier cannot be null")
 
+        log.info("Creating features for ${classifier.name}")
         createFieldNames(classifier)
         createMethodNames(classifier)
 

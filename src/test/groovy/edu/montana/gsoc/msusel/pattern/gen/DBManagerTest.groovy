@@ -27,6 +27,7 @@
 package edu.montana.gsoc.msusel.pattern.gen
 
 import edu.isu.isuese.datamodel.Pattern
+import edu.isu.isuese.datamodel.util.DBCredentials
 import edu.isu.isuese.datamodel.util.DBManager
 import spock.lang.Specification
 
@@ -34,6 +35,7 @@ class DBManagerTest extends Specification {
 
     DBManager fixture
     GeneratorContext context
+    DBCredentials creds
 
     void setup() {
         context = GeneratorContext.getInstance()
@@ -44,7 +46,8 @@ class DBManagerTest extends Specification {
                 'pass'   : 'passwd',
                 'file'   : 'data/testing.db'
         ]
-        fixture = new DBManager(context: context)
+        creds = new DBCredentials(type: "sqlite", driver: context.db.driver, url: context.db.url, user: context.db.user, pass: context.db.pass)
+        fixture = DBManager.instance
     }
 
     void cleanup() {
@@ -55,10 +58,10 @@ class DBManagerTest extends Specification {
     def "Open"() {
         given:
         fixture
-        fixture.createDatabase()
+        fixture.createDatabase(creds)
 
         when:
-        fixture.open()
+        fixture.open(creds)
 
         then:
         !Pattern.findAll().isEmpty()
@@ -68,10 +71,10 @@ class DBManagerTest extends Specification {
     def "Close"() {
         given:
         fixture
-        fixture.createDatabase()
+        fixture.createDatabase(creds)
 
         when:
-        fixture.open()
+        fixture.open(creds)
 
         then:
         fixture.close() == null
@@ -82,7 +85,7 @@ class DBManagerTest extends Specification {
         fixture
 
         when:
-        fixture.createDatabase()
+        fixture.createDatabase(creds)
         File f = new File(context.db.file)
 
         then:

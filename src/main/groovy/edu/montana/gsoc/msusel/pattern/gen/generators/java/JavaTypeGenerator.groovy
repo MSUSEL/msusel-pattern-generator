@@ -72,20 +72,19 @@ class JavaTypeGenerator extends TypeGenerator {
     }
 
     private String fromCue(Cue cue, Type type) {
-        String kind = type.getClass().getSimpleName().toLowerCase();
+        String kind = type.getClass().getSimpleName().toLowerCase()
 
         CueParams params = new CueParams()
         params.setParam("literals", genLiterals(type))
         params.setParam("typedef", createTypeDef(kind, type, type.name))
-        params.setParam("fields", genFields(type))
-        params.setParam("methods", genMethods(type))
+        params.setParam("fields", genFields(cue, type))
+        params.setParam("methods", genMethods(cue, type))
         params.setParam("InstName", type.name)
         params.setParam("ClassComment", typeComment())
 
         type.refresh()
         Project proj = type.getParentProject()
         proj.refresh()
-        ctx.projRbmlMap.keySet().each {println "Key: $it"}
         cue.compile(type, params, ctx.projRbmlMap[proj.getProjectKey()])
     }
 
@@ -109,7 +108,7 @@ class JavaTypeGenerator extends TypeGenerator {
     private String getContent(Type type) {
         return """${
             genLiterals(type)
-        }${genFields(type)}${genMethods(type)}"""
+        }${genFields(null, type)}${genMethods(null, type)}"""
     }
 
     private String typeComment() {
@@ -146,7 +145,14 @@ class JavaTypeGenerator extends TypeGenerator {
             return content
         if (type.getGeneralizedBy()) {
             content += " extends "
-            content += type.getGeneralizedBy().first().name
+            if (type instanceof Interface) {
+                List<String> names = []
+                type.getGeneralizedBy().each {
+                    names << it.name
+                }
+                content += names.join(", ")
+            } else
+                content += type.getGeneralizedBy().first().name
         }
 
         content
@@ -187,14 +193,13 @@ class JavaTypeGenerator extends TypeGenerator {
         content
     }
 
-    private String genFields(Type type) {
-        Cue cue = CueManager.getInstance().getCurrent()
+    private String genFields(Cue cue, Type type) {
         String content = ""
 
         if (type.fields) {
             content += "\n"
             type.fields.each { Field f ->
-                if (!cue.hasCueForRole(ctx.rbmlManager.getRole(f)?.name, type)) {
+                if (!cue?.hasCueForRole(ctx.rbmlManager.getRole(f)?.name, type)) {
                     content += "\n            "
                     ctx.fieldGen.init(field: f, type: type)
                     content += ctx.fieldGen.generate()
@@ -205,14 +210,17 @@ class JavaTypeGenerator extends TypeGenerator {
         content
     }
 
-    private String genMethods(Type type) {
-        Cue cue = CueManager.getInstance().getCurrent()
+    protected String genMethods(Cue cue, Type type) {
         String content = ""
 
         if (!(type instanceof Interface)) {
             type.fields.each { Field f ->
-                if (!cue.hasCueForRole(ctx.rbmlManager.getRole(f)?.name, type)) {
-                    ctx.methodGen.init(field: f, parent: type, parentCue: cue.hasCueForRole(ctx.rbmlManager.getRole(type)?.name, type))
+                if (!cue?.hasCueForRole(ctx.rbmlManager.getRole(f)?.name, f)) {
+                    ctx.methodGen.init(field: f, parent: type, parentCue: cue?.hasCueForRole(ctx.rbmlManager.getRole(type)?.name, type))
+                    content += "\n    "
+                    content += ctx.methodGen.generate()
+                } else if (!type.hasMethodWithName("get${f.getName().capitalize()}") && !type.hasMethodWithName("set${f.getName().capitalize()}")) {
+                    ctx.methodGen.init(field: f, parent: type, parentCue: cue?.hasCueForRole(ctx.rbmlManager.getRole(type)?.name, type))
                     content += "\n    "
                     content += ctx.methodGen.generate()
                 }
@@ -220,8 +228,8 @@ class JavaTypeGenerator extends TypeGenerator {
         }
 
         type.methods.each { Method m ->
-            if (!cue.hasCueForRole(ctx.rbmlManager.getRole(m)?.name, type) || !cue.hasCueForRole(ctx.rbmlManager.getRole(type)?.name, type)) {
-                ctx.methodGen.init(method: m, parent: type, parentCue: cue.hasCueForRole(ctx.rbmlManager.getRole(type)?.name, type))
+            if (!cue?.hasCueForRole(ctx.rbmlManager.getRole(m)?.name, m)) {
+                ctx.methodGen.init(method: m, parent: type, parentCue: cue?.hasCueForRole(ctx.rbmlManager.getRole(type)?.name, type))
                 content += "\n    "
                 content += ctx.methodGen.generate()
             }

@@ -28,6 +28,7 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.System
+import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 
 /**
  * @author Isaac Griffith
@@ -60,12 +61,18 @@ class ProjectBuilder extends AbstractBuilder {
 
         ((System) params.parent).addProject(proj)
 
+        if (CueManager.instance.cues)
+            ctx.loader.selectCue()
+        if (CueManager.instance.current)
+            ctx.projCueMap[proj.getProjectKey()] = CueManager.instance.getCurrent()
+
         ctx.modBuilder.init(parent: proj, name: "default", pattern: params.pattern)
         ctx.modBuilder?.create()
 
         proj.refresh()
         ctx.projRbmlMap[proj.getProjectKey()] = ctx.rbmlManager
         ctx.rbmlManager = null
+        CueManager.instance.current = null
 
         proj
     }

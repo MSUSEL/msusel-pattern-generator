@@ -26,33 +26,50 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
+import spock.lang.Specification
 
-import edu.isu.isuese.datamodel.Component
-import edu.isu.isuese.datamodel.Method
-import groovy.transform.TupleConstructor
+class CueReaderSpec extends Specification {
 
-@TupleConstructor(includeSuperProperties = true, includeSuperFields = true)
-class MethodCue extends Cue {
+    def "Read"(String pattern, String language, int size) {
+        given:
+        String path = "/cues/${language}/${pattern}.tp"
 
-    @Override
-    def getDelimString() {
-        return (/(?ms)start_method: ${name}.*end_method: ${name}/)
+        when:
+        def cues = CueReader.instance.read(path)
+
+        then:
+        cues.size() == size
+
+        where:
+        pattern    | language | size
+        "state"    | "java"   | 1
+        "strategy" | "java"   | 1
     }
 
-    @Override
-    def getReplacement() {
-        return (/\[\[method: ${name}\]\]/)
+    def "PreProcess"() {
+        given:
+        String text = """\
+        something
+        # comment
+        # comment
+        something else
+        """.stripIndent()
+        String expected = """\
+        something
+        something else""".stripIndent()
+
+        when:
+        String processed = CueReader.instance.preProcess(text)
+
+        then:
+        expected == processed
     }
 
-    @Override
-    def getCueForRole(String roleName, Component c) {
-        if (name == roleName && c instanceof Method)
-            return this
-        return null
-    }
+    def "GetInstance"() {
+        when:
+          CueReader reader = CueReader.instance
 
-    @Override
-    def hasCueForRole(String roleName, Component t) {
-        return name == roleName && t instanceof Method
+        then:
+          reader != null
     }
 }

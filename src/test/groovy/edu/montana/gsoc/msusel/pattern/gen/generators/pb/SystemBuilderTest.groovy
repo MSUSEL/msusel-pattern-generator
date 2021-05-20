@@ -42,6 +42,9 @@ class SystemBuilderTest extends DBSpec {
     void setup() {
         ctx = GeneratorContext.instance
         ctx.resetPatternBuilderComponents()
+        ctx.srcPath = "src/main/java"
+        ctx.testPath = "src/test/java"
+        ctx.binPath = "build/classes/java/main"
     }
 
     @After
@@ -56,7 +59,7 @@ class SystemBuilderTest extends DBSpec {
         int num = 1
 
         // when:
-        ctx.sysBuilder.init(pattern: pattern, num: num)
+        ctx.sysBuilder.init(id: "1", pattern: pattern, num: num)
         ctx.sysBuilder.create()
         List<System> sys = System.findAll()
 
@@ -75,18 +78,17 @@ class SystemBuilderTest extends DBSpec {
         int num = 2
 
         // when:
-        ctx.sysBuilder.init(pattern: pattern, num: num)
+        ctx.sysBuilder.init(id: "2", pattern: pattern, num: num)
         ctx.sysBuilder.create()
         List<System> sys = System.findAll()
 
         // then:
         the(sys.size()).shouldEqual(1)
         the(sys[0].name).shouldEqual(pattern)
-        the(Project.findAll().size()).shouldEqual(2)
+        the(Project.findAll().size()).shouldEqual(1)
         List<Project> proj = sys[0].getProjects()
-        the(proj.size()).shouldEqual(2)
-        the("${proj[0].name}").shouldEqual("${pattern}-1")
-        the("${proj[1].name}").shouldEqual("${pattern}-2")
+        the(proj.size()).shouldEqual(1)
+        the("${proj[0].name}").shouldEqual("${pattern}-2")
     }
 
     @Test(expected = IllegalArgumentException.class)

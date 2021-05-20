@@ -26,33 +26,35 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
+import spock.lang.Specification
 
-import edu.isu.isuese.datamodel.Component
-import edu.isu.isuese.datamodel.Method
-import groovy.transform.TupleConstructor
+class PatternCueSpec extends Specification {
 
-@TupleConstructor(includeSuperProperties = true, includeSuperFields = true)
-class MethodCue extends Cue {
+    PatternCue fixture
 
-    @Override
-    def getDelimString() {
-        return (/(?ms)start_method: ${name}.*end_method: ${name}/)
+    def setup() {
+        fixture = new PatternCue(name: "Test")
     }
 
-    @Override
-    def getReplacement() {
-        return (/\[\[method: ${name}\]\]/)
+    def "GetDelimString"() {
+        given:
+          fixture
+
+        when:
+          def actual = fixture.getDelimString()
+
+        then:
+          actual == /(?ms)begin_pattern: Test.*?end_pattern: Test/
     }
 
-    @Override
-    def getCueForRole(String roleName, Component c) {
-        if (name == roleName && c instanceof Method)
-            return this
-        return null
-    }
+    def "GetReplacement"() {
+        given:
+          fixture
 
-    @Override
-    def hasCueForRole(String roleName, Component t) {
-        return name == roleName && t instanceof Method
+        when:
+          def actual = fixture.getReplacement()
+
+        then:
+          actual == "[[pattern: Test]]"
     }
 }

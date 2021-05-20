@@ -30,6 +30,11 @@ package edu.montana.gsoc.msusel.pattern.gen.cue
 class CueFactory {
 
     Cue createCue(CueType type, String name) {
+        if (!type)
+            throw new IllegalArgumentException("CueType cannot be null")
+        if (name == null || name.isEmpty())
+            throw new IllegalArgumentException("Name cannot be null or empty")
+
         switch (type) {
             case CueType.Pattern:
                 return new PatternCue(name)

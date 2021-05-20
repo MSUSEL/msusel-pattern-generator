@@ -26,33 +26,34 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
+import spock.lang.Specification
 
-import edu.isu.isuese.datamodel.Component
-import edu.isu.isuese.datamodel.Method
-import groovy.transform.TupleConstructor
+class CueManagerSpec extends Specification {
 
-@TupleConstructor(includeSuperProperties = true, includeSuperFields = true)
-class MethodCue extends Cue {
+    def "LoadCues"() {
+        given:
+          String pattern = "state"
+          String language = "java"
 
-    @Override
-    def getDelimString() {
-        return (/(?ms)start_method: ${name}.*end_method: ${name}/)
+        when:
+          CueManager.instance.loadCues(pattern, language)
+
+        then:
+          CueManager.instance.cues != null
+          CueManager.instance.cues.size() == 1
     }
 
-    @Override
-    def getReplacement() {
-        return (/\[\[method: ${name}\]\]/)
-    }
+    def "SelectCue"() {
+        given:
+          String pattern = "state"
+          String language = "java"
+          CueManager.instance.loadCues(pattern, language)
 
-    @Override
-    def getCueForRole(String roleName, Component c) {
-        if (name == roleName && c instanceof Method)
-            return this
-        return null
-    }
+        when:
+          CueManager.instance.selectCue()
 
-    @Override
-    def hasCueForRole(String roleName, Component t) {
-        return name == roleName && t instanceof Method
+        then:
+          CueManager.instance.current != null
+          CueManager.instance.current == CueManager.instance.cues.values().first()
     }
 }

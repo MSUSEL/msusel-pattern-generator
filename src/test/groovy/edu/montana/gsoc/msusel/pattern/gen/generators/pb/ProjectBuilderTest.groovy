@@ -46,7 +46,12 @@ class ProjectBuilderTest extends DBSpec {
         sys = System.builder()
                 .name("Test")
                 .key("Test")
+                .basePath(new File(".").absolutePath)
                 .create()
+
+        ctx.srcPath = "src/main/java"
+        ctx.testPath = "src/test/java"
+        ctx.binPath = "build/classes/java/main"
     }
 
     @After

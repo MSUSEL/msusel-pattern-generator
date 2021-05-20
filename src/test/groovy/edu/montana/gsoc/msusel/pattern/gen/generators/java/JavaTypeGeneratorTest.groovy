@@ -28,7 +28,10 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
+import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
+import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.rbml.model.ClassRole
+import edu.montana.gsoc.msusel.rbml.model.SPS
 import org.javalite.activejdbc.test.DBSpec
 import org.junit.After
 import org.junit.Before
@@ -44,6 +47,8 @@ class JavaTypeGeneratorTest extends DBSpec {
     FileTreeBuilder builder
     final File testDir = new File("testdir")
     Type data
+    edu.isu.isuese.datamodel.File file
+    Namespace ns
 
     @Before
     void setup() {
@@ -53,6 +58,27 @@ class JavaTypeGeneratorTest extends DBSpec {
         ctx.resetComponentGenerators()
         testDir.mkdirs()
         builder = new FileTreeBuilder(testDir)
+
+        Project project = Project.builder()
+                .name("Test")
+                .projKey("Test")
+                .version("1.0")
+                .create()
+        project.save()
+
+        System sys = System.builder().name("test").key("test").create()
+
+        ns = Namespace.builder().name("test").nsKey("test").relPath("test").create()
+
+        file = edu.isu.isuese.datamodel.File.builder().type(FileType.SOURCE).name("Test.java").fileKey("Test.java").relPath("Test.java").create()
+
+        ns.save()
+        project.addNamespace(ns)
+        project.addFile(file)
+        sys.addProject(project)
+        sys.updateKeys()
+        ns.refresh()
+        project.refresh()
     }
 
     @After
@@ -65,6 +91,9 @@ class JavaTypeGeneratorTest extends DBSpec {
     void "generate an empty class"() {
         data = Class.builder().name("Test").accessibility(Accessibility.PUBLIC).create()
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -73,6 +102,7 @@ class JavaTypeGeneratorTest extends DBSpec {
  * @version 1.0
  */
 public class Test {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -85,6 +115,9 @@ public class Test {
     void "generate an empty enum"() {
         data = Enum.builder().name("Test").accessibility(Accessibility.PUBLIC).create()
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -93,6 +126,7 @@ public class Test {
  * @version 1.0
  */
 public enum Test {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -105,6 +139,9 @@ public enum Test {
     void "generate an empty interface"() {
         data = Interface.builder().name("Test").accessibility(Accessibility.PUBLIC).create()
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -113,6 +150,7 @@ public enum Test {
  * @version 1.0
  */
 public interface Test {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -128,6 +166,9 @@ public interface Test {
                 .accessibility(Accessibility.PUBLIC)
                 .create()
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -136,6 +177,7 @@ public interface Test {
  * @version 1.0
  */
 public class Test {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -152,6 +194,9 @@ public class Test {
                 .create()
         data.addModifier(Modifier.forName("STATIC"))
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -160,6 +205,7 @@ public class Test {
  * @version 1.0
  */
 public static class Test {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -175,6 +221,9 @@ public static class Test {
                 .accessibility(Accessibility.PRIVATE)
                 .create()
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -183,6 +232,7 @@ public static class Test {
  * @version 1.0
  */
 private class Test {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -198,6 +248,9 @@ private class Test {
                 .accessibility(Accessibility.DEFAULT)
                 .create()
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -206,6 +259,7 @@ private class Test {
  * @version 1.0
  */
 class Test {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -222,6 +276,9 @@ class Test {
                 .create()
         data.addModifier(Modifier.forName("FINAL"))
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -230,6 +287,7 @@ class Test {
  * @version 1.0
  */
 public final class Test {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -251,6 +309,9 @@ public final class Test {
                 .create()
         data.addMember(m)
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -265,6 +326,7 @@ public class Test {
      */
     public void test() {
     }
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -294,6 +356,9 @@ public class Test {
         data.addMember(m)
         data.addMember(m2)
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -314,6 +379,7 @@ public class Test {
      */
     public void test2() {
     }
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -334,6 +400,9 @@ public class Test {
                 .create()
         f.setType(TypeRef.createPrimitiveTypeRef("int"))
         data.addMember(f)
+
+        ns.addType(data)
+        file.addType(data)
 
         String expected = """\
 /**
@@ -359,6 +428,7 @@ public class Test {
     public void setTest(int test) {
         this.test = test;
     }
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -387,6 +457,9 @@ public class Test {
         f2.setType(TypeRef.createPrimitiveTypeRef("int"))
         data.addMember(f)
         data.addMember(f2)
+
+        ns.addType(data)
+        file.addType(data)
 
         String expected = """\
 /**
@@ -427,6 +500,7 @@ public class Test {
     public void setTest2(int test2) {
         this.test2 = test2;
     }
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -449,6 +523,9 @@ public class Test {
         m.addModifier(Modifier.forName("ABSTRACT"))
         data.addMember(m)
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -462,6 +539,7 @@ public interface Test {
      *
      */
     void test();
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -493,6 +571,9 @@ public interface Test {
         data.addMember(m)
         data.addMember(m2)
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -511,6 +592,7 @@ public interface Test {
      *
      */
     void test2();
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -534,6 +616,9 @@ public interface Test {
         f.addModifier(Modifier.forName("FINAL"))
         data.addMember(f)
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -544,6 +629,7 @@ public interface Test {
 public interface Test {
 
     int test;
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -564,6 +650,9 @@ public interface Test {
                 .create()
         data.addMember(l)
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -574,6 +663,7 @@ public interface Test {
 public enum Test {
 
     test;
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -601,6 +691,9 @@ public enum Test {
                 .create()
         data.addMember(l2)
 
+        ns.addType(data)
+        file.addType(data)
+
         String expected = """\
 /**
  * Generated Class
@@ -612,6 +705,7 @@ public enum Test {
 
     test,
     test2;
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -635,6 +729,11 @@ public enum Test {
         parent.addModifier(Modifier.forName("ABSTRACT"))
         data.generalizedBy(parent)
 
+        ns.addType(data)
+        ns.addType(parent)
+        file.addType(data)
+        file.addType(parent)
+
         String expected = """\
 /**
  * Generated Class
@@ -643,6 +742,7 @@ public enum Test {
  * @version 1.0
  */
 public class Test extends Parent {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -665,6 +765,11 @@ public class Test extends Parent {
                 .create()
         data.realizes(parent)
 
+        ns.addType(data)
+        ns.addType(parent)
+        file.addType(data)
+        file.addType(parent)
+
         String expected = """\
 /**
  * Generated Class
@@ -673,6 +778,7 @@ public class Test extends Parent {
  * @version 1.0
  */
 public class Test implements Parent {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -701,6 +807,13 @@ public class Test implements Parent {
                 .create()
         data.realizes(parent2)
 
+        ns.addType(data)
+        ns.addType(parent)
+        ns.addType(parent2)
+        file.addType(data)
+        file.addType(parent)
+        file.addType(parent2)
+
         String expected = """\
 /**
  * Generated Class
@@ -709,6 +822,7 @@ public class Test implements Parent {
  * @version 1.0
  */
 public class Test implements Parent, Parent2 {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -743,6 +857,11 @@ public class Test implements Parent, Parent2 {
                 .create()
         data.realizes(parent3)
 
+        ns.addType(data)
+        ns.addType(parent)
+        file.addType(data)
+        file.addType(parent)
+
         String expected = """\
 /**
  * Generated Class
@@ -751,6 +870,7 @@ public class Test implements Parent, Parent2 {
  * @version 1.0
  */
 public class Test extends Parent implements Parent2, Parent3 {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -785,6 +905,15 @@ public class Test extends Parent implements Parent2, Parent3 {
                 .create()
         data.generalizedBy(parent3)
 
+        ns.addType(data)
+        ns.addType(parent)
+        ns.addType(parent2)
+        ns.addType(parent3)
+        file.addType(data)
+        file.addType(parent)
+        file.addType(parent2)
+        file.addType(parent3)
+
         String expected = """\
 /**
  * Generated Class
@@ -792,7 +921,8 @@ public class Test extends Parent implements Parent2, Parent3 {
  * @author Isaac Griffith
  * @version 1.0
  */
-public interface Test extends Parent, Parent2, Parent3 {
+public interface Test extends Parent2, Parent, Parent3 {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -815,6 +945,11 @@ public interface Test extends Parent, Parent2, Parent3 {
                 .create()
         data.realizes(parent)
 
+        ns.addType(data)
+        ns.addType(parent)
+        file.addType(data)
+        file.addType(parent)
+
         String expected = """\
 /**
  * Generated Class
@@ -823,6 +958,7 @@ public interface Test extends Parent, Parent2, Parent3 {
  * @version 1.0
  */
 public enum Test implements Parent {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -857,6 +993,15 @@ public enum Test implements Parent {
                 .create()
         data.realizes(parent3)
 
+        ns.addType(data)
+        ns.addType(parent)
+        ns.addType(parent2)
+        ns.addType(parent3)
+        file.addType(data)
+        file.addType(parent)
+        file.addType(parent2)
+        file.addType(parent3)
+
         String expected = """\
 /**
  * Generated Class
@@ -865,6 +1010,7 @@ public enum Test implements Parent {
  * @version 1.0
  */
 public enum Test implements Parent, Parent2, Parent3 {
+
 }
 """
         ctx.typeGen.init(type: data)
@@ -984,4 +1130,84 @@ public enum Test implements Parent, Parent2, Parent3 {
 //
 //        assertEquals(expected, observed)
 //    }
+
+    @Test
+    void "Gen Methods with Cue"() {
+        given:
+        // build up components for State Context
+        System sys = System.builder().name("test2").key("test2").basePath(".").create()
+        Project project = Project.builder().name("test").relPath("test").projKey("test").create()
+        sys.addProject(project)
+        Namespace ns = Namespace.builder().name("test").nsKey("test").relPath("test").create()
+        project.addNamespace(ns)
+        edu.isu.isuese.datamodel.File file = edu.isu.isuese.datamodel.File.builder().name("Context.java").relPath("Context.java").fileKey("Context.java").create()
+        project.addFile(file)
+        Type context = Class.builder().name("Context").compKey("Context").accessibility(Accessibility.PUBLIC).create()
+        file.addType(context)
+        ns.addType(context)
+        Type other = Class.builder().name("Other").compKey("Other").accessibility(Accessibility.PUBLIC).create()
+        file.addType(other)
+        ns.addType(other)
+        Field cs = Field.builder()
+                .name("testCurrState")
+                .compKey("testCurrState")
+                .type(other.createTypeRef())
+                .accessibility(Accessibility.PRIVATE)
+                .create()
+        context.addMember(cs)
+        Method req = Method.builder()
+                .name("testRequest")
+                .compKey("testRequest")
+                .type(TypeRef.createPrimitiveTypeRef("void"))
+                .accessibility(Accessibility.PUBLIC)
+                .create()
+        context.addMember(req)
+        sys.updateKeys()
+        req.refresh()
+        cs.refresh()
+        other.refresh()
+        context.refresh()
+        file.refresh()
+        ns.refresh()
+        project.refresh()
+        sys.refresh()
+
+        String expected = """\
+
+                
+            /**
+             * @return the value of testCurrState
+             */
+            public Other getTestCurrState() {
+                return testCurrState;
+            }
+                
+            /**
+             * @param testCurrState the new value for testCurrState
+             */
+            public void setTestCurrState(Other testCurrState) {
+                this.testCurrState = testCurrState;
+            }"""
+
+        SPS sps = ctx.loader.loadPattern("state")
+        ctx.loader.loadPatternCues("state", "java")
+        CueManager.instance.selectCue()
+        Cue cue = CueManager.instance.getCurrent().getCueForRole("Context", context)
+        ctx.rbmlManager.addMapping(sps.getClassifierByName("Context").getStructuralFeatureByName("currentState"), cs)
+        ctx.rbmlManager.addMapping(sps.getClassifierByName("Context").getBehavioralFeatureByName("Request"), req)
+        ctx.rbmlManager.addMapping(sps.getClassifierByName("Context"), context)
+
+        sps.getClassifierByName("Context").structFeats.each {
+            println "Structural Feature Name: ${it.name}"
+        }
+        sps.getClassifierByName("Context").behFeats.each {
+            println "Behavioral Feature Name: ${it.name}"
+        }
+
+        when:
+        String actual = ((JavaTypeGenerator) ctx.typeGen).genMethods(context)
+
+        then:
+        the actual shouldBeEqual expected
+    }
 }

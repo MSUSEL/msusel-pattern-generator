@@ -332,7 +332,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
     private void createFields(Type src, Type dest, String srcName, String destName, int srcUpper, int destUpper) {
         Cue cue = CueManager.instance.getCurrent()
-        if (!cue.hasCueForRole(destName, src)) {
+        if (!(cue?.hasCueForRole(destName, src))) {
             if (!src.hasFieldWithName(destName)) {
                 TypeRef destRef = createTypeRef(dest)
                 Field srcField = Field.builder()
@@ -346,7 +346,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         }
 
         if (srcUpper == -1 && destUpper == -1) {
-            if (!cue.hasCueForRole(srcName, dest)) {
+            if (!(cue?.hasCueForRole(srcName, dest))) {
                 if (!dest.hasFieldWithName(srcName)) {
                     TypeRef srcRef = createTypeRef(src)
                     Field destField = Field.builder()

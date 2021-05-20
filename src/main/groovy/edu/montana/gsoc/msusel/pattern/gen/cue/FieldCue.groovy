@@ -28,6 +28,7 @@ package edu.montana.gsoc.msusel.pattern.gen.cue
 
 
 import edu.isu.isuese.datamodel.Component
+import edu.isu.isuese.datamodel.Field
 import groovy.transform.TupleConstructor
 
 @TupleConstructor(includeSuperProperties = true, includeSuperFields = true)
@@ -45,13 +46,13 @@ class FieldCue extends Cue  {
 
     @Override
     def getCueForRole(String roleName, Component c) {
-        if (name == roleName)
+        if (name == roleName && c instanceof Field)
             return this
         return null
     }
 
     @Override
     def hasCueForRole(String roleName, Component t) {
-        return name == roleName
+        return name == roleName && t instanceof Field
     }
 }

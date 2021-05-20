@@ -43,7 +43,8 @@ class PatternBuilder extends AbstractBuilder {
     Map<String, Integer> patternCounts = [:]
 
     def create() {
-        log.info "Generating pattern ${++ctx.num}/${ctx.numInstances * ctx.patterns.size()}"
+        if (ctx.patterns)
+            log.info "Generating pattern ${++ctx.num}/${ctx.numInstances * ctx.patterns.size()}"
         if (!params.pattern)
             throw new IllegalArgumentException("create: pattern cannot be null or empty")
         if (!params.parent)

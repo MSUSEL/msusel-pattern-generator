@@ -58,6 +58,7 @@ class FileBuilderTest extends DBSpec {
                 .nsKey("ns")
                 .create()
         project.addNamespace(data)
+        project.setSrcPath("src/main/java")
     }
 
     @After
@@ -78,8 +79,8 @@ class FileBuilderTest extends DBSpec {
         // then
         the(files.size()).shouldEqual(1)
         the(data.files.size()).shouldEqual(1)
-        the(files[0].name).shouldEqual("src/main/java/ns/Type.java")
-        the(files[0].fileKey).shouldEqual("Test:src/main/java/ns/Type.java")
+        the(files[0].name).shouldEqual("/src/main/java/ns/Type.java")
+        the(files[0].fileKey).shouldEqual("Test:/src/main/java/ns/Type.java")
         the(files[0].type).shouldEqual(FileType.SOURCE)
     }
 

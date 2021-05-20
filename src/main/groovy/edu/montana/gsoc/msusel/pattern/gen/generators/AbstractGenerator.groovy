@@ -55,11 +55,11 @@ abstract class AbstractGenerator {
 
         switch (comp) {
             case Type:
-                return ctx.projRbmlMap[proj.getProjectKey()].getRole((Type) comp)
+                return ctx.projRbmlMap[proj.getProjectKey()]?.getRole((Type) comp)
             case Method:
-                return ctx.projRbmlMap[proj.getProjectKey()].getRole((Method) comp)
+                return ctx.projRbmlMap[proj.getProjectKey()]?.getRole((Method) comp)
             case Field:
-                return ctx.projRbmlMap[proj.getProjectKey()].getRole((Field) comp)
+                return ctx.projRbmlMap[proj.getProjectKey()]?.getRole((Field) comp)
             default:
                 return null
         }

@@ -26,33 +26,40 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
+import spock.lang.Specification
 
-import edu.isu.isuese.datamodel.Component
-import edu.isu.isuese.datamodel.Method
-import groovy.transform.TupleConstructor
+class CueParamsSpec extends Specification {
 
-@TupleConstructor(includeSuperProperties = true, includeSuperFields = true)
-class MethodCue extends Cue {
+    CueParams fixture
 
-    @Override
-    def getDelimString() {
-        return (/(?ms)start_method: ${name}.*end_method: ${name}/)
+    def setup() {
+        fixture = new CueParams()
     }
 
-    @Override
-    def getReplacement() {
-        return (/\[\[method: ${name}\]\]/)
-    }
+    def "Get and Set Param"(String key, String value) {
+        given:
+        key
+        value
 
-    @Override
-    def getCueForRole(String roleName, Component c) {
-        if (name == roleName && c instanceof Method)
-            return this
-        return null
-    }
+        when:
+        fixture.setParam(key, value)
 
-    @Override
-    def hasCueForRole(String roleName, Component t) {
-        return name == roleName && t instanceof Method
+        then:
+        fixture.getParam(key) == value
+
+        where:
+        key             | value
+        "literals"      | "test"
+        "typedef"       | "test"
+        "fields"        | "test"
+        "methods"       | "test"
+        "imports"       | "test"
+        "package"       | "test"
+        "copyright"     | "test"
+        "InstName"      | "test"
+        "BaseName"      | "test"
+        "RootName"      | "test"
+        "OtherRootName" | "test"
+        "Unknown"       | "test"
     }
 }

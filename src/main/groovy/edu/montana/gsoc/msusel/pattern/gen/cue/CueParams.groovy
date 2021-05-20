@@ -49,4 +49,10 @@ class CueParams {
     String getParam(String param) {
         return params[param]
     }
+
+    void printAll() {
+        params.each {String key, String value ->
+            println "Key: $key\nValue: $value\n"
+        }
+    }
 }

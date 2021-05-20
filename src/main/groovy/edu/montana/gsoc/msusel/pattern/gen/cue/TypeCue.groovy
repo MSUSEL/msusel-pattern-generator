@@ -28,6 +28,7 @@ package edu.montana.gsoc.msusel.pattern.gen.cue
 
 
 import edu.isu.isuese.datamodel.Component
+import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Method
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.RBML2DataModelManager
@@ -94,7 +95,7 @@ class TypeCue extends CueContainer {
             String combined = ""
             Cue cue = null
             manager.getComponentsByRole(role).findAll{((Method) it).parentType == type}.each { meth ->
-                cue = getCueForRole(role.name, meth)
+                cue = getCueForRole(role.name, (Component) meth)
                 if (cue)
                     combined += cue.compile(meth, params, manager) + "\n    "
             }
@@ -108,9 +109,9 @@ class TypeCue extends CueContainer {
             String combined = ""
             Cue cue = null
             manager.getComponentsByRole(role).each { fld ->
-                cue = getCueForRole(role.name, fld)
+                cue = getCueForRole(role.name, (Component) fld)
                 if (cue)
-                    combined += cue.compile(fld, params, manager) + "\n    "
+                    combined += cue.compile((Component) fld, params, manager) + "\n    "
             }
             if (cue) {
                 combined = combined.trim()

@@ -45,6 +45,7 @@ class MethodBuilderTest extends DBSpec {
     @Before
     void setUp() throws Exception {
         ctx = GeneratorContext.getInstance()
+        ctx.resetPatternBuilderComponents()
 
         role = Classifier.builder()
                 .name("Test")
@@ -99,12 +100,12 @@ class MethodBuilderTest extends DBSpec {
                 .create()
 
         // when:
-        ctx.methBuilder.init(feature: feature)
+        ctx.methBuilder.init(feature: feature, methodName: "test", owner: type)
         Method method = ctx.methBuilder.create()
 
         // then:
         the(method.type.typeName).shouldEqual("Class")
-        the(method.name).shouldNotBeNull()
+        the(method.name).shouldBeEqual("test")
     }
 
     @Test
@@ -119,12 +120,12 @@ class MethodBuilderTest extends DBSpec {
                 .create()
 
         // when:
-        ctx.methBuilder.init(feature: feature)
+        ctx.methBuilder.init(feature: feature, methodName: "test", owner: type)
         Method method = ctx.methBuilder.create()
 
         // then:
         the(method.hasModifier("STATIC")).shouldBeTrue()
-        the(method.name).shouldNotBeNull()
+        the(method.name).shouldBeEqual("test")
     }
 
     @Test
@@ -139,33 +140,32 @@ class MethodBuilderTest extends DBSpec {
                 .create()
 
         // when:
-        ctx.methBuilder.init(feature: feature)
+        ctx.methBuilder.init(feature: feature, methodName: "test", owner: type)
         Method method = ctx.methBuilder.create()
 
         // then:
         the(method.isAbstract()).shouldBeTrue()
-        the(method.name).shouldNotBeNull()
+        the(method.name).shouldBeEqual("test")
     }
 
     @Test
     void "test create method with empty type"() {
         // given:
-        type = null
         BehavioralFeature feature = BehavioralFeature.builder()
                 .name("method")
-                .type(type)
+                .type(null)
                 .mult(Multiplicity.fromString("1..1"))
                 .isStatic(false)
                 .isAbstract(false)
                 .create()
 
         // when:
-        ctx.methBuilder.init(feature: feature)
+        ctx.methBuilder.init(feature: feature, methodName: "test", owner: type)
         Method method = ctx.methBuilder.create()
 
         // then:
         the(method.type.typeName).shouldEqual("void")
-        the(method.name).shouldNotBeNull()
+        the(method.name).shouldBeEqual("test")
     }
 
     @Test(expected = IllegalArgumentException.class)
