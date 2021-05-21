@@ -1,2 +1,42 @@
 start_pattern: basic
+start_type: Context
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    start_field: strat
+    private [[Strategy.root]] [[name]];
+    end_field: strat
+    [[fields]]
+
+    start_method: Operation
+    public abstract void [[name]]();
+    end_method: Operation
+    [[methods]]
+}
+end_type: Context
+
+start_type: ConcreteStrategy
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    start_method: Operation
+    /**
+     *
+     */
+    @Override
+    public void [[name]]() {
+        [[StrategyOp.random]]();
+    }
+    end_method: Operation
+
+    [[methods]]
+}
+end_type: ConcreteStrategy
+
 end_pattern: basic
