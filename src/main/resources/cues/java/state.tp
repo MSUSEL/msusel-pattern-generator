@@ -8,6 +8,8 @@ start_type: Context
     start_field: currentState
     private [[State.root]] [[name]];
     end_field: currentState
+    start_field: st
+    end_field: st
     [[fields]]
 
     public [[InstName]]() {

@@ -5,9 +5,9 @@ start_type: Context
  */
 [[typedef]] {
 
-    start_field: strat
+    start_field: currentStrategy
     private [[Strategy.root]] [[name]];
-    end_field: strat
+    end_field: currentStrategy
     [[fields]]
 
     start_method: Operation
