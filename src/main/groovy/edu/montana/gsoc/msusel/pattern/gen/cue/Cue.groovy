@@ -41,11 +41,7 @@ abstract class Cue {
     protected String templateText
 
     String compile(Component comp, CueParams params, RBML2DataModelManager manager) {
-        String compiledText
-        if (templateText)
-            compiledText = templateText.indent(8)
-        else
-            compiledText = "        "
+        String compiledText = templateText
         compiledText = preContent(compiledText, params)
         compiledText = content(compiledText, comp, params, manager)
         compiledText = postContent(compiledText, comp, params, manager)
