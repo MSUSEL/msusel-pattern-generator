@@ -30,6 +30,8 @@ import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Interface
 import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
+import edu.montana.gsoc.msusel.pattern.gen.cue.FieldCue
+import edu.montana.gsoc.msusel.pattern.gen.cue.MethodCue
 import edu.montana.gsoc.msusel.pattern.gen.generators.FieldGenerator
 import groovy.util.logging.Log4j2
 
@@ -51,8 +53,9 @@ class JavaFieldGenerator extends FieldGenerator {
         Field field = (Field) params.field
 
         String roleName = findRole(field)?.name
-        Cue cue = CueManager.getInstance().getCurrent()
-        if (roleName && cue.hasCueForRole(roleName, field))
+        Cue cue = (Cue) params.cue
+
+        if (roleName && cue instanceof FieldCue && params.parentCue)
             return ""
 
         String retVal = ""

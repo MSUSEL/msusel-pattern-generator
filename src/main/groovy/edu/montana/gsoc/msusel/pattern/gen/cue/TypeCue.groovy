@@ -54,16 +54,19 @@ class TypeCue extends CueContainer {
     @Override
     def getCueForRole(String roleName, Component c) {
         Cue retVal = null
-        if (c instanceof Type) {
-            if (name == roleName)
-                retVal = this
+        if (c instanceof Type && name == roleName) {
+            retVal = this
         }
-        if (!retVal) {
-            children.each { key, value ->
-                if (key == roleName)
-                    retVal = value
-                else if (value.hasCueForRole(roleName, c))
-                    retVal = value.getCueForRole(roleName, c)
+        else {
+            for (child in children) {
+                if (child.key == roleName) {
+                    retVal = child.value
+                    break
+                }
+                else {
+                    retVal = child.value.getCueForRole(child.key, c)
+                    break
+                }
             }
         }
 
@@ -76,12 +79,15 @@ class TypeCue extends CueContainer {
         if (t instanceof Type) {
             retVal = name == roleName
         }
-        if (!retVal) {
-            children.each { key, value ->
-                if (key == roleName)
+        else {
+            for (child in children) {
+                if (child.key == roleName) {
                     retVal = true
-                else if (value.hasCueForRole(roleName, t))
+                    break
+                } else if (child.value.hasCueForRole(roleName, t)) {
                     retVal = true
+                    break
+                }
             }
         }
         return retVal
@@ -94,7 +100,7 @@ class TypeCue extends CueContainer {
         compRole.behFeats.each { role ->
             String combined = ""
             Cue cue = null
-            manager.getComponentsByRole(role).findAll{((Method) it).parentType == type}.each { meth ->
+            manager.getComponentsByRole(role).findAll { ((Method) it).parentType == type }.each { meth ->
                 cue = getCueForRole(role.name, (Component) meth)
                 if (cue)
                     combined += cue.compile(meth, params, manager) + "\n    "

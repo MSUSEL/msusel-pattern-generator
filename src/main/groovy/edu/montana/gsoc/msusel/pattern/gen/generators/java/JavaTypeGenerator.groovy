@@ -43,7 +43,7 @@ class JavaTypeGenerator extends TypeGenerator {
 
     @Override
     String generate() {
-        log.info( "Generating Type")
+        log.info("Generating Type")
         Type type = (Type) params.type
 
         String roleName = findRole(type)?.name
@@ -52,7 +52,8 @@ class JavaTypeGenerator extends TypeGenerator {
         String output = ""
 
         if (roleName && cue.hasCueForRole(roleName, type)) {
-            output = fromCue((Cue) cue.getCueForRole(roleName, type), type)
+            Cue other = (Cue) cue.getCueForRole(roleName, type)
+            output = fromCue(other, type)
         } else {
             switch (type) {
                 case Class:
@@ -199,11 +200,9 @@ class JavaTypeGenerator extends TypeGenerator {
         if (type.fields) {
             content += "\n"
             type.fields.each { Field f ->
-                if (!cue?.hasCueForRole(ctx.rbmlManager.getRole(f)?.name, type)) {
-                    content += "\n            "
-                    ctx.fieldGen.init(field: f, type: type)
-                    content += ctx.fieldGen.generate()
-                }
+                content += "\n            "
+                ctx.fieldGen.init(field: f, type: type, parentCue: cue, cue: cue?.getCueForRole(ctx.rbmlManager.getRole(f)?.name, f))
+                content += ctx.fieldGen.generate()
             }
         }
 
@@ -215,24 +214,16 @@ class JavaTypeGenerator extends TypeGenerator {
 
         if (!(type instanceof Interface)) {
             type.fields.each { Field f ->
-                if (!cue?.hasCueForRole(ctx.rbmlManager.getRole(f)?.name, f)) {
-                    ctx.methodGen.init(field: f, parent: type, parentCue: cue?.hasCueForRole(ctx.rbmlManager.getRole(type)?.name, type))
-                    content += "\n    "
-                    content += ctx.methodGen.generate()
-                } else if (!type.hasMethodWithName("get${f.getName().capitalize()}") && !type.hasMethodWithName("set${f.getName().capitalize()}")) {
-                    ctx.methodGen.init(field: f, parent: type, parentCue: cue?.hasCueForRole(ctx.rbmlManager.getRole(type)?.name, type))
-                    content += "\n    "
-                    content += ctx.methodGen.generate()
-                }
+                ctx.methodGen.init(field: f, parent: type, parentCue: cue, cue: cue?.getCueForRole(ctx.rbmlManager.getRole(f)?.name, f))
+                content += "\n    "
+                content += ctx.methodGen.generate()
             }
         }
 
         type.methods.each { Method m ->
-            if (!cue?.hasCueForRole(ctx.rbmlManager.getRole(m)?.name, m)) {
-                ctx.methodGen.init(method: m, parent: type, parentCue: cue?.hasCueForRole(ctx.rbmlManager.getRole(type)?.name, type))
-                content += "\n    "
-                content += ctx.methodGen.generate()
-            }
+            ctx.methodGen.init(method: m, parent: type, parentCue: cue, cue: cue?.getCueForRole(ctx.rbmlManager.getRole(m)?.name, m))
+            content += "\n    "
+            content += ctx.methodGen.generate()
         }
 
         content

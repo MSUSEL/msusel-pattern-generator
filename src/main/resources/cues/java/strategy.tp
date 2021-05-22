@@ -10,9 +10,11 @@ start_type: Context
     end_field: currentStrategy
     [[fields]]
 
-    start_method: Operation
-    public abstract void [[name]]();
-    end_method: Operation
+    start_method: ContextOperation
+    public void [[name]]() {
+        System.out.println("Operation");
+    }
+    end_method: ContextOperation
     [[methods]]
 }
 end_type: Context
@@ -31,9 +33,14 @@ start_type: ConcreteStrategy
      */
     @Override
     public void [[name]]() {
-        [[StrategyOp.random]]();
     }
     end_method: Operation
+
+    start_method: StrategyOp
+    public void [[name]]() {
+        System.out.println("Operation");
+    }
+    end_method: StrategyOp
 
     [[methods]]
 }
