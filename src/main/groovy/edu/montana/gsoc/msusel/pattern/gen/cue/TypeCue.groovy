@@ -92,24 +92,17 @@ class TypeCue extends CueContainer {
         compRole.behFeats.each { role ->
             String combined = ""
             Cue cue = null
-            println ""
-            println "role name: ${role.name}"
             def comps = manager.getComponentsByRole(role).findAll { ((Method) it).parentType == type }
-            println "Number of components: ${comps.size()}"
             comps.each { meth ->
-                println "comp name: ${meth.name}"
                 cue = getCueForRole(role.name, (Component) meth)
-                println "Cue: $cue"
                 if (cue) {
                     combined += cue.compile(meth, params, manager) + "\n    "
-                    println "combined: $combined"
                 }
             }
             if (cue) {
                 combined = combined.trim()
                 text = text.replaceAll(cue.replacement, combined)
             }
-            println ""
         }
 
         compRole.structFeats.each { role ->
