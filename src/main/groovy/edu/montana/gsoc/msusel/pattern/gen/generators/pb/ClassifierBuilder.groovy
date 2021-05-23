@@ -138,6 +138,11 @@ class ClassifierBuilder extends AbstractBuilder {
     }
 
     private List createMethodNames(Classifier classifier) {
+        Set<String> allNames = [] as Set<String>
+        ctx.rbmlManager.methodNames.values().each {
+            allNames.addAll(it)
+        }
+
         classifier.behFeats.each {
             if (!ctx.rbmlManager.methodNames[it.name]) {
                 int min = it.getMult().lower
@@ -157,8 +162,14 @@ class ClassifierBuilder extends AbstractBuilder {
                     num = min
                 else
                     num = rand.nextInt(max - min) + min
-                for (int i = 0; set.size() < num; i++)
-                    set << ctx.methBuilder.getMethodName()
+
+                for (int i = 0; set.size() < num; ) {
+                    String s = ctx.methBuilder.getMethodName()
+                    if (!allNames.contains(s)) {
+                        set << s
+                        i++
+                    }
+                }
                 ctx.rbmlManager.methodNames[it.name] = set
             }
         }

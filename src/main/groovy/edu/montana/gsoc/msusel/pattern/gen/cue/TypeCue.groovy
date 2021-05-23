@@ -59,17 +59,12 @@ class TypeCue extends CueContainer {
         }
         else {
             for (child in children) {
-                if (child.key == roleName) {
-                    retVal = child.value
-                    break
-                }
-                else {
-                    retVal = child.value.getCueForRole(child.key, c)
+                if (child.value.hasCueForRole(roleName, c)) {
+                    retVal = child.value.getCueForRole(roleName, c)
                     break
                 }
             }
         }
-
         return retVal
     }
 
@@ -81,10 +76,7 @@ class TypeCue extends CueContainer {
         }
         else {
             for (child in children) {
-                if (child.key == roleName) {
-                    retVal = true
-                    break
-                } else if (child.value.hasCueForRole(roleName, t)) {
+                if (child.value.hasCueForRole(roleName, t)) {
                     retVal = true
                     break
                 }
@@ -100,15 +92,24 @@ class TypeCue extends CueContainer {
         compRole.behFeats.each { role ->
             String combined = ""
             Cue cue = null
-            manager.getComponentsByRole(role).findAll { ((Method) it).parentType == type }.each { meth ->
+            println ""
+            println "role name: ${role.name}"
+            def comps = manager.getComponentsByRole(role).findAll { ((Method) it).parentType == type }
+            println "Number of components: ${comps.size()}"
+            comps.each { meth ->
+                println "comp name: ${meth.name}"
                 cue = getCueForRole(role.name, (Component) meth)
-                if (cue)
+                println "Cue: $cue"
+                if (cue) {
                     combined += cue.compile(meth, params, manager) + "\n    "
+                    println "combined: $combined"
+                }
             }
             if (cue) {
                 combined = combined.trim()
                 text = text.replaceAll(cue.replacement, combined)
             }
+            println ""
         }
 
         compRole.structFeats.each { role ->

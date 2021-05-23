@@ -85,9 +85,9 @@ class MethodBuilder extends AbstractComponentBuilder {
     String getMethodName() {
         String name = ""
         Random rand = new Random()
-        int nums = rand.nextInt(2) + 1
+        int nums = 2
         boolean isFirst = true
-        nums.each{ int entry ->
+        (1..2).each { int entry ->
             String[] lines = MethodBuilder.class.getResourceAsStream("/edu/montana/gsoc/msusel/pattern/gen/methodnames${entry}.txt").readLines()
             int ndx = rand.nextInt(lines.length)
             if (isFirst) {

@@ -48,9 +48,7 @@ class PatternCue extends CueContainer {
     def getCueForRole(String roleName, Component c) {
         Cue retVal = null
         for (child in children) {
-            if (child.key == roleName) {
-                return child.value
-            } else if (child.value.hasCueForRole(roleName, c)) {
+            if (child.value.hasCueForRole(roleName, c)) {
                 return child.value.getCueForRole(roleName, c)
             }
         }
@@ -61,10 +59,7 @@ class PatternCue extends CueContainer {
     def hasCueForRole(String roleName, Component t) {
         boolean retVal = false
         for (child in children) {
-            if (child.key == roleName) {
-                retVal = true
-                break
-            } else if (child.value.hasCueForRole(roleName, t)) {
+            if (child.value.hasCueForRole(roleName, t)) {
                 retVal = true
                 break
             }

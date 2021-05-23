@@ -40,6 +40,10 @@ class CueManager {
         this.language = language
 
         cues = CueReader.instance.read("/cues/${language}/${this.pattern}.tp")
+        cues.each { key, value ->
+            Cue c = (Cue) value
+            println c.printAll()
+        }
     }
 
     def selectCue() {

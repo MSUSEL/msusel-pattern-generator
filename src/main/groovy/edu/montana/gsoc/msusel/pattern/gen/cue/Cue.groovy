@@ -140,4 +140,8 @@ abstract class Cue {
     String toString() {
         return name
     }
+
+    String printAll() {
+        toString()
+    }
 }

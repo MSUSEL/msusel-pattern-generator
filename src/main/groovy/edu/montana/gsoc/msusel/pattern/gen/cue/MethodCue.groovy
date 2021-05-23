@@ -36,7 +36,7 @@ class MethodCue extends Cue {
 
     @Override
     def getDelimString() {
-        return (/(?ms)start_method: ${name}.*end_method: ${name}/)
+        return (/(?s)start_method: ${name}.*end_method: ${name}/)
     }
 
     @Override

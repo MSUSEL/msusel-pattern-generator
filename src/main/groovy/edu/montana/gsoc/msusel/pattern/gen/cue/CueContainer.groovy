@@ -45,4 +45,11 @@ abstract class CueContainer extends Cue {
         if (child && children.containsKey(child.name))
             children.remove(child.name, child)
     }
+
+    @Override
+    String printAll() {
+        String val = super.printAll() + "\n"
+        children.each {key, value -> val += value.printAll() + "\n" }
+        val
+    }
 }

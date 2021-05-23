@@ -28,7 +28,6 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
-import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.pattern.gen.cue.MethodCue
 import edu.montana.gsoc.msusel.pattern.gen.generators.MethodGenerator
 import groovy.util.logging.Log4j2
@@ -68,7 +67,7 @@ class JavaMethodGenerator extends MethodGenerator {
 
         Cue cue = (Cue) params.cue
 
-        if (roleName && cue instanceof MethodCue && params.parentCue) {
+        if (method && roleName && params.parentCue && ((Cue) params.parentCue).hasCueForRole(roleName, method)) {
             return ""
         }
 
