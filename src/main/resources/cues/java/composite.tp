@@ -1,2 +1,36 @@
 start_pattern: basic
+start_type: ConcreteComposite
+import java.util.*;
+
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    start_field: children
+    end_field: children
+    [[fields]]
+
+    start_method: Add
+    public void [[name]]([[params]]) {
+        if ([[param.c]] != null)
+            children.add([[param.c]]);
+    }
+    end_method: Add
+
+    start_method: Remove
+    public void [[name]]([[params]]) {
+        if ([[param.c]] != null)
+            children.remove([[param.c]]);
+    }
+    end_method: Remove
+
+    start_method: GetChild
+    public [[type]] [[name]]([[params]]) {
+        return children.get([[param(index)]]);
+    }
+    end_method: GetChild
+    [[methods]]
+}
+end_type: ConcreteComposite
 end_pattern: basic

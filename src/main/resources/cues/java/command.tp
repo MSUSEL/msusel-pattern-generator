@@ -1,2 +1,57 @@
 start_pattern: basic
+start_type: ConcreteCommand
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    start_field: r
+    end_field: r
+    [[fields]]
+
+    start_method: Execute
+    public void [[name]]() {
+        [[r]].[[Receiver.Action]]()
+    }
+    end_method: Execute
+    [[methods]]
+}
+end_type: ConcreteCommand
+
+start_type: Invoker
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    public void someMethod([[Command.Root]] command) {
+        [[cond.name]] = command
+        [[cond.name]].[[ConcreteCommand.Execute]]();
+    }
+    [[methods]]
+}
+end_type: Invoker
+
+start_type: Client
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    private [[Invoker]] invoker;
+    [[fields]]
+
+    public [[InstName]]() {
+        invoker = new Invoker();
+        [[cond.name]] = new [[ConcreteCommand.random]]();
+    }
+
+    public void someMethod() {
+        invoker.someMethod([[cond.name]]);
+    }
+    [[methods]]
+}
+end_type: Client
 end_pattern: basic

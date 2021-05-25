@@ -1,0 +1,131 @@
+start_pattern: EagerInit
+start_type: Singleton
+/**
+[[ClassComment]]
+ */
+[[typedef]] {}
+
+    [[fields]]
+
+    protected [[InstName]]() {}
+
+    [[methods]]
+}
+end_type: Singleton
+
+start_type: ConcreteSingleton
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    start_field: Instance
+    private static final [[RootName]] [[name]] = new [[InstName]]();
+    end_field: Instance
+    [[fields]]
+
+    private [[InstName]]() {
+        super();
+    }
+
+    start_method: GetInstance
+    public static [[RootName]] [[name]]() {
+        return [[Instance.name]];
+    }
+    end_method: GetInstance
+
+    [[methods]]
+}
+end_type: ConcreteSingleton
+end_pattern: EagerInit
+
+start_pattern: LazyInit
+start_type: Singleton
+/**
+[[ClassComment]]
+ */
+[[typedef]] {}
+
+    [[fields]]
+
+    protected [[InstName]]() {}
+
+    [[methods]]
+}
+end_type: Singleton
+
+start_type: ConcreteSingleton
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    start_field: Instance
+    private static [[RootName]] [[name]];
+    end_field: Instance
+    [[fields]]
+
+    private [[InstName]]() {
+        super();
+    }
+
+    start_method: GetInstance
+    public static [[RootName]] [[name]]() {
+        if ([[Instance.name]] == null)
+            [[Instance.name]] = new [[InstName]]();
+        return [[Instance.name]];
+    }
+    end_method: GetInstance
+
+    [[methods]]
+}
+end_type: ConcreteSingleton
+end_pattern: LazyInit
+
+start_pattern: DoubleCheckLock
+start_type: Singleton
+/**
+[[ClassComment]]
+ */
+[[typedef]] {}
+
+    [[fields]]
+
+    protected [[InstName]]() {}
+
+    [[methods]]
+}
+end_type: Singleton
+
+start_type: ConcreteSingleton
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    start_field: Instance
+    private static volatile [[RootName]] [[name]];
+    end_field: Instance
+    [[fields]]
+
+    private [[InstName]]() {
+        super();
+    }
+
+    start_method: GetInstance
+    public static [[RootName]] [[name]]() {
+        if ([[Instance.name]] == null) {
+            synchronized ([[InstName]].class) {
+                if ([[Instance.name]] == null) {
+                    [[Instance.name]] = new [[InstName]]();
+                }
+            }
+        }
+        return [[Instance.name]];
+    }
+    end_method: GetInstance
+
+    [[methods]]
+}
+end_type: ConcreteSingleton
+end_pattern: DoubleCheckLock

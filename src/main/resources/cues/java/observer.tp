@@ -1,2 +1,70 @@
 start_pattern: basic
+start_type: Observer
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    start_field: observerState
+    protected [[type]] [[name]]
+    end_field: observerState
+    [[fields]]
+
+    [[methods]]
+}
+end_type: Observer
+
+start_type: ConcreteObserver
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    start_method: Update
+    public void [[name]]() {
+        [[observerState]] = [[sub]].[[ConcreteSubject.GetState]]();
+    }
+    end_method: Update
+    [[methods]]
+}
+end_type: ConcreteObserver
+
+start_type: Subject
+import java.util.*;
+
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    start_field: obs
+    end_field: obs
+    [[fields]]
+
+    start_method: Attach
+    public void [[name]]([[params]]) {
+        if ([[param(obsv)]] != null)
+            [[obs]].add([[param(obsv)]])
+    }
+    end_method: Attach
+
+    start_method: Detach
+    public void [[name]]([[params]]) {
+        if ([[param(obsv)]] != null)
+            [[obs]].remove([[param(obsv)]])
+    }
+    end_method: Detach
+
+    start_method: Notify
+    public void [[name]]() {
+        for ([[obs.type]] item : [[obs]])
+            item.[[Observer.Update]]()
+    }
+    end_method: Notify
+    [[methods]]
+}
+end_type: Subject
+
 end_pattern: basic

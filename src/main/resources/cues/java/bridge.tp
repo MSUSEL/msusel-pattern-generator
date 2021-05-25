@@ -1,2 +1,43 @@
 start_pattern: basic
+start_type: Abstraction
+import java.util.*;
+
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    start_field: imp
+    end_field: imp
+    [[fields]]
+
+    start_method: Operation
+    public void [[name]]() {
+        [[imp]].[[Implementor.OperationImpl]]();
+    }
+    end_method: Operation
+    [[methods]]
+}
+end_type: Abstraction
+
+start_type: ConcreteImplementor
+import java.util.*;
+
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    start_field: imp
+    end_field: imp
+    [[fields]]
+
+    start_method: OperationImpl
+    public void [[name]]() {
+        System.out.println("Executing [[name]]...");
+    }
+    end_method: OperationImpl
+    [[methods]]
+}
+end_type: ConcreteImplementor
 end_pattern: basic

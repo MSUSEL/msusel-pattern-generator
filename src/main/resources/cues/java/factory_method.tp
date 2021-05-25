@@ -1,2 +1,20 @@
 start_pattern: basic
+start_type: ConcreteCreator
+import java.util.*;
+
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    start_method: FactoryMethod
+    public [[type]] [[name]]() {
+        return new [[ConcreteProduct.random()]]();
+    }
+    end_method: FactoryMethod
+    [[methods]]
+}
+end_type: ConcreteCreator
 end_pattern: basic

@@ -1,2 +1,15 @@
 start_pattern: basic
+start_type: ConcreteDecorator
+import java.util.*;
+
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    [[methods]]
+}
+end_type: ConcreteDecorator
 end_pattern: basic

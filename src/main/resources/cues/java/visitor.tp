@@ -1,2 +1,35 @@
 start_pattern: basic
+start_type: ConcreteElement
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    start_method: Accept
+    public void [[name]]([[params]]) {
+        [[param(vis)]].visit[[InstName]](this);
+    }
+    end_method: Accept
+    [[methods]]
+}
+end_type: ConcreteElement
+
+start_type: ConcreteVisitor
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    start_method: Visit
+    public void [[name]]([[params]]) {
+        [[params(elem)]].[[ConcreteElement.Operation]]();
+    }
+    end_method: Visit
+    [[methods]]
+}
+end_type: ConcreteVisitor
 end_pattern: basic
