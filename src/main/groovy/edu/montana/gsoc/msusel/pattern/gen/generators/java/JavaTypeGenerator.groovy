@@ -55,14 +55,14 @@ class JavaTypeGenerator extends TypeGenerator {
             Cue other = (Cue) cue.getCueForRole(roleName, type)
             output = fromCue(other, type)
         } else {
-            switch (type) {
-                case Class:
+            switch (type.getType()) {
+                case Type.CLASS:
                     output = createTemplate("class", type)
                     break
-                case Enum:
+                case Type.ENUM:
                     output = createTemplate("enum", type)
                     break
-                case Interface:
+                case Type.INTERFACE:
                     output = createTemplate("interface", type)
                     break
             }
@@ -134,7 +134,7 @@ class JavaTypeGenerator extends TypeGenerator {
             content += type.modifiers.collect { it.name.toLowerCase() }.join(" ")
             content += " "
         }
-        if (content.contains("abstract ") && type instanceof Interface)
+        if (content.contains("abstract ") && type.getType() == Type.INTERFACE)
             content = content.replace("abstract ", "")
 
         content
@@ -142,11 +142,11 @@ class JavaTypeGenerator extends TypeGenerator {
 
     private String extendsList(Type type) {
         String content = ""
-        if (type instanceof Enum)
+        if (type.getType() == Type.ENUM)
             return content
         if (type.getGeneralizedBy()) {
             content += " extends "
-            if (type instanceof Interface) {
+            if (type.getType() == Type.INTERFACE) {
                 List<String> names = []
                 type.getGeneralizedBy().each {
                     names << it.name
@@ -161,7 +161,7 @@ class JavaTypeGenerator extends TypeGenerator {
 
     private String implementsList(Type type) {
         String content = ""
-        if (type instanceof Interface)
+        if (type.getType() == Type.INTERFACE)
             return content
         if (type.realizes) {
             content += " implements "
@@ -176,7 +176,7 @@ class JavaTypeGenerator extends TypeGenerator {
     private String genLiterals(Type type) {
         String content = ""
 
-        if (type instanceof Enum) {
+        if (type.getType() == Type.ENUM) {
             if (type.literals)
                 content += "\n"
             type.literals.each { Literal l ->
@@ -212,7 +212,7 @@ class JavaTypeGenerator extends TypeGenerator {
     protected String genMethods(Cue cue, Type type) {
         String content = ""
 
-        if (!(type instanceof Interface)) {
+        if (type.getType() != Type.INTERFACE) {
             type.fields.each { Field f ->
                 ctx.methodGen.init(field: f, parent: type, parentCue: cue, cue: cue?.getCueForRole(ctx.rbmlManager.getRole(f)?.name, f))
                 content += "\n    "

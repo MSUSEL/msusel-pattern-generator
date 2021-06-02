@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
-import edu.isu.isuese.datamodel.Class
+
 import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Method
 import edu.isu.isuese.datamodel.Type
@@ -59,7 +59,7 @@ class PatternCueTest extends DBSpec {
     @Test
     void "GetCueForRole child Type"() {
         // Given
-        Type t = Class.builder().name("Test").compKey("Test").create()
+        Type t = Type.builder().type(Type.CLASS).name("Test").compKey("Test").create()
 
         // When
         Cue actual = fixture.getCueForRole("aType", t)
@@ -83,7 +83,7 @@ class PatternCueTest extends DBSpec {
     @Test
     void "GetCueForRole child given parent type"() {
         // Given
-        Type t = Class.builder().name("Test").compKey("Test").create()
+        Type t = Type.builder().type(Type.CLASS).name("Test").compKey("Test").create()
 
         // When
         Cue actual = fixture.getCueForRole("aField", t)
@@ -107,7 +107,7 @@ class PatternCueTest extends DBSpec {
     @Test
     void "GetCueForRole unknown rolename"() {
         // Given
-        Type t = Class.builder().name("Test").compKey("Test").create()
+        Type t = Type.builder().type(Type.CLASS).name("Test").compKey("Test").create()
         String roleName = "Unknown"
 
         // When
@@ -120,7 +120,7 @@ class PatternCueTest extends DBSpec {
     @Test
     void "GetCueForRole null rolename"() {
         // Given
-        Type t = Class.builder().name("Test").compKey("Test").create()
+        Type t = Type.builder().type(Type.CLASS).name("Test").compKey("Test").create()
         String roleName = null
 
         // When
@@ -154,7 +154,7 @@ class PatternCueTest extends DBSpec {
     ])
     void "HasCueForRole"(String roleName, boolean expected) {
         // Given
-        Type t = Class.builder().name("Test").compKey("Test").create()
+        Type t = Type.builder().type(Type.CLASS).name("Test").compKey("Test").create()
 
         // When
         boolean actual = fixture.hasCueForRole(roleName, t)

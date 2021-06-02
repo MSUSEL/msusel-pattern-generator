@@ -88,7 +88,8 @@ class FieldBuilder extends AbstractComponentBuilder {
 
     @Override
     TypeRef createDefaultTypeRef() {
-        UnknownType type = UnknownType.builder()
+        Type type = Type.builder()
+                .type(Type.UNKNOWN)
                 .name("String")
                 .compKey("UT:String")
                 .accessibility(Accessibility.PUBLIC)

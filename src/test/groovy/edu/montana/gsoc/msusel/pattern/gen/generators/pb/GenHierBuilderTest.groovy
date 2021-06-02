@@ -26,8 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
-import edu.isu.isuese.datamodel.Class
-import edu.isu.isuese.datamodel.Interface
+
 import edu.isu.isuese.datamodel.Namespace
 import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.Relation
@@ -35,11 +34,7 @@ import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.Node
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.Tree
-import edu.montana.gsoc.msusel.rbml.model.ClassRole
-import edu.montana.gsoc.msusel.rbml.model.Classifier
-import edu.montana.gsoc.msusel.rbml.model.GeneralizationHierarchy
-import edu.montana.gsoc.msusel.rbml.model.Multiplicity
-import edu.montana.gsoc.msusel.rbml.model.Role
+import edu.montana.gsoc.msusel.rbml.model.*
 import org.javalite.activejdbc.test.DBSpec
 import org.junit.After
 import org.junit.Before
@@ -68,8 +63,8 @@ class GenHierBuilderTest extends DBSpec {
     @Test
     void "test generalizes"() {
         // given:
-        Type parent = Class.builder().name("Parent").compKey("Parent").create()
-        Type child = Class.builder().name("Child").compKey("Child").create()
+        Type parent = Type.builder().type(Type.CLASS).name("Parent").compKey("Parent").create()
+        Type child = Type.builder().type(Type.CLASS).name("Child").compKey("Child").create()
 
         // when:
         ctx.ghBuilder.generalizes(parent, child)
@@ -82,8 +77,8 @@ class GenHierBuilderTest extends DBSpec {
     @Test
     void "test generalizes parent interface child class"() {
         // given:
-        Type parent = Interface.builder().name("Parent").compKey("Parent").create()
-        Type child = Class.builder().name("Child").compKey("Child").create()
+        Type parent = Type.builder().type(Type.INTERFACE).name("Parent").compKey("Parent").create()
+        Type child = Type.builder().type(Type.CLASS).name("Child").compKey("Child").create()
 
         // when:
         ctx.ghBuilder.generalizes(parent, child)
@@ -96,8 +91,8 @@ class GenHierBuilderTest extends DBSpec {
     @Test
     void "test generalizes parent interface child interface"() {
         // given:
-        Type parent = Interface.builder().name("Parent").compKey("Parent").create()
-        Type child = Interface.builder().name("Child").compKey("Child").create()
+        Type parent = Type.builder().type(Type.INTERFACE).name("Parent").compKey("Parent").create()
+        Type child = Type.builder().type(Type.INTERFACE).name("Child").compKey("Child").create()
 
         // when:
         ctx.ghBuilder.generalizes(parent, child)
@@ -110,8 +105,8 @@ class GenHierBuilderTest extends DBSpec {
     @Test
     void "test generalizes parent class child interface"() {
         // given:
-        Type parent = Class.builder().name("Parent").compKey("Parent").create()
-        Type child = Interface.builder().name("Child").compKey("Child").create()
+        Type parent = Type.builder().type(Type.CLASS).name("Parent").compKey("Parent").create()
+        Type child = Type.builder().type(Type.INTERFACE).name("Child").compKey("Child").create()
 
         // when:
         ctx.ghBuilder.generalizes(parent, child)
@@ -124,7 +119,7 @@ class GenHierBuilderTest extends DBSpec {
     void "test generalizes null ok"() {
         // given:
         Type parent = null
-        Type child = Class.builder().name("Child").compKey("Child").create()
+        Type child = Type.builder().type(Type.CLASS).name("Child").compKey("Child").create()
 
         // when:
         ctx.ghBuilder.generalizes(parent, child)
@@ -133,7 +128,7 @@ class GenHierBuilderTest extends DBSpec {
     @Test(expected = IllegalArgumentException.class)
     void "test generalizes ok null"() {
         // given:
-        Type parent = Class.builder().name("Parent").compKey("Parent").create()
+        Type parent = Type.builder().type(Type.CLASS).name("Parent").compKey("Parent").create()
         Type child = null
 
         // when:
@@ -153,7 +148,7 @@ class GenHierBuilderTest extends DBSpec {
 
         // then:
         the(n.type).shouldNotBeNull()
-        the(n.type).shouldBeType(Class)
+        the(n.type.getType()).shouldBeEqual(Type.CLASS)
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -270,8 +265,8 @@ class GenHierBuilderTest extends DBSpec {
         ctx.ghBuilder.populateTree(gh, ns, tree)
 
         // then:
-        the(Interface.findAll().size()).shouldEqual(0)
-        the(Class.findAll().size()).shouldEqual(5)
+        the(Type.find("type = ?", Type.INTERFACE).size()).shouldEqual(0)
+        the(Type.find("type = ?", Type.CLASS).size()).shouldEqual(5)
         the(Relation.findAll().size()).shouldEqual(4)
     }
 

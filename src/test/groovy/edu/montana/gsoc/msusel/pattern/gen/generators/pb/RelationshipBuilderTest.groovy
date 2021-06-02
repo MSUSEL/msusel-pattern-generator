@@ -26,7 +26,6 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
-import edu.isu.isuese.datamodel.Class
 import edu.isu.isuese.datamodel.Namespace
 import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.Relation
@@ -34,14 +33,7 @@ import edu.isu.isuese.datamodel.RelationType
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import edu.montana.gsoc.msusel.rbml.io.SpecificationReader
-import edu.montana.gsoc.msusel.rbml.model.ClassRole
-import edu.montana.gsoc.msusel.rbml.model.Classifier
-import edu.montana.gsoc.msusel.rbml.model.Generalization
-import edu.montana.gsoc.msusel.rbml.model.GeneralizationHierarchy
-import edu.montana.gsoc.msusel.rbml.model.Multiplicity
-import edu.montana.gsoc.msusel.rbml.model.Relationship
-import edu.montana.gsoc.msusel.rbml.model.Role
-import edu.montana.gsoc.msusel.rbml.model.SPS
+import edu.montana.gsoc.msusel.rbml.model.*
 import org.javalite.activejdbc.test.DBSpec
 import org.junit.After
 import org.junit.Before
@@ -190,7 +182,7 @@ SPS:
         ctx.relationBuilder.processRole(ns, role, null)
 
         // then:
-        the(Class.findAll().size()).shouldEqual(1)
+        the(Type.find("type = ?", Type.CLASS).size()).shouldEqual(1)
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -269,7 +261,7 @@ SPS:
         ctx.relationBuilder.generateClassifier(ns, role)
 
         // then:
-        the(Class.findAll().size()).shouldEqual(1)
+        the(Type.find("type = ?", Type.CLASS).size()).shouldEqual(1)
     }
 
     @Test
@@ -281,7 +273,7 @@ SPS:
         ctx.relationBuilder.generateClassifier(ns, role)
 
         // then:
-        the(Class.findAll().size() <= 3).shouldBeTrue()
+        the(Type.find("type = ?", Type.CLASS).size() <= 3).shouldBeTrue()
     }
 
     @Test
@@ -293,7 +285,7 @@ SPS:
         ctx.relationBuilder.generateClassifier(ns, role)
 
         // then:
-        the(Class.findAll().size() <= 2).shouldBeTrue()
+        the(Type.find("type = ?", Type.CLASS).size() <= 2).shouldBeTrue()
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -393,9 +385,9 @@ SPS:
     void "test selectAndCreateRelationship"() {
         // given:
         Role src = Classifier.builder().name("A").create()
-        Type a = Class.builder().name("A").compKey("A").create()
+        Type a = Type.builder().type(Type.CLASS).name("A").compKey("A").create()
         Role dest = Classifier.builder().name("B").create()
-        Type b = Class.builder().name("B").compKey("B").create()
+        Type b = Type.builder().type(Type.CLASS).name("B").compKey("B").create()
         ctx.relationBuilder.map[src] = [a]
         ctx.relationBuilder.map[dest] = [b]
         Relationship rel = new Generalization("test", Multiplicity.fromString("1..1"), dest, src)
@@ -509,9 +501,9 @@ SPS:
     @Test
     void "test prepareAndCreateRelationship"() {
         Role src = Classifier.builder().name("A").create()
-        Type a = Class.builder().name("A").compKey("A").create()
+        Type a = Type.builder().type(Type.CLASS).name("A").compKey("A").create()
         Role dest = Classifier.builder().name("B").create()
-        Type b = Class.builder().name("B").compKey("B").create()
+        Type b = Type.builder().type(Type.CLASS).name("B").compKey("B").create()
         ctx.relationBuilder.map[src] = [a]
         ctx.relationBuilder.map[dest] = [b]
         String srcPort = "source"
@@ -620,11 +612,11 @@ SPS:
     @Test
     void "test createRelationship generalization"() {
         // given:
-        Type a = Class.builder()
+        Type a = Type.builder().type(Type.CLASS)
                 .name("A")
                 .compKey("A")
                 .create()
-        Type b = Class.builder()
+        Type b = Type.builder().type(Type.CLASS)
                 .name("B")
                 .compKey("B")
                 .create()
@@ -641,11 +633,11 @@ SPS:
     @Test
     void "test createRelationship association"() {
         // given:
-        Type a = Class.builder()
+        Type a = Type.builder().type(Type.CLASS)
                 .name("A")
                 .compKey("A")
                 .create()
-        Type b = Class.builder()
+        Type b = Type.builder().type(Type.CLASS)
                 .name("B")
                 .compKey("B")
                 .create()
@@ -662,11 +654,11 @@ SPS:
     @Test
     void "test createRelationship realization"() {
         // given:
-        Type a = Class.builder()
+        Type a = Type.builder().type(Type.CLASS)
                 .name("A")
                 .compKey("A")
                 .create()
-        Type b = Class.builder()
+        Type b = Type.builder().type(Type.CLASS)
                 .name("B")
                 .compKey("B")
                 .create()
@@ -683,11 +675,11 @@ SPS:
     @Test
     void "test createRelationship use"() {
         // given:
-        Type a = Class.builder()
+        Type a = Type.builder().type(Type.CLASS)
                 .name("A")
                 .compKey("A")
                 .create()
-        Type b = Class.builder()
+        Type b = Type.builder().type(Type.CLASS)
                 .name("B")
                 .compKey("B")
                 .create()
@@ -705,7 +697,7 @@ SPS:
     void "test createRelationship null ok ok"() {
         // given:
         Type a = null
-        Type b = Class.builder()
+        Type b = Type.builder().type(Type.CLASS)
                 .name("B")
                 .compKey("B")
                 .create()
@@ -718,7 +710,7 @@ SPS:
     @Test(expected = IllegalArgumentException.class)
     void "test createRelationship ok null ok"() {
         // given:
-        Type a = Class.builder()
+        Type a = Type.builder().type(Type.CLASS)
                 .name("A")
                 .compKey("A")
                 .create()
@@ -732,11 +724,11 @@ SPS:
     @Test(expected = IllegalArgumentException.class)
     void "test createRelationship ok ok null"() {
         // given:
-        Type a = Class.builder()
+        Type a = Type.builder().type(Type.CLASS)
                 .name("A")
                 .compKey("A")
                 .create()
-        Type b = Class.builder()
+        Type b = Type.builder().type(Type.CLASS)
                 .name("B")
                 .compKey("B")
                 .create()

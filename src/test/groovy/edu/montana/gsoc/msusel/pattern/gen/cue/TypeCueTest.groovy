@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
-import edu.isu.isuese.datamodel.Class
+
 import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Method
 import edu.isu.isuese.datamodel.Type
@@ -36,7 +36,8 @@ import org.javalite.activejdbc.test.DBSpec
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import static org.junit.Assert.*
+
+import static org.junit.Assert.fail
 
 @RunWith(JUnitParamsRunner.class)
 class TypeCueTest extends DBSpec {
@@ -57,7 +58,7 @@ class TypeCueTest extends DBSpec {
     @Test
     void "GetCueForRole Type"() {
         // Given
-        Type type = Class.builder().name("Test").compKey("Test").create()
+        Type type = Type.builder().type(Type.CLASS).name("Test").compKey("Test").create()
 
         // When
         Cue actual = fixture.getCueForRole("Test", type)
@@ -81,7 +82,7 @@ class TypeCueTest extends DBSpec {
     @Test
     void "GetCueForRole child given parent type"() {
         // Given
-        Type type = Class.builder().name("Test").compKey("Test").create()
+        Type type = Type.builder().type(Type.CLASS).name("Test").compKey("Test").create()
 
         // When
         Cue actual = fixture.getCueForRole("aField", type)
@@ -105,7 +106,7 @@ class TypeCueTest extends DBSpec {
     @Test
     void "GetCueForRole unknown rolename"() {
         // Given
-        Type type = Class.builder().name("Test").compKey("Test").create()
+        Type type = Type.builder().type(Type.CLASS).name("Test").compKey("Test").create()
         String roleName = "Unknown"
 
         // When
@@ -118,7 +119,7 @@ class TypeCueTest extends DBSpec {
     @Test
     void "GetCueForRole null rolename"() {
         // Given
-        Type type = Class.builder().name("Test").compKey("Test").create()
+        Type type = Type.builder().type(Type.CLASS).name("Test").compKey("Test").create()
         String roleName = null
 
         // When
@@ -151,7 +152,7 @@ class TypeCueTest extends DBSpec {
     ])
     void "HasCueForRole"(String roleName, boolean expected) {
         // Given
-        Type type = Class.builder().name("Test").compKey("Test").create()
+        Type type = Type.builder().type(Type.CLASS).name("Test").compKey("Test").create()
 
         // When
         boolean actual = fixture.getCueForRole(roleName, type)

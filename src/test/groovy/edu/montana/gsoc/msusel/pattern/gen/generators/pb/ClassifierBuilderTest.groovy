@@ -27,7 +27,6 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import edu.isu.isuese.datamodel.Accessibility
-import edu.isu.isuese.datamodel.Class
 import edu.isu.isuese.datamodel.Namespace
 import edu.isu.isuese.datamodel.Project
 import edu.isu.isuese.datamodel.Type
@@ -99,7 +98,7 @@ class ClassifierBuilderTest extends DBSpec {
                 .name("Test")
                 .create()
 
-        Type type = Class.builder()
+        Type type = Type.builder().type(Type.CLASS)
                 .name("Class")
                 .compKey("Class")
                 .accessibility(Accessibility.PUBLIC)

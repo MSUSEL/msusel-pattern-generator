@@ -49,11 +49,11 @@ class ClassifierBuilder extends AbstractBuilder {
         Type t
         String name = getClassName() + ((Classifier) params.classifier).name
         String compKey = ((Namespace) params.ns).getNsKey() + ":" + name
-        if (Class.findFirst("compKey = ?", compKey)) {
-            return Class.findFirst("compKey = ?", compKey)
+        if (Type.findFirst("compKey = ?", compKey)) {
+            return Type.findFirst("compKey = ?", compKey)
         }
         if (params.classifier instanceof InterfaceRole) {
-            t = Interface.builder()
+            t = Type.builder().type(Type.INTERFACE)
                     .name(name)
                     .accessibility(Accessibility.PUBLIC)
                     .compKey(compKey)
@@ -61,7 +61,7 @@ class ClassifierBuilder extends AbstractBuilder {
             if (((Classifier) params.classifier).isAbstrct())
                 t.addModifier(Modifier.forName("ABSTRACT"))
         } else {
-            t = Class.builder()
+            t = Type.builder().type(Type.CLASS)
                     .name(name)
                     .accessibility(Accessibility.PUBLIC)
                     .compKey(compKey)

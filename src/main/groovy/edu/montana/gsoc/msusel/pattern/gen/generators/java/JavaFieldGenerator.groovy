@@ -27,11 +27,8 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.Field
-import edu.isu.isuese.datamodel.Interface
+import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
-import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
-import edu.montana.gsoc.msusel.pattern.gen.cue.FieldCue
-import edu.montana.gsoc.msusel.pattern.gen.cue.MethodCue
 import edu.montana.gsoc.msusel.pattern.gen.generators.FieldGenerator
 import groovy.util.logging.Log4j2
 
@@ -81,6 +78,6 @@ class JavaFieldGenerator extends FieldGenerator {
     }
 
     private boolean parentIsNotNullOrInterface(Field field) {
-        !field.getParentTypes() || !(field.getParentTypes().first() instanceof Interface)
+        !field.getParentTypes() || (field.getParentTypes().first().getType() != Type.INTERFACE)
     }
 }

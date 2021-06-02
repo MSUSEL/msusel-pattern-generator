@@ -30,7 +30,6 @@ import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
 import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
-import edu.montana.gsoc.msusel.rbml.model.ClassRole
 import edu.montana.gsoc.msusel.rbml.model.SPS
 import org.javalite.activejdbc.test.DBSpec
 import org.junit.After
@@ -89,7 +88,7 @@ class JavaTypeGeneratorTest extends DBSpec {
 
     @Test
     void "generate an empty class"() {
-        data = Class.builder().name("Test").accessibility(Accessibility.PUBLIC).create()
+        data = Type.builder().type(Type.CLASS).name("Test").accessibility(Accessibility.PUBLIC).create()
 
         ns.addType(data)
         file.addType(data)
@@ -113,7 +112,7 @@ public class Test {
 
     @Test
     void "generate an empty enum"() {
-        data = Enum.builder().name("Test").accessibility(Accessibility.PUBLIC).create()
+        data = Type.builder().type(Type.ENUM).name("Test").accessibility(Accessibility.PUBLIC).create()
 
         ns.addType(data)
         file.addType(data)
@@ -137,7 +136,7 @@ public enum Test {
 
     @Test
     void "generate an empty interface"() {
-        data = Interface.builder().name("Test").accessibility(Accessibility.PUBLIC).create()
+        data = Type.builder().type(Type.INTERFACE).name("Test").accessibility(Accessibility.PUBLIC).create()
 
         ns.addType(data)
         file.addType(data)
@@ -161,7 +160,7 @@ public interface Test {
 
     @Test
     void "generate a public class"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -188,7 +187,7 @@ public class Test {
 
     @Test
     void "generate a public static class"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -216,7 +215,7 @@ public static class Test {
 
     @Test
     void "generate a private class"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.PRIVATE)
                 .create()
@@ -243,7 +242,7 @@ private class Test {
 
     @Test
     void "generate a default class"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.DEFAULT)
                 .create()
@@ -270,7 +269,7 @@ class Test {
 
     @Test
     void "generate a final class"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -298,7 +297,7 @@ public final class Test {
 
     @Test
     void "generate a class with one method"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -337,7 +336,7 @@ public class Test {
 
     @Test
     void "generate a class with two methods"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -390,7 +389,7 @@ public class Test {
 
     @Test
     void "generate a class with one field"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -439,7 +438,7 @@ public class Test {
 
     @Test
     void "generate a class with two fields"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -511,7 +510,7 @@ public class Test {
 
     @Test
     void "generate an interface with one method"() {
-        data = Interface.builder()
+        data = Type.builder().type(Type.INTERFACE)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -550,7 +549,7 @@ public interface Test {
 
     @Test
     void "generate an interface with two methods"() {
-        data = Interface.builder()
+        data = Type.builder().type(Type.INTERFACE)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -603,7 +602,7 @@ public interface Test {
 
     @Test
     void "generate an interface with a field"() {
-        data = Interface.builder()
+        data = Type.builder().type(Type.INTERFACE)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -640,7 +639,7 @@ public interface Test {
 
     @Test
     void "generate an enum with one literal"() {
-        data = Enum.builder()
+        data = Type.builder().type(Type.ENUM)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -674,7 +673,7 @@ public enum Test {
 
     @Test
     void "generate an enum with two literals"() {
-        data = Enum.builder()
+        data = Type.builder().type(Type.ENUM)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -716,12 +715,12 @@ public enum Test {
 
     @Test
     void "generate a class that extends another"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .compKey("test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
-        Class parent = Class.builder()
+        Type parent = Type.builder().type(Type.CLASS)
                 .name("Parent")
                 .compKey("parent")
                 .accessibility(Accessibility.PUBLIC)
@@ -753,12 +752,12 @@ public class Test extends Parent {
 
     @Test
     void "generate a class that implements an interface"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .compKey("test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
-        Interface parent = Interface.builder()
+        Type parent = Type.builder().type(Type.INTERFACE)
                 .name("Parent")
                 .compKey("parent")
                 .accessibility(Accessibility.PUBLIC)
@@ -789,18 +788,18 @@ public class Test implements Parent {
 
     @Test
     void "generate a class that implements multiple interfaces"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .compKey("test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
-        Interface parent = Interface.builder()
+        Type parent = Type.builder().type(Type.INTERFACE)
                 .name("Parent")
                 .compKey("parent")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.realizes(parent)
-        Interface parent2 = Interface.builder()
+        Type parent2 = Type.builder().type(Type.INTERFACE)
                 .name("Parent2")
                 .compKey("parent2")
                 .accessibility(Accessibility.PUBLIC)
@@ -833,24 +832,24 @@ public class Test implements Parent, Parent2 {
 
     @Test
     void "generate a class that both extends and implements"() {
-        data = Class.builder()
+        data = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .compKey("test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
-        Class parent = Class.builder()
+        Type parent = Type.builder().type(Type.CLASS)
                 .name("Parent")
                 .compKey("parent")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.generalizedBy(parent)
-        Interface parent2 = Interface.builder()
+        Type parent2 = Type.builder().type(Type.INTERFACE)
                 .name("Parent2")
                 .compKey("parent2")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.realizes(parent2)
-        Interface parent3 = Interface.builder()
+        Type parent3 = Type.builder().type(Type.INTERFACE)
                 .name("Parent3")
                 .compKey("parent3")
                 .accessibility(Accessibility.PUBLIC)
@@ -881,24 +880,24 @@ public class Test extends Parent implements Parent2, Parent3 {
 
     @Test
     void "generate an interface that extends another inteface"() {
-        data = Interface.builder()
+        data = Type.builder().type(Type.INTERFACE)
                 .name("Test")
                 .compKey("test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
-        Interface parent = Interface.builder()
+        Type parent = Type.builder().type(Type.INTERFACE)
                 .name("Parent")
                 .compKey("parent")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.generalizedBy(parent)
-        Interface parent2 = Interface.builder()
+        Type parent2 = Type.builder().type(Type.INTERFACE)
                 .name("Parent2")
                 .compKey("parent2")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.generalizedBy(parent2)
-        Interface parent3 = Interface.builder()
+        Type parent3 = Type.builder().type(Type.INTERFACE)
                 .name("Parent3")
                 .compKey("parent3")
                 .accessibility(Accessibility.PUBLIC)
@@ -933,12 +932,12 @@ public interface Test extends Parent2, Parent, Parent3 {
 
     @Test
     void "generate an enum that implements an interface"() {
-        data = Enum.builder()
+        data = Type.builder().type(Type.ENUM)
                 .name("Test")
                 .compKey("test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
-        Interface parent = Interface.builder()
+        Type parent = Type.builder().type(Type.INTERFACE)
                 .name("Parent")
                 .compKey("parent")
                 .accessibility(Accessibility.PUBLIC)
@@ -969,24 +968,24 @@ public enum Test implements Parent {
 
     @Test
     void "generate an enum that implements multiple interfaces"() {
-        data = Enum.builder()
+        data = Type.builder().type(Type.ENUM)
                 .name("Test")
                 .compKey("test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
-        Interface parent = Interface.builder()
+        Type parent = Type.builder().type(Type.INTERFACE)
                 .name("Parent")
                 .compKey("parent")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.realizes(parent)
-        Interface parent2 = Interface.builder()
+        Type parent2 = Type.builder().type(Type.INTERFACE)
                 .name("Parent2")
                 .compKey("parent2")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.realizes(parent2)
-        Interface parent3 = Interface.builder()
+        Type parent3 = Type.builder().type(Type.INTERFACE)
                 .name("Parent3")
                 .compKey("parent3")
                 .accessibility(Accessibility.PUBLIC)
@@ -1025,7 +1024,7 @@ public enum Test implements Parent, Parent2, Parent3 {
 //                .name("file")
 //                .fileKey("file")
 //                .create()
-//        data = Class.builder()
+//        data = Type.builder().type(Type.CLASS)
 //                .name("Test")
 //                .compKey("test")
 //                .accessibility(Accessibility.PUBLIC)
@@ -1059,7 +1058,7 @@ public enum Test implements Parent, Parent2, Parent3 {
 //                .name("file")
 //                .fileKey("file")
 //                .create()
-//        data = Class.builder()
+//        data = Type.builder().type(Type.CLASS)
 //                .name("Test")
 //                .compKey("test")
 //                .accessibility(Accessibility.PUBLIC)
@@ -1103,7 +1102,7 @@ public enum Test implements Parent, Parent2, Parent3 {
 //                .name("file")
 //                .fileKey("file")
 //                .create()
-//        data = Class.builder()
+//        data = Type.builder().type(Type.CLASS)
 //                .name("Test")
 //                .compKey("test")
 //                .accessibility(Accessibility.PUBLIC)
@@ -1142,10 +1141,10 @@ public enum Test implements Parent, Parent2, Parent3 {
         project.addNamespace(ns)
         edu.isu.isuese.datamodel.File file = edu.isu.isuese.datamodel.File.builder().name("Context.java").relPath("Context.java").fileKey("Context.java").create()
         project.addFile(file)
-        Type context = Class.builder().name("Context").compKey("Context").accessibility(Accessibility.PUBLIC).create()
+        Type context = Type.builder().type(Type.CLASS).name("Context").compKey("Context").accessibility(Accessibility.PUBLIC).create()
         file.addType(context)
         ns.addType(context)
-        Type other = Class.builder().name("Other").compKey("Other").accessibility(Accessibility.PUBLIC).create()
+        Type other = Type.builder().type(Type.CLASS).name("Other").compKey("Other").accessibility(Accessibility.PUBLIC).create()
         file.addType(other)
         ns.addType(other)
         Field cs = Field.builder()

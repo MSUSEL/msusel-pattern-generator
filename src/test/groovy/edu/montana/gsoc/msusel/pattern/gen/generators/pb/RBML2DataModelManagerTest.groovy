@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
-import edu.isu.isuese.datamodel.Class
+
 import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.rbml.model.Classifier
@@ -40,7 +40,7 @@ class RBML2DataModelManagerTest extends DBSpec {
 
     RBML2DataModelManager fixture
     Role role
-    Class type
+    Type type
 
     @Before
     void setUp() throws Exception {
@@ -50,7 +50,7 @@ class RBML2DataModelManagerTest extends DBSpec {
                 .name("Test")
                 .create()
 
-        type = Class.builder()
+        type = Type.builder().type(Type.CLASS)
                 .name("Class")
                 .compKey("Class")
                 .create()
@@ -168,7 +168,7 @@ class RBML2DataModelManagerTest extends DBSpec {
     void addMapping() {
         // given
         Role otherRole = Classifier.builder().name("Other").create()
-        Type otherType = Class.builder().name("Other").compKey("Other").create()
+        Type otherType = Type.builder().type(Type.CLASS).name("Other").compKey("Other").create()
 
         // when
         fixture.addMapping(otherRole, otherType)
@@ -181,7 +181,7 @@ class RBML2DataModelManagerTest extends DBSpec {
     @Test
     void "addMapping same role other type"() {
         // given
-        Type otherType = Class.builder().name("Other").compKey("Other").create()
+        Type otherType = Type.builder().type(Type.CLASS).name("Other").compKey("Other").create()
 
         // when
         fixture.addMapping(role, otherType)

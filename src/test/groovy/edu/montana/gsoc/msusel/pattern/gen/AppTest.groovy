@@ -26,8 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen
 
-import edu.isu.isuese.datamodel.Class
-import edu.isu.isuese.datamodel.util.DBManager
+
 import spock.lang.Specification
 
 class AppTest extends Specification {

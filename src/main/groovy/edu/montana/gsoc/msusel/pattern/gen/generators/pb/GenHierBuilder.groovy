@@ -26,8 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
-import edu.isu.isuese.datamodel.Class
-import edu.isu.isuese.datamodel.Interface
+
 import edu.isu.isuese.datamodel.Namespace
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.tree.Node
@@ -189,13 +188,13 @@ class GenHierBuilder extends AbstractBuilder {
         if (!child)
             throw new IllegalArgumentException("generalizes: child cannot be null")
 
-        if (parent instanceof Interface) {
-            if (child instanceof Interface)
+        if (parent.getType() == Type.INTERFACE) {
+            if (child.getType() == Type.INTERFACE)
                 child.generalizedBy(parent)
             else
                 child.realizes(parent)
         } else {
-            if (child instanceof Class)
+            if (child.getType() == Type.CLASS)
                 child.generalizedBy(parent)
         }
     }

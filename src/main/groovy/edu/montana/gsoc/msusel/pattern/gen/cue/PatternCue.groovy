@@ -26,7 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
-import edu.isu.isuese.datamodel.Classifier
+
 import edu.isu.isuese.datamodel.Component
 import groovy.transform.TupleConstructor
 

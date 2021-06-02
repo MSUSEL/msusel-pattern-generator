@@ -136,7 +136,7 @@ class JavaMethodGenerator extends MethodGenerator {
         }
 
         if (method.getParentTypes()) {
-            if (method.getParentTypes().first() instanceof Interface) {
+            if (method.getParentTypes().first().getType() == Type.INTERFACE) {
                 """
             $comment
             $type $name($paramList)$excepts;"""

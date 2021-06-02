@@ -51,7 +51,7 @@ class MethodBuilderTest extends DBSpec {
                 .name("Test")
                 .create()
 
-        type = Class.builder()
+        type = Type.builder().type(Type.CLASS)
                 .name("Class")
                 .compKey("Class")
                 .accessibility(Accessibility.PUBLIC)

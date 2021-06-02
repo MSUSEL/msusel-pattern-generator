@@ -28,7 +28,6 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
 import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
-import edu.montana.gsoc.msusel.rbml.model.StructuralFeature
 import org.javalite.activejdbc.test.DBSpec
 import org.junit.Before
 import org.junit.Test
@@ -46,7 +45,7 @@ class JavaFieldGeneratorTest extends DBSpec {
         ctx.resetComponentGenerators()
         ctx.resetPatternBuilderComponents()
 
-        type = Class.builder()
+        type = Type.builder().type(Type.CLASS)
                 .name("Type")
                 .accessibility(Accessibility.PUBLIC)
                 .compKey("type")

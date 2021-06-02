@@ -27,7 +27,6 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import edu.isu.isuese.datamodel.Accessibility
-import edu.isu.isuese.datamodel.Class
 import edu.isu.isuese.datamodel.Parameter
 import edu.isu.isuese.datamodel.Type
 import edu.isu.isuese.datamodel.TypeRef
@@ -54,7 +53,7 @@ class ParamBuilderTest extends DBSpec {
                 .name("Test")
                 .create()
 
-        type = Class.builder()
+        type = Type.builder().type(Type.CLASS)
                 .name("Class")
                 .compKey("Class")
                 .accessibility(Accessibility.PUBLIC)

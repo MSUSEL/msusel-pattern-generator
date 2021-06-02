@@ -26,29 +26,14 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.java
 
-import edu.isu.isuese.datamodel.Accessibility
-import edu.isu.isuese.datamodel.Class
-import edu.isu.isuese.datamodel.Constructor
-import edu.isu.isuese.datamodel.Destructor
-import edu.isu.isuese.datamodel.Field
-import edu.isu.isuese.datamodel.File
-import edu.isu.isuese.datamodel.FileType
-import edu.isu.isuese.datamodel.Method
-import edu.isu.isuese.datamodel.Modifier
-import edu.isu.isuese.datamodel.Namespace
-import edu.isu.isuese.datamodel.Parameter
-import edu.isu.isuese.datamodel.Project
-import edu.isu.isuese.datamodel.System
-import edu.isu.isuese.datamodel.Type
-import edu.isu.isuese.datamodel.TypeRef
+import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.GeneratorContext
-import edu.montana.gsoc.msusel.rbml.model.BehavioralFeature
-import edu.montana.gsoc.msusel.rbml.model.Role
 import org.javalite.activejdbc.test.DBSpec
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import static org.junit.Assert.*
+
+import static org.junit.Assert.assertEquals
 
 class JavaMethodGeneratorTest extends DBSpec {
 
@@ -66,7 +51,7 @@ class JavaMethodGeneratorTest extends DBSpec {
         ctx.plugin = new JavaLanguageProvider()
         ctx.resetComponentGenerators()
 
-        type = Class.builder()
+        type = Type.builder().type(Type.CLASS)
                 .name("Type")
                 .accessibility(Accessibility.PUBLIC)
                 .compKey("type")
@@ -707,8 +692,8 @@ class JavaMethodGeneratorTest extends DBSpec {
 
     @Test
     void "generate an overriding method"() {
-        Type t1 = Class.builder().name("class1").compKey("class1").create()
-        Type t2 = Class.builder().name("class2").compKey("class2").create()
+        Type t1 = Type.builder().type(Type.CLASS).name("class1").compKey("class1").create()
+        Type t2 = Type.builder().type(Type.CLASS).name("class2").compKey("class2").create()
         t2.generalizes(t1)
         Method data2 = Method.builder()
                 .name("test")
@@ -744,7 +729,7 @@ class JavaMethodGeneratorTest extends DBSpec {
 
 //    @Test
 //    void "test generate with pgcl with disregard flag"() {
-//        Type t1 = Class.builder().name("class1").compKey("class1").create()
+//        Type t1 = Type.builder().type(Type.CLASS).name("class1").compKey("class1").create()
 //
 //        Method data = Method.builder()
 //                .name("test")
@@ -777,7 +762,7 @@ class JavaMethodGeneratorTest extends DBSpec {
 //
 //    @Test
 //    void "test generate with pgcl with definition"() {
-//        Type t1 = Class.builder().name("class1").compKey("class1").create()
+//        Type t1 = Type.builder().type(Type.CLASS).name("class1").compKey("class1").create()
 //
 //        Method data = Method.builder()
 //                .name("test")
@@ -810,7 +795,7 @@ class JavaMethodGeneratorTest extends DBSpec {
 //
 //    @Test
 //    void "test generate with pgcl with content"() {
-//        Type t1 = Class.builder().name("class1").compKey("class1").create()
+//        Type t1 = Type.builder().type(Type.CLASS).name("class1").compKey("class1").create()
 //
 //        Method data = Method.builder()
 //                .name("test")

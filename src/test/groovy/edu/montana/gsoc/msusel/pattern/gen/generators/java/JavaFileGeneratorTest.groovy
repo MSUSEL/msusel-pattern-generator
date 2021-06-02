@@ -88,7 +88,7 @@ class JavaFileGeneratorTest extends DBSpec {
         proj.addNamespace(ns1)
         proj.addNamespace(ns2)
 
-        Class clazz = Class.builder()
+        Type clazz = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -165,7 +165,7 @@ class JavaFileGeneratorTest extends DBSpec {
         proj.addNamespace(ns1)
         proj.addNamespace(ns2)
 
-        Class clazz = Class.builder()
+        Type clazz = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .compKey("Test")
                 .accessibility(Accessibility.PUBLIC)
@@ -179,7 +179,7 @@ class JavaFileGeneratorTest extends DBSpec {
                 .fileKey("Reference.java")
                 .create()
 
-        Class ref = Class.builder()
+        Type ref = Type.builder().type(Type.CLASS)
                 .name("Reference")
                 .accessibility(Accessibility.PUBLIC)
                 .compKey("Reference")
@@ -288,7 +288,7 @@ class JavaFileGeneratorTest extends DBSpec {
         proj.addNamespace(ns1)
         proj.addNamespace(ns2)
 
-        Class clazz = Class.builder()
+        Type clazz = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .compKey("Test")
                 .accessibility(Accessibility.PUBLIC)
@@ -302,7 +302,7 @@ class JavaFileGeneratorTest extends DBSpec {
                 .fileKey("Reference.java")
                 .create()
 
-        Class ref = Class.builder()
+        Type ref = Type.builder().type(Type.CLASS)
                 .name("Reference")
                 .accessibility(Accessibility.PUBLIC)
                 .compKey("Reference")
@@ -526,7 +526,7 @@ class JavaFileGeneratorTest extends DBSpec {
         proj.addNamespace(ns1)
         proj.addNamespace(ns2)
 
-        Class clazz = Class.builder()
+        Type clazz = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
@@ -600,13 +600,13 @@ class JavaFileGeneratorTest extends DBSpec {
         proj.addNamespace(ns1)
         proj.addNamespace(ns2)
 
-        Class clazz = Class.builder()
+        Type clazz = Type.builder().type(Type.CLASS)
                 .name("Test")
                 .accessibility(Accessibility.PUBLIC)
                 .create()
         data.addType(clazz)
         ns1.addType(clazz)
-        Class clazz2 = Class.builder()
+        Type clazz2 = Type.builder().type(Type.CLASS)
                 .name("Test2")
                 .accessibility(Accessibility.DEFAULT)
                 .create()

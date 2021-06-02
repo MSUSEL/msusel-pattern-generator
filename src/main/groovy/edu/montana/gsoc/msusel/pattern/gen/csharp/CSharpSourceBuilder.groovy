@@ -26,7 +26,11 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.csharp
 
-import edu.isu.isuese.datamodel.*
+
+import edu.isu.isuese.datamodel.File
+import edu.isu.isuese.datamodel.Import
+import edu.isu.isuese.datamodel.Method
+import edu.isu.isuese.datamodel.Type
 
 /**
  * C# srcML Builder
@@ -49,7 +53,7 @@ class CSharpSourceBuilder {
     /**
      * {@inheritDoc}
      */
-    def createEnumItems(Enum typ, StringBuilder builder) {
+    def createEnumItems(Type typ, StringBuilder builder) {
     }
 
     /**

@@ -26,14 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
-import edu.isu.isuese.datamodel.Accessibility
-import edu.isu.isuese.datamodel.Parameter
-import edu.isu.isuese.datamodel.RefType
-import edu.isu.isuese.datamodel.Reference
-import edu.isu.isuese.datamodel.Type
-import edu.isu.isuese.datamodel.TypeRef
-import edu.isu.isuese.datamodel.TypeRefType
-import edu.isu.isuese.datamodel.UnknownType
+import edu.isu.isuese.datamodel.*
 
 /**
  * @author Isaac Griffith
@@ -70,7 +63,8 @@ class ParamBuilder extends AbstractComponentBuilder {
 
     @Override
     TypeRef createDefaultTypeRef() {
-        UnknownType type = UnknownType.builder()
+        Type type = Type.builder()
+                .type(Type.UNKNOWN)
                 .name("String")
                 .compKey("UT:String")
                 .accessibility(Accessibility.PUBLIC)
