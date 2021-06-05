@@ -88,7 +88,7 @@ class TypeCueTest extends DBSpec {
         Cue actual = fixture.getCueForRole("aField", type)
 
         // Then
-        the(actual).shouldBeEqual(field)
+        the(actual).shouldBeNull()
     }
 
     @Test
@@ -145,8 +145,8 @@ class TypeCueTest extends DBSpec {
     @Test
     @Parameters([
             "Test, true",
-            "aMethod, true",
-            "aField, true",
+            "aMethod, false",
+            "aField, false",
             "Unknown, false",
             ", false"
     ])

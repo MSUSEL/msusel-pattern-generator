@@ -103,7 +103,7 @@ class MethodCueTest  extends DBSpec {
         Cue actual = fixture.getCueForRole(roleName, null)
 
         // Then
-        the(actual).shouldBeEqual(fixture)
+        the(actual).shouldBeNull()
     }
 
     @Test

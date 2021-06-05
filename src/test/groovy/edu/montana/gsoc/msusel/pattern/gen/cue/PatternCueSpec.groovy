@@ -44,7 +44,7 @@ class PatternCueSpec extends Specification {
           def actual = fixture.getDelimString()
 
         then:
-          actual == /(?ms)begin_pattern: Test.*?end_pattern: Test/
+          actual == /begin_pattern: Test.*end_pattern: Test/
     }
 
     def "GetReplacement"() {

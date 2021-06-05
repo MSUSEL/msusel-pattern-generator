@@ -44,7 +44,7 @@ class MethodCueSpec extends Specification {
           def actual = fixture.getDelimString()
 
         then:
-          actual == /(?ms)start_method: aMethod.*end_method: aMethod/
+          actual == /(?s)start_method: aMethod.*end_method: aMethod/
     }
 
     def "GetReplacement"() {
@@ -55,6 +55,6 @@ class MethodCueSpec extends Specification {
           def actual = fixture.getReplacement()
 
         then:
-          actual == "[[method: aMethod]]"
+          actual == "\\[\\[method: aMethod\\]\\]"
     }
 }

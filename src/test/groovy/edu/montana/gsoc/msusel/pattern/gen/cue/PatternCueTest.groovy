@@ -89,7 +89,7 @@ class PatternCueTest extends DBSpec {
         Cue actual = fixture.getCueForRole("aField", t)
 
         // Then
-        the(actual).shouldBeEqual(field)
+        the(actual).shouldBeNull()
     }
 
     @Test
@@ -140,15 +140,15 @@ class PatternCueTest extends DBSpec {
         Cue actual = fixture.getCueForRole(roleName, t)
 
         // Then
-        the(actual).shouldNotBeNull()
+        the(actual).shouldBeNull()
     }
 
     @Test
     @Parameters([
             "Test, false",
             "aType, true",
-            "aMethod, true",
-            "aField, true",
+            "aMethod, false",
+            "aField, false",
             "Unknown, false",
             ", false"
     ])

@@ -55,6 +55,6 @@ class FieldCueSpec extends Specification {
         def actual = fixture.getReplacement()
 
         then:
-        actual == "[[field: aField]]"
+        actual == "\\[\\[field: aField\\]\\]"
     }
 }
