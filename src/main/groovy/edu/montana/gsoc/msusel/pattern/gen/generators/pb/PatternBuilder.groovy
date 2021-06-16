@@ -127,7 +127,7 @@ class PatternBuilder extends AbstractBuilder {
 
     private void processComponent(Component comp, Role role, Pattern pat, PatternInstance inst) {
         String name = role.getName()
-        edu.isu.isuese.datamodel.Role r = edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", "${pat.getPatternKey()}:${name}")
+        edu.isu.isuese.datamodel.Role r = edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", (String) "${pat.getPatternKey()}:${name}")
         if (r != null && comp != null) {
             RoleBinding binding = createRoleBinding(r, comp)
             if (binding != null) {
@@ -156,7 +156,7 @@ class PatternBuilder extends AbstractBuilder {
         }
 
         rbml.relations.each {
-            if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", "${pat.patternKey}:${it.name}") == null) {
+            if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", (String) "${pat.patternKey}:${it.name}") == null) {
                 edu.isu.isuese.datamodel.Role role = edu.isu.isuese.datamodel.Role.builder()
                         .name(it.name)
                         .roleKey("${pat.patternKey}:${it.name}")
@@ -170,7 +170,7 @@ class PatternBuilder extends AbstractBuilder {
 
     private void buildClassifierRole(Classifier c, Pattern pat) {
 
-        if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", "${pat.patternKey}:${c.name}") == null) {
+        if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", (String) "${pat.patternKey}:${c.name}") == null) {
             edu.isu.isuese.datamodel.Role role = edu.isu.isuese.datamodel.Role.builder()
                     .name(c.name)
                     .roleKey("${pat.patternKey}:${c.name}")
@@ -180,7 +180,7 @@ class PatternBuilder extends AbstractBuilder {
             pat.save()
 
             c.structFeats.each {
-                if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", "${pat.patternKey}:${it.name}") == null) {
+                if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", (String) "${pat.patternKey}:${it.name}") == null) {
                     edu.isu.isuese.datamodel.Role struct = edu.isu.isuese.datamodel.Role.builder()
                             .name(it.name)
                             .roleKey("${pat.patternKey}:${it.name}")
@@ -192,7 +192,7 @@ class PatternBuilder extends AbstractBuilder {
             }
 
             c.behFeats.each {
-                if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", "${pat.patternKey}:${it.name}") == null) {
+                if (edu.isu.isuese.datamodel.Role.findFirst("roleKey = ?", (String) "${pat.patternKey}:${it.name}") == null) {
                     edu.isu.isuese.datamodel.Role behav = edu.isu.isuese.datamodel.Role.builder()
                             .name(it.name)
                             .roleKey("${pat.patternKey}:${it.name}")
