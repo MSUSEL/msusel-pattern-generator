@@ -73,7 +73,18 @@ class JavaTypeGenerator extends TypeGenerator {
     }
 
     private String fromCue(Cue cue, Type type) {
-        String kind = type.getClass().getSimpleName().toLowerCase()
+        String kind = ""
+        switch(type.getType()) {
+            case Type.CLASS:
+                kind = "class"
+                break
+            case Type.INTERFACE:
+                kind = "interface"
+                break
+            case Type.ENUM:
+                kind = "enum"
+                break
+        }
 
         CueParams params = new CueParams()
         params.setParam("literals", genLiterals(type))
