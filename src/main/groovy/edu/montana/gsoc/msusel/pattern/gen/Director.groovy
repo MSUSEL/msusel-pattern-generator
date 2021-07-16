@@ -81,6 +81,8 @@ class Director {
                         } else {
                             context.sysBuilder.init(pattern: pattern, system: sys, id: id)
                             context.sysBuilder.create()
+                            if (!systems.contains(sys))
+                                systems << sys
                         }
                         context.resetPatternBuilderComponents()
                     }
