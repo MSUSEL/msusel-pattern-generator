@@ -66,17 +66,14 @@ class Director {
             // Open DB Connection
             manager.open(creds)
 
-            println "Results\n${context.results}"
             Set<String> patterns = new HashSet<>()
             context.results.rowMap().each { String id, Map<String, String> map ->
                 patterns << map.get("PatternType")
             }
-            println "Patterns: $patterns"
 
             if (!context.generateOnly) {
                 patterns.each { pattern ->
                     Map<String, String> map = context.results.column("PatternType").findAll { String id, String value -> value == pattern }
-                    println "PatternType: $pattern"
                     context.loader.loadPatternCues(pattern, "java")
 
                     map.each { id, val ->
@@ -98,7 +95,6 @@ class Director {
 
             if (!context.dataOnly) {
                 systems.each {sys ->
-                    println("System: ${sys.getKey()} with name: ${sys.name}")
                     context.sysGen.init(sys: sys, builder: new FileTreeBuilder(new File(context.getOutput())), pattern: sys.getName())
                     context.sysGen.generate()
                 }
