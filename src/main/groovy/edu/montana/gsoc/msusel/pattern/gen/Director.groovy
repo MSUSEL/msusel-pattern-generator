@@ -66,6 +66,7 @@ class Director {
             // Open DB Connection
             manager.open(creds)
 
+            println "Results\n${context.results}"
             List<String> patterns = context.results.column("ID")*.get("PatternType")
 
             if (!context.generateOnly) {
