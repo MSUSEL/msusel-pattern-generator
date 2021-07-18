@@ -67,7 +67,7 @@ class Director {
             manager.open(creds)
 
             if (!context.generateOnly) {
-                context.patterns.each {pattern ->
+                context.results.column("PatternType").keySet().each {pattern ->
                     Map<String, String> map = context.results.column("PatternType").findAll { String id, String value -> value == pattern }
 
                     context.loader.loadPatternCues(pattern, "java")
