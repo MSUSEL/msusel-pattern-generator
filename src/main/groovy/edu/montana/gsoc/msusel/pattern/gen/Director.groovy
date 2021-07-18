@@ -66,8 +66,10 @@ class Director {
             // Open DB Connection
             manager.open(creds)
 
+            List<String> patterns = context.results.column("ID")*.get("PatternType")
+
             if (!context.generateOnly) {
-                context.results.column("PatternType").keySet().each {pattern ->
+                patterns.each { pattern ->
                     Map<String, String> map = context.results.column("PatternType").findAll { String id, String value -> value == pattern }
                     println "PatternType: $pattern"
                     context.loader.loadPatternCues(pattern, "java")
