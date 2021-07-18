@@ -67,7 +67,11 @@ class Director {
             manager.open(creds)
 
             println "Results\n${context.results}"
-            List<String> patterns = context.results.column("ID")*.get("PatternType")
+            Set<String> patterns = new HashSet<>()
+            context.results.rowMap().each { String id, Map<String, String> map ->
+                patterns << map.get("PatternType")
+            }
+            println "Patterns: $patterns"
 
             if (!context.generateOnly) {
                 patterns.each { pattern ->
