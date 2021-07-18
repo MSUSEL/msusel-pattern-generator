@@ -54,7 +54,7 @@ class JavaCodeGenerator extends CodeGenerator {
 
     private void handleNamespace(Namespace ns, FileTreeBuilder tree) {
         log.info("Handling the namespace")
-        tree.dir("${ns.name.replaceAll(/\./, "/")}") {
+        tree.dir("${ns.name.replace(".", File.separator)}") {
             ns.namespaces.each {
                 handleNamespace(it, tree)
             }

@@ -45,7 +45,7 @@ class SystemBuilder extends AbstractBuilder {
         String key = params.pattern
         System sys
         if (!params.system)
-            sys = System.builder().key(key).name(name).basePath(ctx.getOutput() + "/" + name).create()
+            sys = System.builder().key(key).name(name).basePath(ctx.getOutput() + File.separator + name).create()
         else
             sys = (System) params.system
 
