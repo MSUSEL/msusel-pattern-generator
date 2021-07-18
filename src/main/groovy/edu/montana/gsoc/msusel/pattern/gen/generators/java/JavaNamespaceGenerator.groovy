@@ -52,7 +52,7 @@ class JavaNamespaceGenerator extends NamespaceGenerator {
 
     private def generateRec(Namespace ns, FileTreeBuilder builder) {
         builder {
-            builder."${ns.getName().replaceAll(/\./, File.separator)}" {
+            builder."${ns.getName().replace(".", File.separator)}" {
 //                ns.getFiles().each {
 //                    ctx.fileGen.init(file: it, builder: builder)
 //                    ctx.fileGen.generate()
