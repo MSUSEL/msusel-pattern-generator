@@ -69,7 +69,7 @@ class Director {
             if (!context.generateOnly) {
                 context.results.column("PatternType").keySet().each {pattern ->
                     Map<String, String> map = context.results.column("PatternType").findAll { String id, String value -> value == pattern }
-
+                    println "PatternType: $pattern"
                     context.loader.loadPatternCues(pattern, "java")
 
                     map.each { id, val ->
