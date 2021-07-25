@@ -1,2 +1,19 @@
 start_pattern: basic
+start_type: ConcreteAdapter
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    start_method: Request
+    public void [[name]]() {
+        [[adaptee.name]].[[Adaptee.SpecificRequest.random()]]();
+    }
+    end_method: Request
+
+    [[methods]]
+}
+end_type: ConcreteAdapter
 end_pattern: basic

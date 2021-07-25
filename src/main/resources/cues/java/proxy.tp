@@ -1,2 +1,18 @@
 start_pattern: basic
+start_type: Proxy
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    [[methods]]
+    start_method: Request
+    public void [[name]]() {
+        [[prox.name]].[[name]]();
+    }
+    end_method: Request
+}
+end_type: Proxy
 end_pattern: basic

@@ -1,2 +1,21 @@
 start_pattern: basic
+start_type: Client
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+    start_field: proto
+    private [[Prototype.name]] [[name]];
+    end_field: proto
+
+    [[methods]]
+    start_method: Operation
+    public void [[name]]() {
+        [[proto.name]].[[Clone.name]]();
+    }
+    end_method: Operation
+}
+end_type: Client
 end_pattern: basic

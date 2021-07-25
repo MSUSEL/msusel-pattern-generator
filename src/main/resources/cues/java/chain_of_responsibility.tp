@@ -1,3 +1,18 @@
 start_pattern: basic
+start_type: Handler
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
 
+    [[fields]]
+
+    start_method: HandleRequest
+    public void [[name]]() {
+        [[succ.name]].[[name]]();
+    }
+    end_method: HandleRequest
+    [[methods]]
+}
+end_type: Handler
 end_pattern: basic

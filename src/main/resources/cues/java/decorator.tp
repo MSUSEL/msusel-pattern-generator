@@ -10,6 +10,60 @@ import java.util.*;
     [[fields]]
 
     [[methods]]
+    start_method: Operation
+    public void [[name]]() {
+        super.[[name]]();
+        [[AddedBehavior.name]]();
+    }
+    end_method: Operation
+
+    public [[InstName]]([[Decorator.name]] component) {
+        super(component);
+    }
 }
 end_type: ConcreteDecorator
+
+start_type: Decorator
+import java.util.*;
+
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+    start_field: absDec
+    [[Decorator.name]] component;
+    end_field: absDec
+
+    [[methods]]
+    start_method: Operation
+    public void [[name]]() {
+        component.[[name]]();
+    }
+    end_method: Operation
+
+    public [[InstName]]([[Decorator.name]] component) {
+        this.component = component;
+    }
+}
+end_type: Decorator
+
+start_type: AbstractDecorator
+import java.util.*;
+
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    [[methods]]
+
+    public [[InstName]]([[Decorator.name]] component) {
+        super(component);
+    }
+}
+end_type: AbstractDecorator
 end_pattern: basic

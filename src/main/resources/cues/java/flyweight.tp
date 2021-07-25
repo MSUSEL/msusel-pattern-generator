@@ -1,2 +1,29 @@
 start_pattern: basic
+start_type: FlyweightFactory
+import java.util.*;
+
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+    start_field: flyweights
+    List<[[Flyweight.name]] [[name]] = new ArrayList<>();
+    end_field: flyweights
+
+    [[methods]]
+    start_method: GetFlyweight
+    public [[Flyweight.name]] [[name]](int key) {
+        if ([[flyweights.name]].size() > key && [[flyweights.name]].get(key) != null) {
+            return [[flyweights.name]].get(key);
+        } else {
+            [[Flyweight.name]] temp = new [[Flyweight.random()]]();
+            [[flyweights.name]].add(temp);
+            return temp;
+        }
+    }
+    end_method: GetFlyweight
+}
+end_type: FlyweightFactory
 end_pattern: basic
