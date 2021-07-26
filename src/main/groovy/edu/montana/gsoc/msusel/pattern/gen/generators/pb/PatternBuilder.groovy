@@ -80,8 +80,15 @@ class PatternBuilder extends AbstractBuilder {
                 .create()
         parentProj.addPatternInstance(inst)
 
-        log.info "Creating an instance of ${pattern.replace('_', ' ').capitalize()}"
-        Pattern pat = (Pattern) Pattern.find("name ilike ?", pattern.capitalize()).first()
+        def nameComps = []
+        pattern.replace("_", ' ').split(/\s/).each {
+            nameComps << it.capitalize()
+        }
+        String patternName = nameComps.join(" ")
+
+        log.info "Creating an instance of ${patternName}"
+        
+        Pattern pat = (Pattern) Pattern.find("name = ?", patternName).first()
         if (pat) {
             pat.addInstance(inst)
             updateRoles(pat, rbml)
