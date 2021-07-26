@@ -1,19 +1,4 @@
 start_pattern: basic
-start_type: Observer
-/**
-[[ClassComment]]
- */
-[[typedef]] {
-
-    start_field: observerState
-    protected [[type]] [[name]]
-    end_field: observerState
-    [[fields]]
-
-    [[methods]]
-}
-end_type: Observer
-
 start_type: ConcreteObserver
 /**
 [[ClassComment]]
