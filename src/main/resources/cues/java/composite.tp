@@ -8,26 +8,27 @@ import java.util.*;
 [[typedef]] {
 
     start_field: children
+    List<[[Composite.root]]> [[name]] = new ArrayList<>();
     end_field: children
     [[fields]]
 
     start_method: Add
     public void [[name]]([[params]]) {
         if ([[param.c]] != null)
-            children.add([[param.c]]);
+            [[children.name]].add([[param.c]]);
     }
     end_method: Add
 
     start_method: Remove
     public void [[name]]([[params]]) {
         if ([[param.c]] != null)
-            children.remove([[param.c]]);
+            [[children.name]].remove([[param.c]]);
     }
     end_method: Remove
 
     start_method: GetChild
     public [[type]] [[name]]([[params]]) {
-        return children.get([[param(index)]]);
+        return [[children.name]].get([[param(index)]]);
     }
     end_method: GetChild
     [[methods]]
