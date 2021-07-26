@@ -51,6 +51,9 @@ class PatternBuilder extends AbstractBuilder {
             throw new IllegalArgumentException("create: parent cannot be null")
 
         String pattern = params.pattern
+
+        log.info "Generating Patter of type: $pattern"
+
         Namespace ns = (Namespace) params.parent
         List<Project> projects = ns.getParentProjects()
         Project parentProj = null

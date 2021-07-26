@@ -5,6 +5,8 @@ start_type: ConcreteCommand
  */
 [[typedef]] {
 
+    start_field: r
+    end_field: r
     [[fields]]
 
     start_method: Execute
