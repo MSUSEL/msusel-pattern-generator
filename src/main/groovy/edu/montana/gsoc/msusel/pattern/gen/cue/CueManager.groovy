@@ -26,10 +26,11 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
-import groovy.util.logging.Log4j
+
+import groovy.util.logging.Log4j2
 
 @Singleton
-@Log4j
+@Log4j2
 class CueManager {
 
     Cue current
