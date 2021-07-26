@@ -87,7 +87,7 @@ class PatternBuilder extends AbstractBuilder {
         String patternName = nameComps.join(" ")
 
         log.info "Creating an instance of ${patternName}"
-        
+
         Pattern pat = (Pattern) Pattern.find("name = ?", patternName).first()
         if (pat) {
             pat.addInstance(inst)
