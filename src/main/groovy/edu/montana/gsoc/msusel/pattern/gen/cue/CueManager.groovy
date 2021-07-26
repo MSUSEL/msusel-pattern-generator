@@ -26,7 +26,10 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.cue
 
+import groovy.util.logging.Log4j
+
 @Singleton
+@Log4j
 class CueManager {
 
     Cue current
@@ -36,6 +39,7 @@ class CueManager {
     Map<String, Cue> cues
 
     def loadCues(String pattern, String language) {
+        log.info "Loading Cues for Pattern: $pattern"
         this.pattern = pattern.toLowerCase().replaceAll(/\s/, "_")
         this.language = language
 
