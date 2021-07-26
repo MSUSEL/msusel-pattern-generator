@@ -52,7 +52,7 @@ class PatternBuilder extends AbstractBuilder {
 
         String pattern = params.pattern
 
-        log.info "Generating Patter of type: $pattern"
+        log.info "Generating Pattern of type: $pattern"
 
         Namespace ns = (Namespace) params.parent
         List<Project> projects = ns.getParentProjects()
