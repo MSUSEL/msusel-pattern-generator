@@ -80,7 +80,7 @@ class PatternBuilder extends AbstractBuilder {
                 .create()
         parentProj.addPatternInstance(inst)
 
-        log.info "Creating an instance of ${pattern.capitalize()}"
+        log.info "Creating an instance of ${pattern.replace('_', ' ').capitalize()}"
         Pattern pat = (Pattern) Pattern.find("name = ?", pattern.capitalize()).first()
         if (pat) {
             pat.addInstance(inst)
