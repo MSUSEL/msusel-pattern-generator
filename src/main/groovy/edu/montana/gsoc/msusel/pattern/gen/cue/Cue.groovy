@@ -70,7 +70,7 @@ abstract class Cue {
                 String roleName = key.substring(0, key.lastIndexOf("."))
                 String property = key.substring(key.lastIndexOf(".") + 1)
                 Role role = manager.findRoleByName(roleName)
-                log.info "Looking for role with name: $roleName"
+                log.info "Looking for role with name: $roleName in $name"
                 List<Type> types = manager.getTypes(role)
 
                 switch (property) {
