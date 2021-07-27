@@ -71,7 +71,7 @@ class RBML2DataModelManager {
 
     List<Type> getTypes(Role role) {
         if (!role)
-            throw new IllegalArgumentException("role must not be null")
+            return []
 
         List<Type> types = typeMapping[role] ?: []
 //        types.asImmutable()
