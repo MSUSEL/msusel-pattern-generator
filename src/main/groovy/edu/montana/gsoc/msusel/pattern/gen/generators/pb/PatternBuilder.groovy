@@ -115,7 +115,8 @@ class PatternBuilder extends AbstractBuilder {
 
             ctx.rbmlManager.getFields().each { Field f ->
                 Role role = ctx.rbmlManager.getRole(f)
-                processComponent(f, role, pat, inst)
+                if (role)
+                    processComponent(f, role, pat, inst)
             }
 
             ctx.rbmlManager.getMethods().each { Method m ->
