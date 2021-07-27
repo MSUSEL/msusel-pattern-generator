@@ -29,10 +29,10 @@ package edu.montana.gsoc.msusel.pattern.gen.cue
 import com.google.common.collect.Lists
 import edu.isu.isuese.datamodel.Component
 import edu.isu.isuese.datamodel.Method
-import edu.isu.isuese.datamodel.Parameter
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.RBML2DataModelManager
 import edu.montana.gsoc.msusel.rbml.model.BehavioralFeature
+import edu.montana.gsoc.msusel.rbml.model.Parameter
 import edu.montana.gsoc.msusel.rbml.model.Role
 import groovy.transform.TupleConstructor
 import groovy.util.logging.Log4j2
