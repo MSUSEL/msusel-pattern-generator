@@ -233,7 +233,7 @@ class RBML2DataModelManager {
             Role parent = roleMapping.values().find {it.name = name.split(/\./)[0] }
             Role child = null
             if (parent instanceof Classifier) {
-                child (parent as Classifier).findFeatureByName(name.split(/\./)[1])
+                child = (parent as Classifier).findFeatureByName(name.split(/\./)[1])
             }
 
             return child
