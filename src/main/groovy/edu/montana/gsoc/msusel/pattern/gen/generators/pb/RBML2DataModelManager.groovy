@@ -232,7 +232,7 @@ class RBML2DataModelManager {
     Role findRoleByName(String name) {
 
         if (name.contains(".")) {
-            Role parent = roleMapping.values().find {it.name = name.split(/\./)[0] }
+            Role parent = roleMapping.values().find {it.name == name.split(/\./)[0] }
             if (parent)
                 log.info "Found parent"
             Role child = null
