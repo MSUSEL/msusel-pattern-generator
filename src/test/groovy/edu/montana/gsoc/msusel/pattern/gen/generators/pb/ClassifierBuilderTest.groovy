@@ -130,7 +130,7 @@ class ClassifierBuilderTest extends DBSpec {
         ctx.clsBuilder.create()
 
         // when:
-        ctx.clsBuilder.createFeatures(clazz)
+        ctx.clsBuilder.createFeatures(clazz, "")
 
         // then:
         the(ctx.rbmlManager.getType(clazz).getFields().size()).shouldEqual(1)
@@ -143,6 +143,6 @@ class ClassifierBuilderTest extends DBSpec {
         Classifier clazz = null
 
         // when:
-        ctx.clsBuilder.createFeatures(clazz)
+        ctx.clsBuilder.createFeatures(clazz, "")
     }
 }

@@ -28,6 +28,8 @@ package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import com.google.common.collect.Sets
 import edu.isu.isuese.datamodel.*
+import edu.montana.gsoc.msusel.pattern.gen.methodnames.MethodNameGenerator
+import edu.montana.gsoc.msusel.pattern.gen.methodnames.NameGenManager
 import edu.montana.gsoc.msusel.rbml.model.Classifier
 import edu.montana.gsoc.msusel.rbml.model.InterfaceRole
 import groovy.util.logging.Log4j2
@@ -83,13 +85,13 @@ class ClassifierBuilder extends AbstractBuilder {
         t
     }
 
-    void createFeatures(Classifier classifier) {
+    void createFeatures(Classifier classifier, String pattern) {
         if (!classifier)
             throw new IllegalArgumentException("createFeatures: classifier cannot be null")
 
         log.info("Creating features for ${classifier.name}")
         createFieldNames(classifier)
-        createMethodNames(classifier)
+        createMethodNames(classifier, pattern)
 
         ctx.rbmlManager.getTypes(classifier).each { Type t ->
             classifier.structFeats.each {structFeat ->
@@ -137,7 +139,7 @@ class ClassifierBuilder extends AbstractBuilder {
         }
     }
 
-    private List createMethodNames(Classifier classifier) {
+    private List createMethodNames(Classifier classifier, String pattern) {
         Set<String> allNames = [] as Set<String>
         ctx.rbmlManager.methodNames.values().each {
             allNames.addAll(it)
@@ -155,21 +157,13 @@ class ClassifierBuilder extends AbstractBuilder {
                     max = ctx.maxMethods
                 }
 
-                Set<String> set = Sets.newHashSet()
-                Random rand = new Random()
-                int num
-                if (min == max)
-                    num = min
-                else
-                    num = rand.nextInt(max - min) + min
+                NameGenManager mgr = NameGenManager.instance
+                mgr.min = min
+                mgr.max = max
+                mgr.ctx = ctx
+                MethodNameGenerator gen = mgr.getNameGeneratorFor(pattern, classifier.name, it.name)
 
-                for (int i = 0; set.size() < num; ) {
-                    String s = ctx.methBuilder.getMethodName()
-                    if (!allNames.contains(s)) {
-                        set << s
-                        i++
-                    }
-                }
+                Set<String> set = gen.generate(allNames)
                 ctx.rbmlManager.methodNames[it.name] = set
             }
         }

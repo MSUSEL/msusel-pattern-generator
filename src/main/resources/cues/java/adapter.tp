@@ -9,7 +9,7 @@ start_type: ConcreteAdapter
 
     start_method: Request
     public void [[name]]() {
-        [[adaptee.name]].[[Adaptee.SpecificRequest.random()]]();
+        [[adaptee.name]].[[Adaptee.SpecificRequest.random]]();
     }
     end_method: Request
 

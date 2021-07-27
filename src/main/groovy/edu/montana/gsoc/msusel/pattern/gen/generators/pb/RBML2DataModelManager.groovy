@@ -26,17 +26,12 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
+import com.google.common.collect.Sets
 import edu.isu.isuese.datamodel.Component
 import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Method
 import edu.isu.isuese.datamodel.Type
-import edu.montana.gsoc.msusel.rbml.model.BehavioralFeature
-import edu.montana.gsoc.msusel.rbml.model.ClassRole
-import edu.montana.gsoc.msusel.rbml.model.Classifier
-import edu.montana.gsoc.msusel.rbml.model.InterfaceRole
-import edu.montana.gsoc.msusel.rbml.model.Role
-import edu.montana.gsoc.msusel.rbml.model.SPS
-import edu.montana.gsoc.msusel.rbml.model.StructuralFeature
+import edu.montana.gsoc.msusel.rbml.model.*
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
@@ -55,6 +50,7 @@ class RBML2DataModelManager {
     Map<Type, Role> roleMapping = [:]
     Map<Method, Role> roleMethodMapping = [:]
     Map<Field, Role> roleFieldMapping = [:]
+    Map<Field, String> relNameFieldMapping = [:]
     Map<String, Set<String>> methodNames = [:]
     Map<String, Set<String>> fieldNames = [:]
 
@@ -145,6 +141,12 @@ class RBML2DataModelManager {
         roleFieldMapping[field] = role
     }
 
+    def addMapping(String relName, Field field) {
+        if (!relName || !field)
+            return
+        relNameFieldMapping[field] = relName
+    }
+
     def removeMapping(Role role, Type type) {
         if (!role || !type)
             return
@@ -195,8 +197,25 @@ class RBML2DataModelManager {
         roles.asImmutable()
     }
 
+    Set<String> getFieldRelNames() {
+        Set<String> relNames = relNameFieldMapping.values().toSet()
+        relNames.asImmutable()
+    }
+
+    Set<Field> getFieldByRelName(String relName) {
+        Set<Field> fields = Sets.newHashSet()
+        relNameFieldMapping.each { Field f, String rn ->
+            if (rn == relName)
+                fields.add(f)
+        }
+        fields
+    }
+
     Set<Field> getFields() {
-        roleFieldMapping.keySet().asImmutable()
+        Set<Field> set = Sets.newHashSet()
+        set.addAll(roleFieldMapping.keySet())
+        set.addAll(relNameFieldMapping.keySet())
+        set.asImmutable()
     }
 
     Set<Role> getMethodRoles() {
@@ -210,14 +229,24 @@ class RBML2DataModelManager {
 
     Role findRoleByName(String name) {
 
-        Role r = roleMapping.values().find {it.name == name }
-        if (r == null) {
-            r = roleFieldMapping.values().find { it.name == name }
+        if (name.contains(".")) {
+            Role parent = roleMapping.values().find {it.name = name.split(/\./)[0] }
+            Role child = null
+            if (parent instanceof Classifier) {
+                child (parent as Classifier).findFeatureByName(name.split(/\./)[1])
+            }
+
+            return child
+        } else {
+            Role r = roleMapping.values().find { it.name == name }
+            if (r == null) {
+                r = roleFieldMapping.values().find { it.name == name }
+            }
+            if (r == null) {
+                r = roleMethodMapping.values().find { it.name == name }
+            }
+            return r
         }
-        if (r == null) {
-            r = roleMethodMapping.values().find {it.name == name }
-        }
-        return r
     }
 
     def getComponentsByRole(Role role) {

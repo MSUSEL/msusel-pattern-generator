@@ -68,7 +68,7 @@ class PatternBuilder extends AbstractBuilder {
 
         ctx.rbmlManager.getRoles().each {
             if (it instanceof Classifier)
-                ctx.clsBuilder.createFeatures(it)
+                ctx.clsBuilder.createFeatures(it, pattern)
         }
 
         createInstance(rbml, pattern, parentProj)

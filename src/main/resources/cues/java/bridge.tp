@@ -7,13 +7,11 @@ import java.util.*;
  */
 [[typedef]] {
 
-    start_field: imp
-    end_field: imp
     [[fields]]
 
     start_method: Operation
     public void [[name]]() {
-        [[imp]].[[Implementor.OperationImpl]]();
+        [[imp.name]].[[Implementor.OperationImpl.random]]();
     }
     end_method: Operation
     [[methods]]
@@ -28,8 +26,6 @@ import java.util.*;
  */
 [[typedef]] {
 
-    start_field: imp
-    end_field: imp
     [[fields]]
 
     start_method: OperationImpl

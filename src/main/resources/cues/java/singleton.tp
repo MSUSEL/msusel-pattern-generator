@@ -104,7 +104,7 @@ start_type: ConcreteSingleton
 [[typedef]] {
 
     start_field: Instance
-    private static volatile [[RootName]] [[name]];
+    private static volatile [[Singleton.name]] [[name]];
     end_field: Instance
     [[fields]]
 
@@ -113,7 +113,7 @@ start_type: ConcreteSingleton
     }
 
     start_method: GetInstance
-    public static [[RootName]] [[name]]() {
+    public static [[Singleton.name]] [[name]]() {
         if ([[Instance.name]] == null) {
             synchronized ([[InstName]].class) {
                 if ([[Instance.name]] == null) {

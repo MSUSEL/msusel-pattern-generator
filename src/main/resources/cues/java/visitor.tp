@@ -9,7 +9,7 @@ start_type: ConcreteElement
 
     start_method: Accept
     public void [[name]]([[params]]) {
-        [[param(vis)]].visit[[InstName]](this);
+        [[param.vis]].visit[[InstName]](this);
     }
     end_method: Accept
     [[methods]]
@@ -26,7 +26,7 @@ start_type: ConcreteVisitor
 
     start_method: Visit
     public void [[name]]([[params]]) {
-        [[params(elem)]].[[ConcreteElement.Operation]]();
+        [[params.elem]].[[ConcreteElement.Operation.name]]();
     }
     end_method: Visit
     [[methods]]

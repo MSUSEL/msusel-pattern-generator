@@ -5,13 +5,11 @@ start_type: ConcreteCommand
  */
 [[typedef]] {
 
-    start_field: r
-    end_field: r
     [[fields]]
 
     start_method: Execute
     public void [[name]]() {
-        [[r.name]].[[Receiver.Action]]()
+        [[r.name]].[[Receiver.Action.name]]()
     }
     end_method: Execute
     [[methods]]
@@ -28,7 +26,7 @@ start_type: Invoker
 
     public void someMethod([[Command.root]] command) {
         [[cond.name]] = command
-        [[cond.name]].[[ConcreteCommand.Execute]]();
+        [[cond.name]].[[ConcreteCommand.Execute.name]]();
     }
     [[methods]]
 }

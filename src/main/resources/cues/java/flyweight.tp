@@ -18,7 +18,7 @@ import java.util.*;
         if ([[flyweights.name]].size() > key && [[flyweights.name]].get(key) != null) {
             return [[flyweights.name]].get(key);
         } else {
-            [[Flyweight.name]] temp = new [[Flyweight.random()]]();
+            [[Flyweight.name]] temp = new [[Flyweight.random]]();
             [[flyweights.name]].add(temp);
             return temp;
         }

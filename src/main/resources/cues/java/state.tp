@@ -35,11 +35,11 @@ start_type: ConcreteState
  */
 [[typedef]] {
 
-    private static [[InstName]] instance;
+    private static [[name]] instance;
     private [[Context.name]] context;
     [[fields]]
 
-    private [[InstName]]([[Context.name]] ctx) {
+    private [[name]]([[Context.name]] ctx) {
         this.context = ctx;
     }
 

@@ -342,6 +342,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                         .type(destRef)
                         .create()
                 src.addMember(srcField)
+                ctx.rbmlManager.addMapping(destName, srcField)
             }
         }
 
@@ -356,6 +357,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                             .type(srcRef)
                             .create()
                     dest.addMember(destField)
+                    ctx.rbmlManager.addMapping(srcName, destField)
                 }
             }
         }

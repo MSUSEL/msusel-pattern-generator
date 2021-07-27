@@ -32,19 +32,16 @@ import java.util.*;
 [[typedef]] {
 
     [[fields]]
-    start_field: absDec
-    [[Decorator.name]] component;
-    end_field: absDec
 
     [[methods]]
     start_method: Operation
     public void [[name]]() {
-        component.[[name]]();
+        [[absDec.name]].[[name]]();
     }
     end_method: Operation
 
     public [[InstName]]([[Decorator.name]] component) {
-        this.component = component;
+        this.[[absDec.name]] = component;
     }
 }
 end_type: Decorator

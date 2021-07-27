@@ -28,8 +28,11 @@ package edu.montana.gsoc.msusel.pattern.gen.cue
 
 import com.google.common.collect.Lists
 import edu.isu.isuese.datamodel.Component
+import edu.isu.isuese.datamodel.Method
+import edu.isu.isuese.datamodel.Parameter
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.RBML2DataModelManager
+import edu.montana.gsoc.msusel.rbml.model.BehavioralFeature
 import edu.montana.gsoc.msusel.rbml.model.Role
 import groovy.transform.TupleConstructor
 import groovy.util.logging.Log4j2
@@ -62,10 +65,10 @@ abstract class Cue {
     }
 
     String postContent(String text, Component comp, CueParams params, RBML2DataModelManager manager) {
-        keys(text).each { key ->
+        keys(text).each { String key ->
             if (key.contains(".")) {
-                String roleName = key.split(/\./)[0]
-                String property = key.split(/\./)[1]
+                String roleName = key.substring(0, key.lastIndexOf("."))
+                String property = key.substring(key.lastIndexOf(".") + 1)
                 Role role = manager.findRoleByName(roleName)
                 log.info "Looking for role with name: $roleName"
                 List<Type> types = manager.getTypes(role)
@@ -85,15 +88,38 @@ abstract class Cue {
                         }
                         break
                     case "name":
-                        List comps = Lists.newArrayList(manager.getComponentsByRole(role))
+                        List comps = []
+                        if (role) {
+                            comps = Lists.newArrayList(manager.getComponentsByRole(role))
+                        } else {
+                            comps = Lists.newArrayList(manager.getFieldByRelName(roleName))
+                        }
                         String name = randomSelect(comps)?.name
                         text = replace(text, key as String, name)
                         break
+                    default:
+                        if (roleName == "param") {
+                            Role r = manager.getRoleForComponent(comp)
+                            if (r instanceof BehavioralFeature) {
+                                Parameter param = (r as BehavioralFeature).params.find { it.name == property }
+                                int index = -1
+                                if (param)
+                                    index = r.params.indexOf(param)
+                                if (index >= 0)
+                                    text = replace(text, key as String, (comp as Method).getParams().get(index).getName())
+                            }
+                        }
                 }
             } else {
                 switch (key) {
                     case "name":
                         text = replace(text, key as String, comp.name)
+                        break
+                    case "params":
+                        if (comp instanceof Method) {
+                            List<String> paramList = (comp as Method).getParams()*.getName()
+                            text = replace(text, key as String, paramList.join(", "))
+                        }
                         break
                     default:
                         text = replace(text, key as String, "")
@@ -109,8 +135,8 @@ abstract class Cue {
         return current.replaceAll(/\[\[$key\]\]/, value)
     }
 
-    private def keys(String text) {
-        def keys = []
+    private List<String> keys(String text) {
+        List<String> keys = []
         def pattern = ~/(?ms)\[\[(?<content>[\w\.\d\s:]*?)\]\]/
         def results = (text =~ pattern)
         for (int i = 0; i < results.size(); i++)

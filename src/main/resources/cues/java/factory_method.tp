@@ -10,8 +10,8 @@ import java.util.*;
     [[fields]]
 
     start_method: FactoryMethod
-    public [[type]] [[name]]() {
-        return new [[ConcreteProduct.random()]]();
+    public [[Product.name]] [[name]]() {
+        return new [[ConcreteProduct.random]]();
     }
     end_method: FactoryMethod
     [[methods]]
