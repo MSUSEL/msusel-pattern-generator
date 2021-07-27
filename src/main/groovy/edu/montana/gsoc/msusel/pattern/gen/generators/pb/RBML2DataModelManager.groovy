@@ -34,11 +34,13 @@ import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.rbml.model.*
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import groovy.util.logging.Log4j2
 
 /**
  * @author Isaac Griffith
  * @version 1.3.0
  */
+@Log4j2
 @EqualsAndHashCode(includes = ['id'])
 @ToString(includes = ['id'])
 class RBML2DataModelManager {
@@ -91,7 +93,7 @@ class RBML2DataModelManager {
     Role getRole(Type type) {
         if (!type)
             return null
-            //throw new IllegalArgumentException("type must not be null")
+        //throw new IllegalArgumentException("type must not be null")
 
         roleMapping[type]
     }
@@ -99,7 +101,7 @@ class RBML2DataModelManager {
     Role getRole(Method method) {
         if (!method)
             return null
-            //throw new IllegalArgumentException("getRole: method must not be null")
+        //throw new IllegalArgumentException("getRole: method must not be null")
 
         roleMethodMapping[method]
     }
@@ -231,9 +233,13 @@ class RBML2DataModelManager {
 
         if (name.contains(".")) {
             Role parent = roleMapping.values().find {it.name = name.split(/\./)[0] }
+            if (parent)
+                log.info "Found parent"
             Role child = null
             if (parent instanceof Classifier) {
                 child = (parent as Classifier).findFeatureByName(name.split(/\./)[1])
+                if (child)
+                    log.info "Found child"
             }
 
             return child
