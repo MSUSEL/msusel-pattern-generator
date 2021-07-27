@@ -57,7 +57,6 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
         sps.relations.each { rel ->
             if (rel instanceof Relationship) {
-                println "Relationship: $rel.name"
                 processRole(ns, rel.source(), rel.srcPort)
                 processRole(ns, rel.dest(), rel.destPort)
                 selectAndCreateRelationship(rel)
@@ -264,7 +263,8 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                 sources += map[it]
             }
         } else {
-            sources = map[src].asList()
+            if (map[src])
+                sources = map[src].asList()
         }
         if (dest instanceof GeneralizationHierarchy) {
             findGenHierarchyComponents((GeneralizationHierarchy) dest, destPort).each {
