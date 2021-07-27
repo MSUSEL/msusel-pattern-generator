@@ -71,6 +71,8 @@ abstract class Cue {
                 String property = key.substring(key.lastIndexOf(".") + 1)
                 Role role = manager.findRoleByName(roleName)
                 log.info "Looking for role with name: $roleName in $name"
+                if (role)
+                    log.info "Found Role with name ${role.name}"
                 List<Type> types = manager.getTypes(role)
 
                 switch (property) {
@@ -94,7 +96,7 @@ abstract class Cue {
                         } else {
                             comps = Lists.newArrayList(manager.getFieldByRelName(roleName))
                         }
-                        String name = randomSelect(comps)?.name
+                        String name = randomSelect(comps)?.getName()
                         text = replace(text, key as String, name)
                         break
                     default:
@@ -145,7 +147,7 @@ abstract class Cue {
         return keys
     }
 
-    private static def randomSelect(List list) {
+    private static Component randomSelect(List<Component> list) {
         Random rand = new Random()
         if (list.size() > 0) {
             int index = rand.nextInt(list.size())
