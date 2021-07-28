@@ -64,6 +64,8 @@ class FieldBuilder extends AbstractComponentBuilder {
                 .create()
         if (((StructuralFeature) params.feature).isStatic)
             field.addModifier(Modifier.forName("STATIC"))
+        if (((StructuralFeature) params.feature).isReadOnly)
+            field.addModifier(Modifier.forName("FINAL"))
 
         ((Type) params.owner).addMember(field)
         field.updateKey()

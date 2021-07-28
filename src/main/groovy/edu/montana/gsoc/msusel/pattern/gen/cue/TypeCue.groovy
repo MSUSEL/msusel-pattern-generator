@@ -110,7 +110,7 @@ class TypeCue extends CueContainer {
             Cue cue = null
             manager.getComponentsByRole(role).each { fld ->
                 cue = getCueForRole(role.name, (Component) fld)
-                if (cue)
+                if (cue && (fld as Field).getParentType() == type)
                     combined += cue.compile((Component) fld, params, manager) + "\n    "
             }
             if (cue) {

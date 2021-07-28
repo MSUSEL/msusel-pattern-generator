@@ -208,9 +208,9 @@ class JavaTypeGenerator extends TypeGenerator {
     private String genFields(Cue cue, Type type) {
         String content = ""
 
-        if (type.fields) {
+        if (!type.getFields().isEmpty()) {
             content += "\n"
-            type.fields.each { Field f ->
+            type.getFields().each { Field f ->
                 content += "\n            "
                 ctx.fieldGen.init(field: f, type: type, parentCue: cue, cue: cue?.getCueForRole(ctx.rbmlManager.getRole(f)?.name, f))
                 content += ctx.fieldGen.generate()
