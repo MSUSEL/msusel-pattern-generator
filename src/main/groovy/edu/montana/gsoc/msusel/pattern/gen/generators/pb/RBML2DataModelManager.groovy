@@ -234,13 +234,9 @@ class RBML2DataModelManager {
 
         if (name.contains(".")) {
             Role parent = roleMapping.values().find {it.name == name.split(/\./)[0] }
-            if (parent)
-                log.info "Found parent"
             Role child = null
             if (parent instanceof Classifier) {
                 child = (parent as Classifier).findFeatureByName(name.split(/\./)[1])
-                if (child)
-                    log.info "Found child"
             }
 
             return child

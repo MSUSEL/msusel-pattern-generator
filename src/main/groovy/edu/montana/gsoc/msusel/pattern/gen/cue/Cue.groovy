@@ -70,9 +70,6 @@ abstract class Cue {
                 String roleName = key.substring(0, key.lastIndexOf("."))
                 String property = key.substring(key.lastIndexOf(".") + 1)
                 Role role = manager.findRoleByName(roleName)
-                log.info "Looking for role with name: $roleName in $name"
-                if (role)
-                    log.info "Found Role with name ${role.name}"
                 List<Type> types = manager.getTypes(role)
 
                 switch (property) {
@@ -93,9 +90,6 @@ abstract class Cue {
                         List comps = []
                         if (role) {
                             comps = Lists.newArrayList(manager.getComponentsByRole(role))
-                            manager.getComponentsByRole(role).each { Component c ->
-                                println "Component: ${c.getName()}"
-                            }
                         } else {
                             comps = Lists.newArrayList(manager.getFieldByRelName(roleName))
                         }
@@ -113,6 +107,15 @@ abstract class Cue {
                                 if (index >= 0)
                                     text = replace(text, key as String, (comp as Method).getParams().get(index).getName())
                             }
+                        } else if (roleName == "callsAll") {
+                            role = manager.findRoleByName(property)
+                            List<Component> comps = manager.getComponentsByRole(role)
+                            List<String> calls = []
+                            comps.each {
+                                calls << "        ${it.name}();"
+                            }
+                            String value = calls.join("\n")
+                            text = replace(text, key as String, value)
                         }
                 }
             } else {

@@ -9,7 +9,7 @@ start_type: ConcreteCommand
 
     start_method: Execute
     public void [[name]]() {
-        [[r.name]].[[Receiver.Action.name]]()
+        [[r.name]].[[Receiver.Action.name]]();
     }
     end_method: Execute
     [[methods]]
