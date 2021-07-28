@@ -24,6 +24,9 @@ import java.util.*;
  */
 [[typedef]] {
 
+    start_field: obs
+    protected List<[[Observer.name]]> [[obs.name]] = new ArrayList<>();
+    end_field: obs
     [[fields]]
 
     start_method: Attach
