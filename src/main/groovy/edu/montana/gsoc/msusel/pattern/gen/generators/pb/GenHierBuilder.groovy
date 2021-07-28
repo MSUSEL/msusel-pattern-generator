@@ -68,7 +68,7 @@ class GenHierBuilder extends AbstractBuilder {
         Tree tree = ctx.treeGenerator.generate()
         if (!roots.isEmpty()) {
             tree.root.type = roots[0]
-            roots.remove(0)
+            roots = []
         }
         populateTree(gh, ns, tree)
     }
