@@ -29,21 +29,21 @@ import java.util.*;
     start_method: Attach
     public void [[name]]([[params]]) {
         if ([[param.obsv]] != null)
-            [[obs.name]].add([[param.obsv]])
+            [[obs.name]].add([[param.obsv]]);
     }
     end_method: Attach
 
     start_method: Detach
     public void [[name]]([[params]]) {
         if ([[param.obsv]] != null)
-            [[obs.name]].remove([[param.obsv]])
+            [[obs.name]].remove([[param.obsv]]);
     }
     end_method: Detach
 
     start_method: Notify
     public void [[name]]() {
         for ([[Observer.name]] item : [[obs.name]])
-            item.[[Observer.Update.name]]()
+            item.[[Observer.Update.name]]();
     }
     end_method: Notify
     [[methods]]
