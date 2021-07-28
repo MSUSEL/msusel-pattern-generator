@@ -106,6 +106,7 @@ start_type: ConcreteSingleton
     start_field: uniqueInstance
     private static volatile [[Singleton.name]] [[name]];
     end_field: uniqueInstance
+
     [[fields]]
 
     private [[InstName]]() {
