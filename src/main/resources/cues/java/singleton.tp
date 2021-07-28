@@ -19,9 +19,9 @@ start_type: ConcreteSingleton
  */
 [[typedef]] {
 
-    start_field: Instance
+    start_field: uniqueInstance
     private static final [[RootName]] [[name]] = new [[InstName]]();
-    end_field: Instance
+    end_field: uniqueInstance
     [[fields]]
 
     private [[InstName]]() {
@@ -30,7 +30,7 @@ start_type: ConcreteSingleton
 
     start_method: GetInstance
     public static [[RootName]] [[name]]() {
-        return [[Instance.name]];
+        return [[uniqueInstance.name]];
     }
     end_method: GetInstance
 
@@ -60,9 +60,9 @@ start_type: ConcreteSingleton
  */
 [[typedef]] {
 
-    start_field: Instance
+    start_field: uniqueInstance
     private static [[RootName]] [[name]];
-    end_field: Instance
+    end_field: uniqueInstance
     [[fields]]
 
     private [[InstName]]() {
@@ -71,9 +71,9 @@ start_type: ConcreteSingleton
 
     start_method: GetInstance
     public static [[RootName]] [[name]]() {
-        if ([[Instance.name]] == null)
-            [[Instance.name]] = new [[InstName]]();
-        return [[Instance.name]];
+        if ([[uniqueInstance.name]] == null)
+            [[uniqueInstance.name]] = new [[InstName]]();
+        return [[uniqueInstance.name]];
     }
     end_method: GetInstance
 
@@ -103,9 +103,9 @@ start_type: ConcreteSingleton
  */
 [[typedef]] {
 
-    start_field: Instance
+    start_field: uniqueInstance
     private static volatile [[Singleton.name]] [[name]];
-    end_field: Instance
+    end_field: uniqueInstance
     [[fields]]
 
     private [[InstName]]() {
@@ -114,14 +114,14 @@ start_type: ConcreteSingleton
 
     start_method: GetInstance
     public static [[Singleton.name]] [[name]]() {
-        if ([[Instance.name]] == null) {
+        if ([[uniqueInstance.name]] == null) {
             synchronized ([[InstName]].class) {
-                if ([[Instance.name]] == null) {
-                    [[Instance.name]] = new [[InstName]]();
+                if ([[uniqueInstance.name]] == null) {
+                    [[uniqueInstance.name]] = new [[InstName]]();
                 }
             }
         }
-        return [[Instance.name]];
+        return [[uniqueInstance.name]];
     }
     end_method: GetInstance
 
