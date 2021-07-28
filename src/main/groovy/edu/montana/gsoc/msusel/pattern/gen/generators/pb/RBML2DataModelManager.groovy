@@ -26,6 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
+import com.google.common.collect.Lists
 import com.google.common.collect.Sets
 import edu.isu.isuese.datamodel.Component
 import edu.isu.isuese.datamodel.Field
@@ -259,9 +260,9 @@ class RBML2DataModelManager {
         if (role instanceof Classifier || role instanceof ClassRole || role instanceof InterfaceRole)
             return typeMapping[role]
         else if (role instanceof StructuralFeature)
-            return roleFieldMapping.keySet().findAll {roleFieldMapping[it] == role }
+            return Lists.newArrayList(roleFieldMapping.keySet().findAll {roleFieldMapping[it] == role })
         else if (role instanceof BehavioralFeature)
-            return roleMethodMapping.keySet().findAll {roleMethodMapping[it] == role }
+            return Lists.newArrayList(roleMethodMapping.keySet().findAll {roleMethodMapping[it] == role })
         else return [].asList()
     }
 }
