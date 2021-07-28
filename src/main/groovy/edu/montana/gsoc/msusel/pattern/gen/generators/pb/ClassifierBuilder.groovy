@@ -129,7 +129,7 @@ class ClassifierBuilder extends AbstractBuilder {
 
                 int num
                 if (min == max)
-                    num = min
+                    num = max
                 else
                     num = rand.nextInt(max - min) + min
                 for (int i = 0; i < num; i++)

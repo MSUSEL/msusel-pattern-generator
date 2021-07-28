@@ -93,6 +93,9 @@ abstract class Cue {
                         List comps = []
                         if (role) {
                             comps = Lists.newArrayList(manager.getComponentsByRole(role))
+                            manager.getComponentsByRole(role).each { Component c ->
+                                println "Component: ${c.getName()}"
+                            }
                         } else {
                             comps = Lists.newArrayList(manager.getFieldByRelName(roleName))
                         }

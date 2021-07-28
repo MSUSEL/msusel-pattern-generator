@@ -255,7 +255,7 @@ class RBML2DataModelManager {
         }
     }
 
-    def getComponentsByRole(Role role) {
+    List<Component> getComponentsByRole(Role role) {
         if (role instanceof Classifier || role instanceof ClassRole || role instanceof InterfaceRole)
             return typeMapping[role]
         else if (role instanceof StructuralFeature)
