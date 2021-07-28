@@ -19,9 +19,6 @@ start_type: ConcreteSingleton
  */
 [[typedef]] {
 
-    start_field: uniqueInstance
-    private static final [[Singleton.name]] [[name]] = new [[InstName]]();
-    end_field: uniqueInstance
     [[fields]]
 
     private [[InstName]]() {
