@@ -9,7 +9,7 @@ start_type: ConcreteObserver
 
     start_method: Update
     public void [[name]]() {
-        [[observerState]] = [[sub]].[[ConcreteSubject.GetState]]();
+        [[observerState.name]] = [[sub.name]].[[ConcreteSubject.GetState]]();
     }
     end_method: Update
     [[methods]]
@@ -31,14 +31,14 @@ import java.util.*;
     start_method: Attach
     public void [[name]]([[params]]) {
         if ([[param.obsv]] != null)
-            [[obs]].add([[param.obsv]])
+            [[obs.name]].add([[param.obsv]])
     }
     end_method: Attach
 
     start_method: Detach
     public void [[name]]([[params]]) {
         if ([[param.obsv]] != null)
-            [[obs]].remove([[param.obsv]])
+            [[obs.name]].remove([[param.obsv]])
     }
     end_method: Detach
 
