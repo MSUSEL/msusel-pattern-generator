@@ -40,50 +40,7 @@
 # end_type: ConcreteSingleton
 # end_pattern: EagerInit
 
-start_pattern: LazyInit
-start_type: Singleton
-/**
-[[ClassComment]]
- */
-[[typedef]] {
-
-    [[fields]]
-
-    protected [[InstName]]() {}
-
-    [[methods]]
-}
-end_type: Singleton
-
-start_type: ConcreteSingleton
-/**
-[[ClassComment]]
- */
-[[typedef]] {
-
-    start_field: uniqueInstance
-    private static [[Singleton.name]] [[name]];
-    end_field: uniqueInstance
-    [[fields]]
-
-    private [[InstName]]() {
-        super();
-    }
-
-    start_method: GetInstance
-    public static [[Singleton.name]] [[name]]() {
-        if ([[uniqueInstance.name]] == null)
-            [[uniqueInstance.name]] = new [[InstName]]();
-        return [[uniqueInstance.name]];
-    }
-    end_method: GetInstance
-
-    [[methods]]
-}
-end_type: ConcreteSingleton
-end_pattern: LazyInit
-
-# start_pattern: DoubleCheckLock
+# start_pattern: LazyInit
 # start_type: Singleton
 # /**
 # [[ClassComment]]
@@ -105,9 +62,8 @@ end_pattern: LazyInit
 # [[typedef]] {
 #
 #     start_field: uniqueInstance
-#     private static volatile [[Singleton.name]] [[name]];
+#     private static [[Singleton.name]] [[name]];
 #     end_field: uniqueInstance
-#
 #     [[fields]]
 #
 #     private [[InstName]]() {
@@ -116,13 +72,8 @@ end_pattern: LazyInit
 #
 #     start_method: GetInstance
 #     public static [[Singleton.name]] [[name]]() {
-#         if ([[uniqueInstance.name]] == null) {
-#             synchronized ([[InstName]].class) {
-#                 if ([[uniqueInstance.name]] == null) {
-#                     [[uniqueInstance.name]] = new [[InstName]]();
-#                 }
-#             }
-#         }
+#         if ([[uniqueInstance.name]] == null)
+#             [[uniqueInstance.name]] = new [[InstName]]();
 #         return [[uniqueInstance.name]];
 #     }
 #     end_method: GetInstance
@@ -130,4 +81,53 @@ end_pattern: LazyInit
 #     [[methods]]
 # }
 # end_type: ConcreteSingleton
-# end_pattern: DoubleCheckLock
+# end_pattern: LazyInit
+
+start_pattern: DoubleCheckLock
+start_type: Singleton
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    protected [[InstName]]() {}
+
+    [[methods]]
+}
+end_type: Singleton
+
+start_type: ConcreteSingleton
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    start_field: uniqueInstance
+    private static volatile [[Singleton.name]] [[name]];
+    end_field: uniqueInstance
+
+    [[fields]]
+
+    private [[InstName]]() {
+        super();
+    }
+
+    start_method: GetInstance
+    public static [[Singleton.name]] [[name]]() {
+        if ([[uniqueInstance.name]] == null) {
+            synchronized ([[InstName]].class) {
+                if ([[uniqueInstance.name]] == null) {
+                    [[uniqueInstance.name]] = new [[InstName]]();
+                }
+            }
+        }
+        return [[uniqueInstance.name]];
+    }
+    end_method: GetInstance
+
+    [[methods]]
+}
+end_type: ConcreteSingleton
+end_pattern: DoubleCheckLock
