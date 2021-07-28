@@ -44,7 +44,7 @@ start_type: Singleton
 /**
 [[ClassComment]]
  */
-[[typedef]] {}
+[[typedef]] {
 
     [[fields]]
 
@@ -87,7 +87,7 @@ start_type: Singleton
 /**
 [[ClassComment]]
  */
-[[typedef]] {}
+[[typedef]] {
 
     [[fields]]
 
