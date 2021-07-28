@@ -24,8 +24,6 @@ import java.util.*;
  */
 [[typedef]] {
 
-    start_field: obs
-    end_field: obs
     [[fields]]
 
     start_method: Attach
@@ -44,7 +42,7 @@ import java.util.*;
 
     start_method: Notify
     public void [[name]]() {
-        for ([[obs.type]] item : [[obs]])
+        for ([[Observer.name]] item : [[obs.name]])
             item.[[Observer.Update.name]]()
     }
     end_method: Notify
