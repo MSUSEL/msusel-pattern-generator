@@ -20,7 +20,7 @@ start_type: ConcreteSingleton
 [[typedef]] {
 
     start_field: uniqueInstance
-    private static final [[RootName]] [[name]] = new [[InstName]]();
+    private static final [[Singleton.name]] [[name]] = new [[InstName]]();
     end_field: uniqueInstance
     [[fields]]
 
@@ -29,7 +29,7 @@ start_type: ConcreteSingleton
     }
 
     start_method: GetInstance
-    public static [[RootName]] [[name]]() {
+    public static [[Singleton.name]] [[name]]() {
         return [[uniqueInstance.name]];
     }
     end_method: GetInstance
@@ -61,7 +61,7 @@ start_type: ConcreteSingleton
 [[typedef]] {
 
     start_field: uniqueInstance
-    private static [[RootName]] [[name]];
+    private static [[Singleton.name]] [[name]];
     end_field: uniqueInstance
     [[fields]]
 
@@ -70,7 +70,7 @@ start_type: ConcreteSingleton
     }
 
     start_method: GetInstance
-    public static [[RootName]] [[name]]() {
+    public static [[Singleton.name]] [[name]]() {
         if ([[uniqueInstance.name]] == null)
             [[uniqueInstance.name]] = new [[InstName]]();
         return [[uniqueInstance.name]];
