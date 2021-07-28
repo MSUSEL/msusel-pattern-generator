@@ -3,7 +3,7 @@ start_type: Singleton
 /**
 [[ClassComment]]
  */
-[[typedef]] {}
+[[typedef]] {
 
     [[fields]]
 
