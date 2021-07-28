@@ -17,4 +17,16 @@ import java.util.*;
     [[methods]]
 }
 end_type: ConcreteCreator
+
+start_type: ConcreteProduct
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    [[methods]]
+}
+end_type: ConcreteProduct
 end_pattern: basic

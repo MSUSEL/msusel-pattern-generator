@@ -9,7 +9,7 @@ import java.util.*;
 
     [[fields]]
     start_field: flyweights
-    List<[[Flyweight.name]] [[name]] = new ArrayList<>();
+    List<[[Flyweight.name]]> [[name]] = new ArrayList<>();
     end_field: flyweights
 
     [[methods]]
