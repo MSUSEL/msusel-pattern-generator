@@ -1,4 +1,46 @@
-start_pattern: EagerInit
+# start_pattern: EagerInit
+# start_type: Singleton
+# /**
+# [[ClassComment]]
+#  */
+# [[typedef]] {
+#
+#     [[fields]]
+#
+#     protected [[InstName]]() {}
+#
+#     [[methods]]
+# }
+# end_type: Singleton
+#
+# start_type: ConcreteSingleton
+# /**
+# [[ClassComment]]
+#  */
+# [[typedef]] {
+#
+#     start_field: uniqueInstance
+#     private static final [[Singleton.name]] [[name]] = new [[InstName]]();
+#     end_field: uniqueInstance
+#
+#     [[fields]]
+#
+#     private [[InstName]]() {
+#         super();
+#     }
+#
+#     start_method: GetInstance
+#     public static [[Singleton.name]] [[name]]() {
+#         return [[uniqueInstance.name]];
+#     }
+#     end_method: GetInstance
+#
+#     [[methods]]
+# }
+# end_type: ConcreteSingleton
+# end_pattern: EagerInit
+
+start_pattern: LazyInit
 start_type: Singleton
 /**
 [[ClassComment]]
@@ -20,9 +62,8 @@ start_type: ConcreteSingleton
 [[typedef]] {
 
     start_field: uniqueInstance
-    private static final [[Singleton.name]] [[name]] = new [[InstName]]();
+    private static [[Singleton.name]] [[name]];
     end_field: uniqueInstance
-   
     [[fields]]
 
     private [[InstName]]() {
@@ -31,6 +72,8 @@ start_type: ConcreteSingleton
 
     start_method: GetInstance
     public static [[Singleton.name]] [[name]]() {
+        if ([[uniqueInstance.name]] == null)
+            [[uniqueInstance.name]] = new [[InstName]]();
         return [[uniqueInstance.name]];
     }
     end_method: GetInstance
@@ -38,50 +81,7 @@ start_type: ConcreteSingleton
     [[methods]]
 }
 end_type: ConcreteSingleton
-end_pattern: EagerInit
-
-# start_pattern: LazyInit
-# start_type: Singleton
-# /**
-# [[ClassComment]]
-#  */
-# [[typedef]] {
-#
-#     [[fields]]
-#
-#     protected [[InstName]]() {}
-#
-#     [[methods]]
-# }
-# end_type: Singleton
-
-# start_type: ConcreteSingleton
-# /**
-# [[ClassComment]]
-#  */
-# [[typedef]] {
-#
-#     start_field: uniqueInstance
-#     private static [[Singleton.name]] [[name]];
-#     end_field: uniqueInstance
-#     [[fields]]
-#
-#     private [[InstName]]() {
-#         super();
-#     }
-#
-#     start_method: GetInstance
-#     public static [[Singleton.name]] [[name]]() {
-#         if ([[uniqueInstance.name]] == null)
-#             [[uniqueInstance.name]] = new [[InstName]]();
-#         return [[uniqueInstance.name]];
-#     }
-#     end_method: GetInstance
-#
-#     [[methods]]
-# }
-# end_type: ConcreteSingleton
-# end_pattern: LazyInit
+end_pattern: LazyInit
 
 # start_pattern: DoubleCheckLock
 # start_type: Singleton
