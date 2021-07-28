@@ -125,7 +125,10 @@ abstract class Cue {
                         break
                     case "params":
                         if (comp instanceof Method) {
-                            List<String> paramList = (comp as Method).getParams()*.getName()
+                            List<String> paramList = []
+                            (comp as Method).getParams().each {
+                                paramList << "${it.getType().getTypeName()} ${it.getName()}"
+                            }
                             text = replace(text, key as String, paramList.join(", "))
                         }
                         break
