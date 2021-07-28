@@ -9,7 +9,7 @@ start_type: ConcreteElement
 
     start_method: Accept
     public void [[name]]([[params]]) {
-        [[param.vis]].[[ConcreteVisitor.Visit.random]](this);
+        [[param.vis]].[[ConcreteVisitor.Visit.name]](this);
     }
     end_method: Accept
     [[methods]]
