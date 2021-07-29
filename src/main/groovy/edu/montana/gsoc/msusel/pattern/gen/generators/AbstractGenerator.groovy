@@ -60,7 +60,7 @@ abstract class AbstractGenerator {
                 return ctx.projRbmlMap[proj.getProjectKey()]?.getRole((Method) comp)?.name
             case Field:
                 String roleName = ctx.projRbmlMap[proj.getProjectKey()]?.getRole((Field) comp)?.name
-                if (!roleName)
+                if (roleName == null)
                     roleName = ctx.projRbmlMap[proj.getProjectKey()]?.getRelName((Field) comp)
                 return roleName
             default:

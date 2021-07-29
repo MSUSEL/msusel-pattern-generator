@@ -346,7 +346,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                         .compKey(src.getCompKey() + "." + destName)
                         .type(destRef)
                         .create()
+                srcField.save()
                 src.addMember(srcField)
+                srcField.updateKey()
                 ctx.rbmlManager.addMapping(destName, srcField)
             }
 //        }
@@ -365,7 +367,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                             .compKey(dest.getCompKey() + "." + srcName)
                             .type(srcRef)
                             .create()
+                    destField.save()
                     dest.addMember(destField)
+                    destField.updateKey()
                     ctx.rbmlManager.addMapping(srcName, destField)
                 }
 //            }
