@@ -47,6 +47,9 @@ class CueManager {
         cues = CueReader.instance.read("/cues/${language}/${this.pattern}.tp")
         cues.each { key, value ->
             Cue c = (Cue) value
+
+            println "Cue $key for ${this.pattern}"
+            println c.printAll()
         }
     }
 

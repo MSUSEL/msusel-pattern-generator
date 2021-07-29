@@ -51,7 +51,7 @@ class JavaFieldGenerator extends FieldGenerator {
 
         String roleName = findRoleName(field)
 
-        if (roleName && params.parentCue && ((Cue) params.parentCue).hasCueForRole(roleName, field))
+        if (roleName && params.parentCue && (params.parentCue as Cue).hasCueForRole(roleName, field))
             return ""
 
         String retVal = ""

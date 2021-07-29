@@ -6,9 +6,6 @@ start_type: Client
 [[typedef]] {
 
     [[fields]]
-    start_field: proto
-    private [[Prototype.name]] [[name]];
-    end_field: proto
 
     [[methods]]
     start_method: Operation
