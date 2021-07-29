@@ -225,9 +225,16 @@ class JavaTypeGenerator extends TypeGenerator {
 
         if (type.getType() != Type.INTERFACE) {
             type.fields.each { Field f ->
-                ctx.methodGen.init(field: f, parent: type, parentCue: cue, cue: cue?.getCueForRole(ctx.rbmlManager.getRole(f)?.name, f))
-                content += "\n    "
-                content += ctx.methodGen.generate()
+                Cue childCue = (Cue) cue?.getCueForRole(ctx.rbmlManager.getRole(f)?.name, f)
+                if (!childCue) {
+                    childCue = (Cue) cue?.getCueForRole(ctx.rbmlManager.getRelName(f), f)
+                }
+
+                if (childCue) {
+                    ctx.methodGen.init(field: f, parent: type, parentCue: cue, cue: childCue)
+                    content += "\n    "
+                    content += ctx.methodGen.generate()
+                }
             }
         }
 
