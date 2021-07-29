@@ -31,7 +31,7 @@ start_type: Command
     [[methods]]
 
     public [[InstName]]([[Receiver.name]] rcvr) {
-        super(rcvr);
+        this.[[rcvr.name]] = rcvr;
     }
 }
 end_type: Command
