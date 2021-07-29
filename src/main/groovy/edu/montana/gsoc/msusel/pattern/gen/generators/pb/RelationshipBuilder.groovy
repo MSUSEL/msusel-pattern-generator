@@ -276,7 +276,8 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         List<Type> dests = []
         if (src instanceof GeneralizationHierarchy) {
             findGenHierarchyComponents((GeneralizationHierarchy) src, srcPort).each {
-                sources += map[it]
+                if (map[it])
+                    sources += map[it]
             }
         } else {
             if (map[src])
@@ -284,11 +285,11 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         }
         if (dest instanceof GeneralizationHierarchy) {
             findGenHierarchyComponents((GeneralizationHierarchy) dest, destPort).each {
-                if (map[it] != null)
+                if (map[it])
                     dests += map[it]
             }
         } else {
-            if (map[dest] != null)
+            if (map[dest])
                 dests = map[dest].asList()
         }
 
