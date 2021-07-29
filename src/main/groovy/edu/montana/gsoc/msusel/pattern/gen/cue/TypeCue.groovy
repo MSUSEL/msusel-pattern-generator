@@ -95,7 +95,7 @@ class TypeCue extends CueContainer {
             def comps = manager.getComponentsByRole(role).findAll { ((Method) it).parentType == type }
             comps.each { meth ->
                 cue = getCueForRole(role.name, (Component) meth)
-                if (cue) {
+                if (cue && (meth as Method).getParentType() == type) {
                     combined += cue.compile(meth, params, manager) + "\n    "
                 }
             }

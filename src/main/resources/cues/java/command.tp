@@ -22,7 +22,8 @@ start_type: Client
  */
 [[typedef]] {
 
-    private [[Invoker]] invoker;
+    private [[Invoker.name]] invoker;
+
     [[fields]]
 
     public [[InstName]]() {
