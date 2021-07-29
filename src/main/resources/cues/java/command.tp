@@ -13,8 +13,44 @@ start_type: ConcreteCommand
     }
     end_method: Execute
     [[methods]]
+
+    public [[InstName]]([[Receiver.name]] rcvr) {
+        super(rcvr);
+    }
 }
 end_type: ConcreteCommand
+
+start_type: Command
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    [[methods]]
+
+    public [[InstName]]([[Receiver.name]] rcvr) {
+        super(rcvr);
+    }
+}
+end_type: Command
+
+start_type: AbstractCommand
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    [[methods]]
+
+    public [[InstName]]([[Receiver.name]] rcvr) {
+        super(rcvr);
+    }
+}
+end_type: AbstractCommand
 
 start_type: Client
 /**
@@ -25,7 +61,8 @@ start_type: Client
     [[fields]]
 
     public [[InstName]]() {
-        [[rcvr.name]] = new [[ConcreteCommand.random]]();
+        [[rcvr.name]] = new [[Receiver.random]]();
+        [[Command.name]] cmd = new [[ConcreteCommand.random]]([[rcvr.name]]);
     }
 
     [[methods]]
