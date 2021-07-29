@@ -58,6 +58,10 @@ start_type: Client
  */
 [[typedef]] {
 
+    start_field: rcvr
+    private [[Receiver.name]] [[rcvr.name]];
+    end_field: rcvr
+
     [[fields]]
 
     public [[InstName]]() {
