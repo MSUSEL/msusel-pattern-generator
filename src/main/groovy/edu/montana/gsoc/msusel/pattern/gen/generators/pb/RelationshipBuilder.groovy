@@ -131,9 +131,10 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                         map[role] = [clazz].toSet()
                 }
             }
+            return map[role]
         }
 
-        return map[role]
+        return new HashSet<>()
     }
 
     private boolean isGHRoot(Role role) {
