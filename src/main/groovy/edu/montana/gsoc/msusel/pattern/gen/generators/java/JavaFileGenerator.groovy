@@ -93,7 +93,7 @@ class JavaFileGenerator extends FileGenerator {
     }
 
     private def createImportStatements(File file) {
-        List<String> imports = file.getImports()*.getName()
+        Set<String> imports = file.getImports()*.getName()
 
         file.getAllTypedMembers().each {
             addTypeToImports(file, it.getType(), imports)
@@ -116,8 +116,8 @@ class JavaFileGenerator extends FileGenerator {
         output
     }
 
-    private def addTypeToImports(File file, TypeRef type, List<String> imports) {
-        if (type.getType() == TypeRefType.Type) {
+    private def addTypeToImports(File file, TypeRef type, Set<String> imports) {
+        if (type.getType() == TypeRefType.Type && type.getTypeName() != "String") {
             if (file.getParentProject()) {
                 Type t = type.getType(file.getParentProject().getProjectKey())
                 if (t) imports << t.getFullName()
