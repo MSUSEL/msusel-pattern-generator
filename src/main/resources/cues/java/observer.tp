@@ -7,11 +7,6 @@ start_type: ConcreteObserver
 
     [[fields]]
 
-    start_method: Update
-    public void [[name]]() {
-        [[observerState.name]] = [[sub.name]].[[ConcreteSubject.GetState.name]]();
-    }
-    end_method: Update
     [[methods]]
 }
 end_type: ConcreteObserver
