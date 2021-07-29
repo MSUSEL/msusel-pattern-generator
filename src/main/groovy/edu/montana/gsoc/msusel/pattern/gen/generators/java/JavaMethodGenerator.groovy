@@ -30,6 +30,7 @@ import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.MethodCue
 import edu.montana.gsoc.msusel.pattern.gen.generators.MethodGenerator
+import edu.montana.gsoc.msusel.pattern.gen.generators.pb.RBML2DataModelManager
 import groovy.util.logging.Log4j2
 
 /**
@@ -103,6 +104,10 @@ class JavaMethodGenerator extends MethodGenerator {
     String generate(Field field) {
         if (!field)
             throw new IllegalArgumentException("Field cannot be null")
+
+        if (ctx.rbmlManager.getRole(field) && !((params.parentCue as Cue)?.hasCueForRole(ctx.rbmlManager.getRole(field)?.name, field))) {
+            return ""
+        }
 
         String line = """\
             ${createAccessor(field)}"""

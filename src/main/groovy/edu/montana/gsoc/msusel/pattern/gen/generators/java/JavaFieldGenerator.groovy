@@ -49,7 +49,7 @@ class JavaFieldGenerator extends FieldGenerator {
 
         Field field = (Field) params.field
 
-        String roleName = findRole(field)?.name
+        String roleName = findRoleName(field)
 
         if (roleName && params.parentCue && ((Cue) params.parentCue).hasCueForRole(roleName, field))
             return ""

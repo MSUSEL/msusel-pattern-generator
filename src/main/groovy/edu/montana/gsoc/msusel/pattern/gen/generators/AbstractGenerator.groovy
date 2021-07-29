@@ -49,17 +49,20 @@ abstract class AbstractGenerator {
 
     abstract def generate()
 
-    def findRole(Component comp) {
+    String findRoleName(Component comp) {
         Project proj = comp.getParentProject()
         proj.refresh()
 
         switch (comp) {
             case Type:
-                return ctx.projRbmlMap[proj.getProjectKey()]?.getRole((Type) comp)
+                return ctx.projRbmlMap[proj.getProjectKey()]?.getRole((Type) comp)?.name
             case Method:
-                return ctx.projRbmlMap[proj.getProjectKey()]?.getRole((Method) comp)
+                return ctx.projRbmlMap[proj.getProjectKey()]?.getRole((Method) comp)?.name
             case Field:
-                return ctx.projRbmlMap[proj.getProjectKey()]?.getRole((Field) comp)
+                String roleName = ctx.projRbmlMap[proj.getProjectKey()]?.getRole((Field) comp)?.name
+                if (!roleName)
+                    roleName = ctx.projRbmlMap[proj.getProjectKey()]?.getRelName((Field) comp)
+                return roleName
             default:
                 return null
         }

@@ -46,7 +46,7 @@ class JavaTypeGenerator extends TypeGenerator {
         log.info("Generating Type")
         Type type = (Type) params.type
 
-        String roleName = findRole(type)?.name
+        String roleName = findRoleName(type)
         Cue cue = CueManager.getInstance().getCurrent()
 
         String output = ""

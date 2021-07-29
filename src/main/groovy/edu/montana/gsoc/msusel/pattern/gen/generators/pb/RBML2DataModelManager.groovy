@@ -115,6 +115,13 @@ class RBML2DataModelManager {
         roleFieldMapping[field]
     }
 
+    String getRelName(Field field) {
+        if (!field)
+            return null
+
+        relNameFieldMapping[field]
+    }
+
     def addMapping(Role role, Type type) {
         if (!role || !type)
             return
