@@ -56,9 +56,12 @@ class FieldBuilder extends AbstractComponentBuilder {
         String name = params.fieldName
         Type type = ctx.rbmlManager.getType(feature.type)
         TypeRef tr = createTypeRef(type)
+        Accessibility access = Accessibility.PRIVATE
+        if (type.isAbstract())
+            access = Accessibility.PROTECTED
         Field field = Field.builder()
                 .name(name)
-                .accessibility(Accessibility.PRIVATE)
+                .accessibility(access)
                 .compKey(name)
                 .type(tr)
                 .create()
