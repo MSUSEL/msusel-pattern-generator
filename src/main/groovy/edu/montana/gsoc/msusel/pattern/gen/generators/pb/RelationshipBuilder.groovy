@@ -333,34 +333,42 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
     private void createFields(Type src, Type dest, String srcName, String destName, int srcUpper, int destUpper) {
         Cue cue = CueManager.instance.getCurrent()
-        if (!(cue?.hasCueForRole(destName, src))) {
+//        if (!(cue?.hasCueForRole(destName, src))) {
             if (!src.hasFieldWithName(destName)) {
+                Accessibility access = Accessibility.PRIVATE
+                if (src.isAbstract())
+                    access = Accessibility.PROTECTED
+
                 TypeRef destRef = createTypeRef(dest)
                 Field srcField = Field.builder()
                         .name(destName)
-                        .accessibility(Accessibility.PRIVATE)
+                        .accessibility(access)
                         .compKey(src.getCompKey() + "." + destName)
                         .type(destRef)
                         .create()
                 src.addMember(srcField)
                 ctx.rbmlManager.addMapping(destName, srcField)
             }
-        }
+//        }
 
         if (srcUpper == -1 && destUpper == -1) {
-            if (!(cue?.hasCueForRole(srcName, dest))) {
+//            if (!(cue?.hasCueForRole(srcName, dest))) {
                 if (!dest.hasFieldWithName(srcName)) {
                     TypeRef srcRef = createTypeRef(src)
+                    Accessibility access = Accessibility.PRIVATE
+                    if (dest.isAbstract())
+                        access = Accessibility.PROTECTED
+
                     Field destField = Field.builder()
                             .name(srcName)
-                            .accessibility(Accessibility.PRIVATE)
+                            .accessibility(access)
                             .compKey(dest.getCompKey() + "." + srcName)
                             .type(srcRef)
                             .create()
                     dest.addMember(destField)
                     ctx.rbmlManager.addMapping(srcName, destField)
                 }
-            }
+//            }
         }
     }
 
