@@ -17,7 +17,7 @@ import java.util.*;
     }
     end_method: Operation
 
-    public [[InstName]]([[Decorator.name]] component) {
+    public [[InstName]]([[Component.name]] component) {
         super(component);
     }
 }
@@ -36,12 +36,12 @@ import java.util.*;
     [[methods]]
     start_method: Operation
     public void [[name]]() {
-        [[absDec.name]].[[name]]();
+        [[absComp.name]].[[name]]();
     }
     end_method: Operation
 
-    public [[InstName]]([[Decorator.name]] component) {
-        this.[[absDec.name]] = component;
+    public [[InstName]]([[Component.name]] component) {
+        this.[[absComp.name]] = component;
     }
 }
 end_type: Decorator
@@ -58,7 +58,7 @@ import java.util.*;
 
     [[methods]]
 
-    public [[InstName]]([[Decorator.name]] component) {
+    public [[InstName]]([[Component.name]] component) {
         super(component);
     }
 }

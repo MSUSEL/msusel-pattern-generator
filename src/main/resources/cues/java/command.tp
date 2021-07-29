@@ -22,18 +22,12 @@ start_type: Client
  */
 [[typedef]] {
 
-    private [[Invoker.name]] invoker;
-
     [[fields]]
 
     public [[InstName]]() {
-        invoker = new Invoker();
-        [[cond.name]] = new [[ConcreteCommand.random]]();
+        [[rcvr.name]] = new [[ConcreteCommand.random]]();
     }
 
-    public void someMethod() {
-        invoker.someMethod([[cond.name]]);
-    }
     [[methods]]
 }
 end_type: Client
