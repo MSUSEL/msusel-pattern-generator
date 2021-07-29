@@ -124,7 +124,7 @@ class TypeCue extends CueContainer {
             combined = combined.trim()
             text = text.replaceAll(cue.replacement, combined)
         }
-        
+
         text
     }
 }

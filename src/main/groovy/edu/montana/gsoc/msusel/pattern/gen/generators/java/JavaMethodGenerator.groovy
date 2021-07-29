@@ -105,7 +105,8 @@ class JavaMethodGenerator extends MethodGenerator {
         if (!field)
             throw new IllegalArgumentException("Field cannot be null")
 
-        if (ctx.rbmlManager.getRole(field) && !((params.parentCue as Cue)?.hasCueForRole(ctx.rbmlManager.getRole(field)?.name, field))) {
+        if (ctx.rbmlManager.getRole(field) && !((params.parentCue as Cue)?.hasCueForRole(ctx.rbmlManager.getRole(field)?.name, field) ||
+                (params.parentCue as Cue)?.hasCueForRole(ctx.rbmlManager.getRelName(field), field))) {
             return ""
         }
 
