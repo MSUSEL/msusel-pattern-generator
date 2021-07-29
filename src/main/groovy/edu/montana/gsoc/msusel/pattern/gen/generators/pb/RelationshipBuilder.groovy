@@ -115,21 +115,36 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 //        if (ghRoot)
 //            newRole = copyToInterface((Classifier) role)
 
-        num.times {
-            if (newRole)
-                ctx.clsBuilder.init(ns: ns, classifier: newRole)
-            else
-                ctx.clsBuilder.init(ns: ns, classifier: role)
-            Type clazz = (Type) ctx.clsBuilder.create()
-            if (clazz != null) {
-                if (map[role])
-                    map[role] << clazz
+        boolean isRoot = isGHRoot(role)
+
+        if (!ghRoot && !isRoot) {
+            num.times {
+                if (newRole)
+                    ctx.clsBuilder.init(ns: ns, classifier: newRole)
                 else
-                    map[role] = [clazz].toSet()
+                    ctx.clsBuilder.init(ns: ns, classifier: role)
+                Type clazz = (Type) ctx.clsBuilder.create()
+                if (clazz != null) {
+                    if (map[role])
+                        map[role] << clazz
+                    else
+                        map[role] = [clazz].toSet()
+                }
             }
         }
 
         return map[role]
+    }
+
+    private boolean isGHRoot(Role role) {
+        SPS sps = params.rbml as SPS
+        sps.genHierarchies.each {
+            if (it instanceof GeneralizationHierarchy) {
+                if ((it as GeneralizationHierarchy).root == role)
+                    return true
+            }
+        }
+        return false
     }
 
     ClassRole copyToInterface(Classifier role) {
