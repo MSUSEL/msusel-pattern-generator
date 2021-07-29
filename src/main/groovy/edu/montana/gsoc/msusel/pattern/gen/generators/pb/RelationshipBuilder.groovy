@@ -117,7 +117,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
         boolean isRoot = isGHRoot(role)
 
-        if (!ghRoot && !isRoot) {
+        if (!(ghRoot || isRoot)) {
             num.times {
                 if (newRole)
                     ctx.clsBuilder.init(ns: ns, classifier: newRole)
@@ -295,11 +295,11 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             for (int i = 0; i < sources.size(); i++) {
                 createRelationship(sources[i], dests[i], type, srcName, destName, srcUpper, destUpper)
             }
-        } else if (sources.size() == 1 && dests.size() > 1) {
+        } else if (sources.size() == 1 && dests.size() > 1 && sources.first()) {
             dests.each {
-                createRelationship(sources[0], it, type, srcName, destName, srcUpper, destUpper)
+                createRelationship(sources.first(), it, type, srcName, destName, srcUpper, destUpper)
             }
-        } else if (sources.size() > 1 && dests.size() == 1) {
+        } else if (sources.size() > 1 && dests.size() == 1 && dests.first()) {
             sources.each {
                 createRelationship(it, dests[0], type, srcName, destName, srcUpper, destUpper)
             }
