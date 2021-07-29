@@ -33,6 +33,7 @@ import edu.isu.isuese.datamodel.Method
 import edu.isu.isuese.datamodel.Type
 import edu.montana.gsoc.msusel.pattern.gen.generators.pb.RBML2DataModelManager
 import edu.montana.gsoc.msusel.rbml.model.Classifier
+import edu.montana.gsoc.msusel.rbml.model.Role
 import groovy.transform.TupleConstructor
 
 @TupleConstructor(includeSuperProperties = true, includeSuperFields = true, excludes = ["fieldCues", "methodCues"])
@@ -105,19 +106,25 @@ class TypeCue extends CueContainer {
             }
         }
 
-        compRole.structFeats.each { role ->
-            String combined = ""
-            Cue cue = null
-            manager.getComponentsByRole(role).each { fld ->
-                cue = getCueForRole(role.name, (Component) fld)
-                if (cue && (fld as Field).getParentType() == type)
-                    combined += cue.compile((Component) fld, params, manager) + "\n    "
-            }
+        Map<Cue, String> combinedMap = [:]
+        type.getFields().each {
+            String roleName = manager.getRole(it)
+            if (!roleName)
+                roleName = manager.getRelName(it)
+            Cue cue = getCueForRole(roleName, it)
             if (cue) {
-                combined = combined.trim()
-                text = text.replaceAll(cue.replacement, combined)
+                String combined = cue.compile(it, params, manager) + "\n    "
+                if (combinedMap[cue])
+                    combinedMap[cue] += combined
+                else
+                    combinedMap[cue] = combined
             }
         }
+        combinedMap.each {Cue cue, String combined ->
+            combined = combined.trim()
+            text = text.replaceAll(cue.replacement, combined)
+        }
+        
         text
     }
 }
