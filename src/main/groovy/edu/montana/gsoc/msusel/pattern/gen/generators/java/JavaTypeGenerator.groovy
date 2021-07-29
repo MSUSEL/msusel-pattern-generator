@@ -230,7 +230,7 @@ class JavaTypeGenerator extends TypeGenerator {
                     childCue = (Cue) cue?.getCueForRole(ctx.rbmlManager.getRelName(f), f)
                 }
 
-                if (childCue) {
+                if (!childCue) {
                     ctx.methodGen.init(field: f, parent: type, parentCue: cue, cue: childCue)
                     content += "\n    "
                     content += ctx.methodGen.generate()
