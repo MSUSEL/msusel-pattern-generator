@@ -57,6 +57,8 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
         sps.relations.each { rel ->
             if (rel instanceof Relationship) {
+                "getTypes(rel.source()): ${ctx.rbmlManager.getTypes(rel.source())}"
+                "getTypes(rel.dest()): ${ctx.rbmlManager.getTypes(rel.dest())}"
                 if (!ctx.rbmlManager.getTypes(rel.source()))
                     processRole(ns, rel.source(), rel.srcPort)
                 if (!ctx.rbmlManager.getTypes(rel.dest()))
@@ -152,9 +154,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
     ClassRole copyToInterface(Classifier role) {
         ClassRole ir = ClassRole.builder()
-            .name(role.name)
-            .mult(role.mult)
-            .create()
+                .name(role.name)
+                .mult(role.mult)
+                .create()
         ir.structFeats = role.structFeats
         ir.behFeats = role.behFeats
         ir.abstrct = role.abstrct
@@ -279,7 +281,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         if (map[src])
             sources = map[src].asList()
         if (map[dest])
-                dests = map[dest].asList()
+            dests = map[dest].asList()
 
         println "Sources Name: ${srcName}"
         println "Sources size? ${sources.size()}"
@@ -344,44 +346,44 @@ class RelationshipBuilder extends AbstractComponentBuilder {
     private void createFields(Type src, Type dest, String srcName, String destName, int srcUpper, int destUpper) {
         Cue cue = CueManager.instance.getCurrent()
 //        if (!(cue?.hasCueForRole(destName, src))) {
-            if (!src.hasFieldWithName(destName)) {
-                Accessibility access = Accessibility.PRIVATE
-                if (src.isAbstract())
-                    access = Accessibility.PROTECTED
+        if (!src.hasFieldWithName(destName)) {
+            Accessibility access = Accessibility.PRIVATE
+            if (src.isAbstract())
+                access = Accessibility.PROTECTED
 
-                TypeRef destRef = createTypeRef(dest)
-                Field srcField = Field.builder()
-                        .name(destName)
-                        .accessibility(access)
-                        .compKey(src.getCompKey() + "." + destName)
-                        .type(destRef)
-                        .create()
-                srcField.save()
-                src.addMember(srcField)
-                srcField.updateKey()
-                ctx.rbmlManager.addMapping(destName, srcField)
-            }
+            TypeRef destRef = createTypeRef(dest)
+            Field srcField = Field.builder()
+                    .name(destName)
+                    .accessibility(access)
+                    .compKey(src.getCompKey() + "." + destName)
+                    .type(destRef)
+                    .create()
+            srcField.save()
+            src.addMember(srcField)
+            srcField.updateKey()
+            ctx.rbmlManager.addMapping(destName, srcField)
+        }
 //        }
 
         if (srcUpper == -1 && destUpper == -1) {
 //            if (!(cue?.hasCueForRole(srcName, dest))) {
-                if (!dest.hasFieldWithName(srcName)) {
-                    TypeRef srcRef = createTypeRef(src)
-                    Accessibility access = Accessibility.PRIVATE
-                    if (dest.isAbstract())
-                        access = Accessibility.PROTECTED
+            if (!dest.hasFieldWithName(srcName)) {
+                TypeRef srcRef = createTypeRef(src)
+                Accessibility access = Accessibility.PRIVATE
+                if (dest.isAbstract())
+                    access = Accessibility.PROTECTED
 
-                    Field destField = Field.builder()
-                            .name(srcName)
-                            .accessibility(access)
-                            .compKey(dest.getCompKey() + "." + srcName)
-                            .type(srcRef)
-                            .create()
-                    destField.save()
-                    dest.addMember(destField)
-                    destField.updateKey()
-                    ctx.rbmlManager.addMapping(srcName, destField)
-                }
+                Field destField = Field.builder()
+                        .name(srcName)
+                        .accessibility(access)
+                        .compKey(dest.getCompKey() + "." + srcName)
+                        .type(srcRef)
+                        .create()
+                destField.save()
+                dest.addMember(destField)
+                destField.updateKey()
+                ctx.rbmlManager.addMapping(srcName, destField)
+            }
 //            }
         }
     }
