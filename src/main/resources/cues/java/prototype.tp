@@ -15,4 +15,21 @@ start_type: Client
     end_method: Operation
 }
 end_type: Client
+
+start_type: ConcretePrototype
+/**
+[[ClassComment]]
+ */
+[[typedef]] {
+
+    [[fields]]
+
+    [[methods]]
+    start_method: Clone
+    public [[Prototype.name]] [[name]]() {
+        return new [[InstName]]();
+    }
+    end_method: Clone
+}
+end_type: ConcretePrototype
 end_pattern: basic
