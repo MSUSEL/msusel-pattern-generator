@@ -26,6 +26,7 @@
  */
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
+import com.google.common.collect.Sets
 import edu.isu.isuese.datamodel.Accessibility
 import edu.isu.isuese.datamodel.Field
 import edu.isu.isuese.datamodel.Namespace
@@ -120,10 +121,11 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 //            newRole = copyToInterface((Classifier) role)
 
         boolean isRoot = isGHRoot(role)
+        Set<Type> types = Sets.newHashSet(ctx.rbmlManager.getTypes(role))
 
         println "Num: $num"
-        if (map[role])
-            num = num - map[role].size()
+        if (types)
+            num = num - types.size()
         println "Num: $num"
 
         if (!(ghRoot || isRoot) && num > 0) {
@@ -136,8 +138,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                 if (clazz != null) {
                     if (map[role])
                         map[role] << clazz
-                    else
+                    else {
                         map[role] = [clazz].toSet()
+                    }
                 }
             }
             return map[role]
