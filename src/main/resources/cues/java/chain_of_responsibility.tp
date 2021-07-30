@@ -5,9 +5,9 @@ start_type: Handler
  */
 [[typedef]] {
 
-#    start_field: succ
-#    protected [[Handler.name]] [[succ.name]];
-#    end_field: succ
+    start_field: succ
+    protected [[Handler.name]] [[succ.name]];
+    end_field: succ
 
     [[fields]]
 
