@@ -143,7 +143,7 @@ abstract class Cue {
     }
 
     private static String replace(String current, String key, String value) {
-        println "Key: $key"
+        println "Key: $key, Value: $value"
         return current.replaceAll(/\[\[$key\]\]/, value)
     }
 
