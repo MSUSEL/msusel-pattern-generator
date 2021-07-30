@@ -55,6 +55,14 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         Namespace ns = (Namespace) params.ns
         SPS sps = (SPS) params.rbml
 
+        sps.genHierarchies.each {
+            if (it instanceof GeneralizationHierarchy) {
+                ctx.ghBuilder.init(ns: ns, gh: (GeneralizationHierarchy) it)
+                ctx.ghBuilder.ghmap = ghmap
+                ctx.ghBuilder.create()
+            }
+        }
+
         sps.relations.each { rel ->
             if (rel instanceof Relationship) {
                 "getTypes(rel.source()): ${ctx.rbmlManager.getTypes(rel.source())}"
@@ -64,14 +72,6 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 //                if (ctx.rbmlManager.getTypes(rel.dest()).isEmpty())
                     processRole(ns, rel.dest(), rel.destPort)
                 selectAndCreateRelationship(rel)
-            }
-        }
-
-        sps.genHierarchies.each {
-            if (it instanceof GeneralizationHierarchy) {
-                ctx.ghBuilder.init(ns: ns, gh: (GeneralizationHierarchy) it)
-                ctx.ghBuilder.ghmap = ghmap
-                ctx.ghBuilder.create()
             }
         }
     }
