@@ -59,9 +59,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             if (rel instanceof Relationship) {
                 "getTypes(rel.source()): ${ctx.rbmlManager.getTypes(rel.source())}"
                 "getTypes(rel.dest()): ${ctx.rbmlManager.getTypes(rel.dest())}"
-                if (!ctx.rbmlManager.getTypes(rel.source()))
+                if (ctx.rbmlManager.getTypes(rel.source()).isEmpty())
                     processRole(ns, rel.source(), rel.srcPort)
-                if (!ctx.rbmlManager.getTypes(rel.dest()))
+                if (ctx.rbmlManager.getTypes(rel.dest()).isEmpty())
                     processRole(ns, rel.dest(), rel.destPort)
                 selectAndCreateRelationship(rel)
             }
@@ -344,6 +344,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
     }
 
     private void createFields(Type src, Type dest, String srcName, String destName, int srcUpper, int destUpper) {
+        println "RelationshipBuilder: Creating Fields"
         Cue cue = CueManager.instance.getCurrent()
 //        if (!(cue?.hasCueForRole(destName, src))) {
         if (!src.hasFieldWithName(destName)) {
