@@ -121,7 +121,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 //        if (ghRoot)
 //            newRole = copyToInterface((Classifier) role)
 
-        boolean isRoot = isGHRoot(role)
+        boolean ghMember = isGHMember(role)
         Set<Type> types = Sets.newHashSet(ctx.rbmlManager.getTypes(role))
 
         println "Num: $num"
@@ -129,7 +129,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             num = num - types.size()
         println "Num: $num"
 
-        if (!(ghRoot || isRoot) && num > 0) {
+        if (!(ghRoot || ghMember) && num > 0) {
             num.times {
                 if (newRole)
                     ctx.clsBuilder.init(ns: ns, classifier: newRole)
