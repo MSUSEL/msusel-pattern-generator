@@ -284,12 +284,8 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         if (!type)
             throw new IllegalArgumentException("prepareAndCreateRelationship: type cannot be null")
 
-        List<Type> sources = []
-        List<Type> dests = []
-        if (map[src])
-            sources = map[src].asList()
-        if (map[dest])
-            dests = map[dest].asList()
+        List<Type> sources = ctx.rbmlManager.getTypes(src)
+        List<Type> dests = ctx.rbmlManager.getTypes(dest)
 
         println "Sources Name: ${srcName}"
         println "Sources size? ${sources.size()}"
