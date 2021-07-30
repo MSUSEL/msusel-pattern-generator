@@ -276,24 +276,15 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
         List<Type> sources = []
         List<Type> dests = []
-        if (src instanceof GeneralizationHierarchy) {
-            findGenHierarchyComponents((GeneralizationHierarchy) src, srcPort).each {
-                if (map[it])
-                    sources += map[it]
-            }
-        } else {
-            if (map[src])
-                sources = map[src].asList()
-        }
-        if (dest instanceof GeneralizationHierarchy) {
-            findGenHierarchyComponents((GeneralizationHierarchy) dest, destPort).each {
-                if (map[it])
-                    dests += map[it]
-            }
-        } else {
-            if (map[dest])
+        if (map[src])
+            sources = map[src].asList()
+        if (map[dest])
                 dests = map[dest].asList()
-        }
+
+        println "Sources Name: ${srcName}"
+        println "Sources size? ${sources.size()}"
+        println "Dests Name: ${destName}"
+        println "Dests size? ${dests.size()}"
 
         if (sources.size() == dests.size()) {
             for (int i = 0; i < sources.size(); i++) {
