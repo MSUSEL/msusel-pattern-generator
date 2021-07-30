@@ -121,8 +121,10 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
         boolean isRoot = isGHRoot(role)
 
+        println "Num: $num"
         if (map[role])
             num = num - map[role].size()
+        println "Num: $num"
 
         if (!(ghRoot || isRoot) && num > 0) {
             num.times {
