@@ -121,7 +121,10 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
         boolean isRoot = isGHRoot(role)
 
-        if (!(ghRoot || isRoot)) {
+        if (map[role])
+            num = num - map[role].size()
+
+        if (!(ghRoot || isRoot) && num > 0) {
             num.times {
                 if (newRole)
                     ctx.clsBuilder.init(ns: ns, classifier: newRole)
