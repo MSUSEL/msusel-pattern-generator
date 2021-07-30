@@ -93,6 +93,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         if (!role)
             throw new IllegalArgumentException("generateClassifier: role cannot be null")
 
+        println "Generating Classifier for ${role.name}"
         Random rand = new Random()
         int num
 
@@ -101,7 +102,6 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         } else {
             if (role.mult.lower == role.mult.upper) {
                 num = (Integer) (role.mult.upper < ctx.maxBreadth ? role.mult.upper : ctx.maxBreadth)
-
             } else if (role.mult.upper == -1) {
                 num = rand.nextInt(ctx.maxBreadth) + role.mult.lower
             } else {
