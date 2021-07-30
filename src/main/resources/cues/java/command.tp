@@ -8,6 +8,7 @@ start_type: ConcreteCommand
     start_field: r
     private [[Receiver.name]] [[r.name]];
     end_field: r
+
     [[fields]]
 
     start_method: Execute
