@@ -86,7 +86,8 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         if (role instanceof GeneralizationHierarchy) {
             processGHRole(ns, role, port)
         } else if (role instanceof Classifier) {
-            generateClassifier(ns, (Classifier) role)
+            if (!isGHMember(role))
+                generateClassifier(ns, (Classifier) role)
         }
     }
 
@@ -154,6 +155,19 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         sps.genHierarchies.each {
             if (it instanceof GeneralizationHierarchy) {
                 if ((it as GeneralizationHierarchy).root == role)
+                    return true
+            }
+        }
+        return false
+    }
+
+    private boolean isGHMember(Role role) {
+        SPS sps = params.rbml as SPS
+        sps.genHierarchies.each {
+            if (it instanceof GeneralizationHierarchy) {
+                if ((it as GeneralizationHierarchy).root == role)
+                    return true
+                else if ((it as GeneralizationHierarchy).children.contains(role))
                     return true
             }
         }
