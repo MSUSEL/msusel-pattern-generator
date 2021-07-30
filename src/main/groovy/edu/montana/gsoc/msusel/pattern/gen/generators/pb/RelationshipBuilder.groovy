@@ -59,9 +59,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             if (rel instanceof Relationship) {
                 "getTypes(rel.source()): ${ctx.rbmlManager.getTypes(rel.source())}"
                 "getTypes(rel.dest()): ${ctx.rbmlManager.getTypes(rel.dest())}"
-                if (ctx.rbmlManager.getTypes(rel.source()).isEmpty())
+//                if (ctx.rbmlManager.getTypes(rel.source()).isEmpty())
                     processRole(ns, rel.source(), rel.srcPort)
-                if (ctx.rbmlManager.getTypes(rel.dest()).isEmpty())
+//                if (ctx.rbmlManager.getTypes(rel.dest()).isEmpty())
                     processRole(ns, rel.dest(), rel.destPort)
                 selectAndCreateRelationship(rel)
             }
