@@ -6,10 +6,9 @@ start_type: Context
 [[typedef]] {
 
     start_field: currentState
-    private [[State.root]] [[name]];
+    private [[State.root]] [[currentState.name]];
     end_field: currentState
-    start_field: st
-    end_field: st
+
     [[fields]]
 
     public [[InstName]]() {

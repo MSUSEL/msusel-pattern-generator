@@ -20,7 +20,7 @@
 # [[typedef]] {
 #
 #     start_field: uniqueInstance
-#     private static final [[Singleton.name]] [[name]] = new [[InstName]]();
+#     private static final [[Singleton.name]] [[uniqueInstance.name]] = new [[InstName]]();
 #     end_field: uniqueInstance
 #
 #     [[fields]]
@@ -62,7 +62,7 @@
 # [[typedef]] {
 #
 #     start_field: uniqueInstance
-#     private static [[Singleton.name]] [[name]];
+#     private static [[Singleton.name]] [[uniqueInstance.name]];
 #     end_field: uniqueInstance
 #     [[fields]]
 #
@@ -105,7 +105,7 @@ start_type: ConcreteSingleton
 [[typedef]] {
 
     start_field: uniqueInstance
-    private static volatile [[Singleton.name]] [[name]];
+    private static volatile [[Singleton.name]] [[uniqueInstance.name]];
     end_field: uniqueInstance
 
     [[fields]]
