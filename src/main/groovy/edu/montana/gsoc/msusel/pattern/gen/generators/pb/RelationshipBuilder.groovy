@@ -57,9 +57,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
         sps.relations.each { rel ->
             if (rel instanceof Relationship) {
-                if (ctx.rbmlManager.getTypes(rel.source()))
+                if (!ctx.rbmlManager.getTypes(rel.source()))
                     processRole(ns, rel.source(), rel.srcPort)
-                if (ctx.rbmlManager.getTypes(rel.dest()))
+                if (!ctx.rbmlManager.getTypes(rel.dest()))
                     processRole(ns, rel.dest(), rel.destPort)
                 selectAndCreateRelationship(rel)
             }
