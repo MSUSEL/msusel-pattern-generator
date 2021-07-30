@@ -106,6 +106,22 @@ class TypeCue extends CueContainer {
             }
         }
 
+        compRole.structFeats.each { role ->
+            String combined = ""
+            Cue cue = null
+            def comps = manager.getComponentsByRole(role).findAll {((Field) it).parentType == type }
+            comps.each {fld ->
+                cue = getCueForRole(role.name, (Component) fld)
+                if (cue && (fld as Field).getParentType() == type) {
+                    combined += cue.compile(fld, params, manager) + "\n    "
+                }
+            }
+            if (cue) {
+                combined = combined.trim()
+                text = text.replaceAll(cue.replacement, combined)
+            }
+        }
+
         Map<Cue, String> combinedMap = [:]
         type.getFields().each {
             String roleName = manager.getRole(it)
