@@ -18,7 +18,7 @@ start_type: ConcreteCommand
     [[methods]]
 
     public [[InstName]]([[Receiver.name]] rcvr) {
-        this.[[r.name]] = rcvr
+        this.[[r.name]] = rcvr;
     }
 }
 end_type: ConcreteCommand
