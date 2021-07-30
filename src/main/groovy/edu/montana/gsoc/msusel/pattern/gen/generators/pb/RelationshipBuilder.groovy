@@ -307,8 +307,10 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         println "Dests size? ${dests.size()}"
 
         if (sources.size() == dests.size()) {
-            for (int i = 0; i < sources.size(); i++) {
-                createRelationship(sources[i], dests[i], type, srcName, destName, srcUpper, destUpper)
+            sources.size().times {
+                for (int i = 0; i < sources.size(); i++) {
+                    createRelationship(sources[i], dests[i], type, srcName, destName, srcUpper, destUpper)
+                }
             }
         } else if (sources.size() == 1 && dests.size() > 1 && sources.first()) {
             dests.each {
