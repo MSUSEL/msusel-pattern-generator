@@ -49,7 +49,7 @@ class RampedHalfHalf extends AbstractTreeGenerator {
         } else if (depth == 0) {
 //            node.value = parent ? randomSelect(nonterms) : root
             node = parent ? parent : new Node(parent: parent)
-            if (!node.value)
+//            if (!node.value)
                 node.value = root
             generateChildren(node, depth, maxDepth)
         }

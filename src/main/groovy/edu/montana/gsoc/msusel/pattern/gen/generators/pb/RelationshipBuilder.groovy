@@ -95,7 +95,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         println "Generating Classifier for ${role.name}"
         if (!ctx.rbmlManager.getTypes(role).isEmpty())
             return new HashSet<>(ctx.rbmlManager.getTypes(role))
-        
+
         Random rand = new Random()
         int num
 
