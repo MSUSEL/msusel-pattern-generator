@@ -93,6 +93,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             throw new IllegalArgumentException("generateClassifier: role cannot be null")
 
         println "Generating Classifier for ${role.name}"
+        if (!ctx.rbmlManager.getTypes(role).isEmpty())
+            return new HashSet<>(ctx.rbmlManager.getTypes(role))
+        
         Random rand = new Random()
         int num
 
@@ -133,6 +136,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             throw new IllegalArgumentException("generateClassifier: role cannot be null")
 
         println "Generating Classifier for ${role.name}"
+
         Random rand = new Random()
         int num
 
