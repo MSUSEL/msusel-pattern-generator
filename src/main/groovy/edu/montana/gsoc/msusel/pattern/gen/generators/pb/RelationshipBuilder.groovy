@@ -27,16 +27,10 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import com.google.common.collect.Sets
-import edu.isu.isuese.datamodel.Accessibility
-import edu.isu.isuese.datamodel.Field
-import edu.isu.isuese.datamodel.Namespace
-import edu.isu.isuese.datamodel.RelationType
-import edu.isu.isuese.datamodel.Type
-import edu.isu.isuese.datamodel.TypeRef
+import edu.isu.isuese.datamodel.*
 import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.rbml.model.*
-import org.apache.logging.log4j.Level
 
 /**
  * @author Isaac Griffith
@@ -66,12 +60,12 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
         sps.relations.each { rel ->
             if (rel instanceof Relationship) {
-                "getTypes(rel.source()): ${ctx.rbmlManager.getTypes(rel.source())}"
-                "getTypes(rel.dest()): ${ctx.rbmlManager.getTypes(rel.dest())}"
+                println "getTypes(rel.source()): ${ctx.rbmlManager.getTypes(rel.source())}"
+                println "getTypes(rel.dest()): ${ctx.rbmlManager.getTypes(rel.dest())}"
 //                if (ctx.rbmlManager.getTypes(rel.source()).isEmpty())
-                    processRole(ns, rel.source(), rel.srcPort)
+                processRole(ns, rel.source(), rel.srcPort)
 //                if (ctx.rbmlManager.getTypes(rel.dest()).isEmpty())
-                    processRole(ns, rel.dest(), rel.destPort)
+                processRole(ns, rel.dest(), rel.destPort)
                 selectAndCreateRelationship(rel)
             }
         }
@@ -135,16 +129,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                     ctx.clsBuilder.init(ns: ns, classifier: newRole)
                 else
                     ctx.clsBuilder.init(ns: ns, classifier: role)
-                Type clazz = (Type) ctx.clsBuilder.create()
-                if (clazz != null) {
-                    if (map[role])
-                        map[role] << clazz
-                    else {
-                        map[role] = [clazz].toSet()
-                    }
-                }
+                ctx.clsBuilder.create()
             }
-            return map[role]
+            return new HashSet<>(ctx.rbmlManager.getTypes(role))
         }
 
         return new HashSet<>()
@@ -308,9 +295,9 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
         if (sources.size() == dests.size()) {
 //            sources.size().times {
-                for (int i = 0; i < sources.size(); i++) {
-                    createRelationship(sources[i], dests[i], type, srcName, destName, srcUpper, destUpper)
-                }
+            for (int i = 0; i < sources.size(); i++) {
+                createRelationship(sources[i], dests[i], type, srcName, destName, srcUpper, destUpper)
+            }
 //            }
         } else if (sources.size() == 1 && dests.size() > 1 && sources.first()) {
             dests.each {
