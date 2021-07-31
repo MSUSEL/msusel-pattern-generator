@@ -27,7 +27,12 @@
 package edu.montana.gsoc.msusel.pattern.gen.generators.pb
 
 import com.google.common.collect.Sets
-import edu.isu.isuese.datamodel.*
+import edu.isu.isuese.datamodel.Accessibility
+import edu.isu.isuese.datamodel.Field
+import edu.isu.isuese.datamodel.Namespace
+import edu.isu.isuese.datamodel.RelationType
+import edu.isu.isuese.datamodel.Type
+import edu.isu.isuese.datamodel.TypeRef
 import edu.montana.gsoc.msusel.pattern.gen.cue.Cue
 import edu.montana.gsoc.msusel.pattern.gen.cue.CueManager
 import edu.montana.gsoc.msusel.rbml.model.*
@@ -58,16 +63,15 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             }
         }
 
-        sps.relations.each { rel ->
-            if (rel instanceof Relationship) {
-                println "getTypes(rel.source()): ${ctx.rbmlManager.getTypes(rel.source())}"
-                println "getTypes(rel.dest()): ${ctx.rbmlManager.getTypes(rel.dest())}"
+        sps.relations.each { r ->
+            Relationship rel = r as Relationship
+            println "getTypes(rel.source()): ${ctx.rbmlManager.getTypes(rel.source())}"
+            println "getTypes(rel.dest()): ${ctx.rbmlManager.getTypes(rel.dest())}"
 //                if (ctx.rbmlManager.getTypes(rel.source()).isEmpty())
-                processRole(ns, rel.source(), rel.srcPort)
+            processRole(ns, rel.source(), rel.getSrcPort())
 //                if (ctx.rbmlManager.getTypes(rel.dest()).isEmpty())
-                processRole(ns, rel.dest(), rel.destPort)
-                selectAndCreateRelationship(rel)
-            }
+            processRole(ns, rel.dest(), rel.getDestPort())
+            selectAndCreateRelationship(rel)
         }
     }
 
@@ -369,6 +373,8 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             srcField.save()
             src.addMember(srcField)
             srcField.updateKey()
+            srcField.save()
+            srcField.refresh()
             ctx.rbmlManager.addMapping(destName, srcField)
         }
 //        }
@@ -390,6 +396,8 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                 destField.save()
                 dest.addMember(destField)
                 destField.updateKey()
+                destField.save()
+                destField.refresh()
                 ctx.rbmlManager.addMapping(srcName, destField)
             }
 //            }
