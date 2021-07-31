@@ -84,12 +84,51 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         if (role instanceof GeneralizationHierarchy) {
             processGHRole(ns, role, port)
         } else if (role instanceof Classifier) {
-            if (!isGHMember(role))
-                generateClassifier(ns, (Classifier) role)
+            generateRelClassifier(ns, (Classifier) role)
         }
     }
 
-    Set<Type> generateClassifier(Namespace ns, Classifier role, boolean ghRoot = false) {
+    Set<Type> generateRelClassifier(Namespace ns, Classifier role) {
+        if (!role)
+            throw new IllegalArgumentException("generateClassifier: role cannot be null")
+
+        println "Generating Classifier for ${role.name}"
+        Random rand = new Random()
+        int num
+
+        if (role.mult.lower == role.mult.upper) {
+            num = (Integer) (role.mult.upper < ctx.maxBreadth ? role.mult.upper : ctx.maxBreadth)
+        } else if (role.mult.upper == -1) {
+            num = rand.nextInt(ctx.maxBreadth) + role.mult.lower
+        } else {
+            if (role.mult.upper < ctx.maxBreadth) {
+                num = rand.nextInt(role.mult.upper) + role.mult.lower
+            } else {
+                num = rand.nextInt(ctx.maxBreadth) + role.mult.lower
+            }
+        }
+
+        boolean ghMember = isGHMember(role)
+        println "Role is GH Member: $ghMember"
+        Set<Type> types = Sets.newHashSet(ctx.rbmlManager.getTypes(role))
+
+        println "Num: $num"
+        if (types)
+            num = num - types.size()
+        println "Num: $num"
+
+        if (!ghMember && num > 0) {
+            num.times {
+                ctx.clsBuilder.init(ns: ns, classifier: role)
+                ctx.clsBuilder.create()
+            }
+            return new HashSet<>(ctx.rbmlManager.getTypes(role))
+        }
+
+        return new HashSet<>()
+    }
+
+    Set<Type> generateGHClassifier(Namespace ns, Classifier role, boolean ghRoot = false) {
         if (!role)
             throw new IllegalArgumentException("generateClassifier: role cannot be null")
 
@@ -113,13 +152,6 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             }
         }
 
-//        boolean makeInterface = rand.nextBoolean()
-        boolean makeInterface = false
-        Role newRole = role
-//        if (ghRoot)
-//            newRole = copyToInterface((Classifier) role)
-
-        boolean ghMember = isGHMember(role)
         Set<Type> types = Sets.newHashSet(ctx.rbmlManager.getTypes(role))
 
         println "Num: $num"
@@ -127,29 +159,11 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             num = num - types.size()
         println "Num: $num"
 
-        if (!(ghRoot || ghMember) && num > 0) {
-            num.times {
-                if (newRole)
-                    ctx.clsBuilder.init(ns: ns, classifier: newRole)
-                else
-                    ctx.clsBuilder.init(ns: ns, classifier: role)
-                ctx.clsBuilder.create()
-            }
-            return new HashSet<>(ctx.rbmlManager.getTypes(role))
+        num.times {
+            ctx.clsBuilder.init(ns: ns, classifier: role)
+            ctx.clsBuilder.create()
         }
-
-        return new HashSet<>()
-    }
-
-    private boolean isGHRoot(Role role) {
-        SPS sps = params.rbml as SPS
-        sps.genHierarchies.each {
-            if (it instanceof GeneralizationHierarchy) {
-                if ((it as GeneralizationHierarchy).root == role)
-                    return true
-            }
-        }
-        return false
+        return new HashSet<>(ctx.rbmlManager.getTypes(role))
     }
 
     private boolean isGHMember(Role role) {
@@ -158,23 +172,11 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             if (it instanceof GeneralizationHierarchy) {
                 if ((it as GeneralizationHierarchy).root == role)
                     return true
-                else if ((it as GeneralizationHierarchy).children.contains(role))
+                if ((it as GeneralizationHierarchy).children.contains(role))
                     return true
             }
         }
         return false
-    }
-
-    ClassRole copyToInterface(Classifier role) {
-        ClassRole ir = ClassRole.builder()
-                .name(role.name)
-                .mult(role.mult)
-                .create()
-        ir.structFeats = role.structFeats
-        ir.behFeats = role.behFeats
-        ir.abstrct = role.abstrct
-
-        ir
     }
 
     void processGHRole(Namespace ns, Role role, String port) {
@@ -205,7 +207,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                     nonterm = true
                 }
             }
-            Set<Type> generated = generateClassifier(ns, toGen, isRoot)
+            Set<Type> generated = generateGHClassifier(ns, toGen, isRoot)
             if (!ghmap[name]) {
                 ghmap[name] = new HashMap<String, Set<Type>>()
                 ghmap[name]["roots"] = [] as Set<Type>
