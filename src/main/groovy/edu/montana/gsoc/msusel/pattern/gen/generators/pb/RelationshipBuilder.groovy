@@ -65,11 +65,7 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
         sps.relations.each { r ->
             Relationship rel = r as Relationship
-            println "getTypes(rel.source()): ${ctx.rbmlManager.getTypes(rel.source())}"
-            println "getTypes(rel.dest()): ${ctx.rbmlManager.getTypes(rel.dest())}"
-//                if (ctx.rbmlManager.getTypes(rel.source()).isEmpty())
             processRole(ns, rel.source(), rel.getSrcPort())
-//                if (ctx.rbmlManager.getTypes(rel.dest()).isEmpty())
             processRole(ns, rel.dest(), rel.getDestPort())
             selectAndCreateRelationship(rel)
         }
@@ -92,7 +88,6 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         if (!role)
             throw new IllegalArgumentException("generateClassifier: role cannot be null")
 
-        println "Generating Classifier for ${role.name}"
         if (!ctx.rbmlManager.getTypes(role).isEmpty())
             return new HashSet<>(ctx.rbmlManager.getTypes(role))
 
@@ -112,13 +107,10 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         }
 
         boolean ghMember = isGHMember(role)
-        println "Role is GH Member: $ghMember"
         Set<Type> types = Sets.newHashSet(ctx.rbmlManager.getTypes(role))
 
-        println "Num: $num"
         if (types)
             num = num - types.size()
-        println "Num: $num"
 
         if (!ghMember && num > 0) {
             num.times {
@@ -134,8 +126,6 @@ class RelationshipBuilder extends AbstractComponentBuilder {
     Set<Type> generateGHClassifier(Namespace ns, Classifier role, boolean ghRoot = false) {
         if (!role)
             throw new IllegalArgumentException("generateClassifier: role cannot be null")
-
-        println "Generating Classifier for ${role.name}"
 
         Random rand = new Random()
         int num
@@ -158,10 +148,8 @@ class RelationshipBuilder extends AbstractComponentBuilder {
 
         Set<Type> types = Sets.newHashSet(ctx.rbmlManager.getTypes(role))
 
-        println "Num: $num"
         if (types)
             num = num - types.size()
-        println "Num: $num"
 
         num.times {
             ctx.clsBuilder.init(ns: ns, classifier: role)
@@ -298,17 +286,10 @@ class RelationshipBuilder extends AbstractComponentBuilder {
         List<Type> sources = ctx.rbmlManager.getTypes(src)
         List<Type> dests = ctx.rbmlManager.getTypes(dest)
 
-        println "Sources Name: ${srcName}"
-        println "Sources size? ${sources.size()}"
-        println "Dests Name: ${destName}"
-        println "Dests size? ${dests.size()}"
-
         if (sources.size() == dests.size()) {
-//            sources.size().times {
             for (int i = 0; i < sources.size(); i++) {
                 createRelationship(sources[i], dests[i], type, srcName, destName, srcUpper, destUpper)
             }
-//            }
         } else if (sources.size() == 1 && dests.size() > 1 && sources.first()) {
             dests.each {
                 createRelationship(sources.first(), it, type, srcName, destName, srcUpper, destUpper)
@@ -361,9 +342,8 @@ class RelationshipBuilder extends AbstractComponentBuilder {
     }
 
     private void createFields(Type src, Type dest, String srcName, String destName, int srcUpper, int destUpper) {
-        println "RelationshipBuilder: Creating Fields"
         Cue cue = CueManager.instance.getCurrent()
-//        if (!(cue?.hasCueForRole(destName, src))) {
+
         if (!src.hasFieldWithName(destName)) {
             Accessibility access = Accessibility.PRIVATE
             if (src.isAbstract())
@@ -383,10 +363,8 @@ class RelationshipBuilder extends AbstractComponentBuilder {
             srcField.refresh()
             ctx.rbmlManager.addMapping(destName, srcField)
         }
-//        }
 
         if (srcUpper == -1 && destUpper == -1) {
-//            if (!(cue?.hasCueForRole(srcName, dest))) {
             if (!dest.hasFieldWithName(srcName)) {
                 TypeRef srcRef = createTypeRef(src)
                 Accessibility access = Accessibility.PRIVATE
@@ -406,7 +384,6 @@ class RelationshipBuilder extends AbstractComponentBuilder {
                 destField.refresh()
                 ctx.rbmlManager.addMapping(srcName, destField)
             }
-//            }
         }
     }
 

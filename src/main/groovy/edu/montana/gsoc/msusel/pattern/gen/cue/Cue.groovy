@@ -93,7 +93,7 @@ abstract class Cue {
                         } else {
                             comps = Lists.newArrayList(manager.getFieldByRelName(roleName))
                         }
-                        println "Comps.size(): ${comps.size()}"
+
                         String name = randomSelect(comps)?.getName()
                         text = replace(text, key as String, name)
                         break
@@ -144,7 +144,6 @@ abstract class Cue {
     }
 
     private static String replace(String current, String key, String value) {
-        println "Key: $key, Value: $value"
         return current.replaceAll(/\[\[$key\]\]/, value)
     }
 
