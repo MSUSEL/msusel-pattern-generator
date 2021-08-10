@@ -74,7 +74,6 @@ class JavaGradleBuildFileGenerator extends JavaBuildFileGenerator {
             sourceCompatibility = 1.8
             targetCompatibility = 1.8
             compileJava.options.fork = true
-            compileJava.options.forkOptions.executable = '${this.ctx.javaBinary}'
             
             // In this section you declare the dependencies for your production and test code
             dependencies {
