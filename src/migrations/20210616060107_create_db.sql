@@ -1,7 +1,7 @@
 --
--- The MIT License (MIT)
+-- MIT License
 --
--- MSUSEL DataModel
+-- MSUSEL Design Pattern Generator
 -- Copyright (c) 2015-2019 Montana State University, Gianforte School of Computing,
 -- Software Engineering Laboratory and Idaho State University, Informatics and
 -- Computer Science, Empirical Software Engineering Laboratory

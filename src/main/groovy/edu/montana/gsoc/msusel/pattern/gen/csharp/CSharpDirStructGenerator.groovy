@@ -1,4 +1,4 @@
-/**
+/*
  * MIT License
  *
  * MSUSEL Design Pattern Generator
