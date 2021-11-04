@@ -1,5 +1,5 @@
 start_pattern: basic
-start_type: Proxy
+start_type: Template
 /**
 [[ClassComment]]
  */
@@ -14,5 +14,5 @@ start_type: Proxy
     }
     end_method: Operation
 }
-end_type: Proxy
+end_type: Template
 end_pattern: basic
